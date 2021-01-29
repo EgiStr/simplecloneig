@@ -1,0 +1,21 @@
+.contentImage{
+    width: 100%;
+    object-fit: contain;
+}
+.head{
+    display: flex;
+    align-items: center;
+    padding: 20px 10px;
+}
+
+.avatar{
+    margin-right:10px;
+}
+.content{
+    border:1px solid lightgray;
+    margin-bottom:45px !important;
+    margin-top:45px !important  ;
+}
+.caption{
+    margin:20px;
+}

@@ -7,7 +7,12 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-      <Content />
+      <div className="row">
+        <div className="col s9">
+          <Content username="m.jawa_" captions="i don't understand" />
+          <Content username="EgiStr" captions="yes i'm sorry" />
+        </div>
+      </div>
 
     </div>
 
