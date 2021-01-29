@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export class content extends Component {
-    render() {
-        return (
-            <div>
-                conten
-            </div>
-        )
-    }
+function Content() {
+    return (
+        <div className="content">
+            <h4>Username</h4>
+            <img src="/public/favicon.ico"/>
+        </div>
+    )
 }
 
-export default content
+export default Content
+
