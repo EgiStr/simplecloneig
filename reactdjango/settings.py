@@ -41,6 +41,7 @@ INSTALLED_APPS = [
   # local app
   'posts',
   'comment',
+  'usercostumer',
 
   # external app
   'rest_framework',
