@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.6.0",
-    "react": "^16.2.0",
+    "materialize-css": "^1.0.0-rc.2",
+    "react": "^16.14.0",
     "react-bootstrap": "^1.4.3",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.14.0",
+    "react-materialize": "^3.9.6",
     "react-scripts": "1.0.17"
   },
   "scripts": {
