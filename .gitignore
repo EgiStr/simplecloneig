@@ -4,6 +4,7 @@
 /staticfiles
 /.vscode
 
+/static
 *.pyc
 *.sqlite3
 package-lock.json
