@@ -15,18 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path,include
-from django.views.generic import TemplateView
+
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 
 
-
-urlpatterns = [
-  path('admin/', admin.site.urls),
+urlpatterns =[
+  path('admin/',admin.site.urls),
+  path('token',TokenObtainPairView.as_view(),name='token'),
+  path('token/refresh',TokenRefreshView.as_view(),name='token-refresh'),
   path("", include(('posts.urls', 'posts'), namespace='post')),
-  path("api/", include(('posts.api.urls','posts.api'),namespace='api-post'))
-  # path('api/', include('sampleapp.urls')),
-  # re_path('.*', TemplateView.as_view(template_name='index.html')),
+  path("api/", include(('posts.api.urls','posts.api'),namespace='api-post')),
 ]
+
+
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
