@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
   path('admin/', admin.site.urls),
   path("", include(('posts.urls', 'posts'), namespace='post')),
+  path("api/", include(('posts.api.urls','posts.api'),namespace='api-post'))
   # path('api/', include('sampleapp.urls')),
   # re_path('.*', TemplateView.as_view(template_name='index.html')),
 ]
