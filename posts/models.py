@@ -17,7 +17,7 @@ class PostManage(models.Manager):
 class Post(models.Model):
     
     user = models.ForeignKey(UserProfil,related_name='author', on_delete=models.CASCADE)
-    post = models.ImageField(upload_to='image/post', height_field='height_field', width_field='width_field')
+    post = models.ImageField(upload_to='media/image/post', height_field='height_field', width_field='width_field')
     caption = models.TextField(blank=True, null=True)
     likes =models.ManyToManyField(UserProfil,blank=True,related_name='likes')
     width_field = models.PositiveIntegerField(default=0)
