@@ -19,7 +19,7 @@ class UserProfil(models.Model):
     bio = models.TextField(blank=True, null=True)
     email  = models.EmailField(max_length=254,blank=True, null=True)
     nomorHp= models.PositiveIntegerField(blank=True, null=True)
-    gender = models.CharField(choices=CHOICE_GENDER,max_length=50,blank=True, null=True) 
+    gender = models.CharField(choices=CHOICE_GENDER,max_length=50,blank=True) 
 
     
 
@@ -28,13 +28,21 @@ class UserProfil(models.Model):
         count = self.author.all().count()
         return count
 
+    def __str__(self):
+        return f'of {self.user} '
+
 class UserFollowing(models.Model):
-    user = models.ForeignKey(UserProfil,related_name='following', on_delete=models.CASCADE)
-    following_user = models.ForeignKey(UserProfil,related_name='follower', on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfil,related_name='follower', on_delete=models.CASCADE)
+    following_user = models.ForeignKey(UserProfil,related_name='following', on_delete=models.CASCADE)
     created= models.DateTimeField(auto_now=True, auto_now_add=False)
 
     class Meta:
         ordering =['-created']
+    
+    def __str__(self):
+        return f'follower {self.user.nickname} and following of {self.following_user.nickname}'
+
+
 @receiver(post_save,sender=settings.AUTH_USER_MODEL)
 def post_save_user(instance,created,*args, **kwargs):
     if created:
