@@ -18,15 +18,12 @@ from django.urls import path, re_path,include
 
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
-
 
 urlpatterns =[
   path('admin/',admin.site.urls),
-  path('token',TokenObtainPairView.as_view(),name='token'),
-  path('token/refresh',TokenRefreshView.as_view(),name='token-refresh'),
   path("", include(('posts.urls', 'posts'), namespace='post')),
   path("api/", include(('posts.api.urls','posts.api'),namespace='api-post')),
+  path("login/", include(('usercostumer.api.urls','usercostumer.api'),namespace='token')),
 ]
 
 
