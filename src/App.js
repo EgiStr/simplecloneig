@@ -10,7 +10,7 @@ function App() {
       <div className="row">
         <div className="col s9">
           <Content username="m.jawa_" captions="i don't understand" />
-          <Content username="EgiStr" captions="yes i'm sorry" imageUrl=""/>
+          <Content username="EgiStr" captions="yes i'm sorry" imageUrl="" />
         </div>
       </div>
 
