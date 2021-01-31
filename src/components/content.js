@@ -16,6 +16,11 @@ function Content({ username, captions, imageUrl }) {
                         <h6>{username}</h6>
                     </div>
                     <img className="contentImage" src={imageUrl} />
+                    <div className="ml 5">
+                        <i className="small material-icons">favorite</i>
+                        <i className="small material-icons">comment</i>
+                        <i className="small material-icons">near_me</i>
+                    </div>
                     <h6 className="caption"><b>{username}</b> {captions}</h6>
                 </div>
             </div>

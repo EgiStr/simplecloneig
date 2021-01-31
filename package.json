@@ -10,6 +10,7 @@
     "react-bootstrap": "^1.4.3",
     "react-dom": "^16.14.0",
     "react-materialize": "^3.9.6",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "1.0.17"
   },
   "scripts": {
