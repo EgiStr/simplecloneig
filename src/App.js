@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import './App.css'
 import Content from './components/Content'
 import Navbar from './components/Navbar'
 import Message from './components/Message'
@@ -15,7 +14,7 @@ function App() {
       caption: "i hope i can to finish this project",
       imageUrl: "https://lh3.googleusercontent.com/2Fz6Fn5zq_hh75oNLsyNqyGSHzPopHojN77Eu6GImw_3bb4JteONR_K8lnCY2nRbZQV9RD7ACVYvTHEEoW6oGt2GNkAVXzsGdHl1XI9JWwr9ojo3N7t5mYgqaux8lESdvi4mJTti4Ok=w2400"
     },
-    { 
+    {
       avatar: "",
       username: "hasan",
       caption: "kumaha anjeun ",
@@ -24,28 +23,29 @@ function App() {
   ]);
 
   return (
-    <Router>
-      <Navbar />
-      <div className="container">
-        <Switch>
-          <Route path="/" exact>
-            {
-              contents.map(content => (
-                <Content
-                  username={content.username}
-                  captions={content.caption}
-                  imageUrl={content.imageUrl}
-                  avatar={content.avatar}
-                />
-              ))
-            }
-          </Route>
-          <Route path="/message" component={Message} />
-          <Route path="/username" component={Profile} />
-        </Switch>
-      </div>
-    </Router>
-
+    <div style={{backgroundColor : "#ffebee"}}>
+      <Router>
+        <Navbar />
+        <div className="container">
+          <Switch>
+            <Route path="/" exact>
+              {
+                contents.map(content => (
+                  <Content
+                    username={content.username}
+                    captions={content.caption}
+                    imageUrl={content.imageUrl}
+                    avatar={content.avatar}
+                  />
+                ))
+              }
+            </Route>
+            <Route path="/message" component={Message} />
+            <Route path="/username" component={Profile} />
+          </Switch>
+        </div>
+      </Router>
+    </div>
   )
 }
 

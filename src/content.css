@@ -11,11 +11,8 @@
 .avatar{
     margin-right:10px;
 }
-.content{
+.col{
     border:1px solid lightgray;
-    margin-bottom:20px !important;
     margin-top:40px !important  ;
 }
-.caption{
-    margin:20px;
-}
+
