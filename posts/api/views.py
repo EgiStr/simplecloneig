@@ -1,6 +1,6 @@
 
 from rest_framework.mixins import DestroyModelMixin,UpdateModelMixin
-from rest_framework.generics import ListAPIView,DestroyAPIView,RetrieveAPIView,RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView,DestroyAPIView,RetrieveAPIView,RetrieveUpdateDestroyAPIView,CreateAPIView
 from usercostumer.models import UserProfil,UserFollowing
 
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
@@ -9,6 +9,7 @@ from posts.models import Post
 from posts.api.serializers import (
                                     PostSerializer,
                                     PostDetailSerialzer,
+                                    CreatePostSerializer,
                                     )
 class PostApiViews(ListAPIView):
 
@@ -25,3 +26,9 @@ class PostApiViews(ListAPIView):
 class PostDetailApiView(RetrieveAPIView,RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerialzer
+
+
+
+class CreatePostAPiView(CreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = CreatePostSerializer

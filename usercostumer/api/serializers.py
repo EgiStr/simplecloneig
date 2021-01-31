@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.deletion import SET_NULL
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
@@ -10,7 +11,7 @@ from django.contrib.auth.password_validation import validate_password
 
 class registeruser(ModelSerializer):
     email = serializers.EmailField(
-            required=False,
+            required=True,
             validators=[
                 UniqueValidator(queryset=User.objects.all())
                 ]
@@ -20,7 +21,7 @@ class registeruser(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password2', 'email')
+        fields = ('email','username', 'password', 'password2' )
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -32,7 +33,7 @@ class registeruser(ModelSerializer):
         try:
             email_valid = validated_data['email']
         except:
-            email_valid = None
+            email_valid = SET_NULL
         user = User.objects.create(
             username=validated_data['username'],
             email=email_valid,

@@ -1,4 +1,4 @@
-from rest_framework import fields
+
 from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
 
 from posts.models import Post
@@ -21,6 +21,7 @@ class PostSerializer(ModelSerializer):
             'likes',
             'create_at',
         ]
+        
     def get_user(self,obj):
         return obj.user.nickname
     
@@ -42,3 +43,19 @@ class PostDetailSerialzer(ModelSerializer):
     def get_likes_count(self,obj):
         return obj.likes.count()
 
+
+class CreatePostSerializer(ModelSerializer):
+    # user = SerializerMethodField()
+    class Meta:
+        model = Post
+        fields = [
+            'post',
+            'caption'
+        ]
+        read_only_fields = ['id']
+
+    # def get_user(self,obj):
+    #     return obj.user
+
+    # def get_likes(self,obj):
+    #     return obj.likes
