@@ -2,7 +2,7 @@ import React from 'react'
 import "../content.css";
 import Avatar from "@material-ui/core/Avatar";
 
-function Content({ username, captions, imageUrl }) {
+function Content({ username, captions, imageUrl, avatar }) {
     return (
         <div className="row">
             <div className="col s8">
@@ -10,12 +10,12 @@ function Content({ username, captions, imageUrl }) {
                     <div className="head">
                         <Avatar
                             className="avatar"
-                            alt="hasyim"
-                            src={imageUrl}
+                            alt="foto"
+                            src={avatar}
                         />
                         <h6>{username}</h6>
                     </div>
-                    <img className="contentImage" src={imageUrl} />
+                    <img className="contentImage" src={imageUrl} alt="foto" />
                     <div className="ml 5">
                         <i className="small material-icons">favorite</i>
                         <i className="small material-icons">comment</i>
