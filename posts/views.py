@@ -27,3 +27,7 @@ def index(reqeust):
         'posts':posts,
     }
     return render(reqeust,'testing.html',context)
+
+
+def index2(request):
+    return render(request,'testing2.html')
