@@ -1,7 +1,10 @@
-from rest_framework import fields
-from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
 
+from usercostumer.models import UserProfil
+from django.db.models import fields
+from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
+from rest_framework import serializers
 from posts.models import Post
+
 
 class PostSerializer(ModelSerializer):
     detail = HyperlinkedIdentityField(
@@ -21,6 +24,27 @@ class PostSerializer(ModelSerializer):
             'likes',
             'create_at',
         ]
+        
+    def get_user(self,obj):
+        return obj.user.nickname
+    
+    def get_likes(self,obj):
+        return obj.likes.count()
+
+class PostSerializerProfil(ModelSerializer):
+    user = SerializerMethodField()
+    likes = SerializerMethodField()
+    class Meta:
+        model = Post
+        fields = [
+            'user',
+            'id',
+            'caption',
+            'post',
+            'likes',
+            'create_at',
+        ]
+        
     def get_user(self,obj):
         return obj.user.nickname
     
@@ -34,11 +58,60 @@ class PostDetailSerialzer(ModelSerializer):
     class Meta:
         model = Post
         fields = '__all__'
-        read_only_fields =('id','user','post','create_at','width_field','height_field','likes_count')
-        
+
     def get_user(self,obj):
         return obj.user.nickname
     
     def get_likes_count(self,obj):
         return obj.likes.count()
 
+
+class CreatePostSerializer(ModelSerializer):
+    user = serializers.ModelField
+
+    # user = SerializerMethodField()
+    class Meta:
+        model = Post
+        fields = [
+            'user',
+            'post',
+            'caption'
+        ]
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        post = Post.objects.create(
+            user=validated_data['user'],
+            caption=validated_data['caption'],
+            post=validated_data['post'],
+        )
+        return post
+
+class EditPostSerializer(ModelSerializer):
+    class Meta:
+        model= Post
+        fields = [
+            'caption',
+            'private'
+        ]
+
+class JustLikeSerializer(ModelSerializer):
+    class Meta:
+        model = Post
+        fields =['likes']
+
+    def update(self, instance, validated_data):
+
+        post = instance
+    
+        like =[t.id for t in validated_data['likes']][0]
+        like = UserProfil.objects.get(id=like)
+       
+        if post.likes.filter(id=like.id).exists(): #already liked the content
+            post.likes.remove(like) #remove user from likes 
+
+        else:
+             post.likes.add(like) 
+
+        post.save()
+        return post
