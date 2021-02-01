@@ -31,6 +31,26 @@ class PostSerializer(ModelSerializer):
     def get_likes(self,obj):
         return obj.likes.count()
 
+class PostSerializerProfil(ModelSerializer):
+    user = SerializerMethodField()
+    likes = SerializerMethodField()
+    class Meta:
+        model = Post
+        fields = [
+            'user',
+            'id',
+            'caption',
+            'post',
+            'likes',
+            'create_at',
+        ]
+        
+    def get_user(self,obj):
+        return obj.user.nickname
+    
+    def get_likes(self,obj):
+        return obj.likes.count()
+
 
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
@@ -81,6 +101,7 @@ class JustLikeSerializer(ModelSerializer):
         fields =['likes']
 
     def update(self, instance, validated_data):
+
         post = instance
     
         like =[t.id for t in validated_data['likes']][0]

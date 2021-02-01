@@ -1,6 +1,7 @@
-from django.db import models
+from posts.api.serializers import PostSerializerProfil
+from usercostumer.models import UserProfil
 from django.db.models.deletion import SET_NULL
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer,SerializerMethodField
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
@@ -8,6 +9,36 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 
+
+class UserProfilSerialzer(ModelSerializer):
+    user = SerializerMethodField()
+    post_count = SerializerMethodField()
+    post_data = SerializerMethodField()
+    class Meta:
+        model = UserProfil
+        fields = [
+            'user',
+            'id',
+            'nickname',
+            'profil',
+            'bio',
+            'email',
+            'nomorHp',
+            'gender',
+            'post_count',
+            'post_data',
+        ]
+
+    def get_user(self,obj):
+        return obj.user.username
+
+    def get_post_count(self,obj):
+        return obj.get_count_posts
+    
+    def get_post_data(self,obj):
+        post = obj.author.all()
+        post = PostSerializerProfil(post,many=True).data
+        return post
 
 class registeruser(ModelSerializer):
     email = serializers.EmailField(

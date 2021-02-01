@@ -30,6 +30,7 @@ class UserProfil(models.Model):
 
     def __str__(self):
         return f'{self.user}'
+    
 
 class UserFollowing(models.Model):
     user = models.ForeignKey(UserProfil,related_name='follower', on_delete=models.CASCADE)
