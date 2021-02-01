@@ -1,7 +1,10 @@
 
+from usercostumer.models import UserProfil
+from django.db.models import fields
 from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
 from rest_framework import serializers
 from posts.models import Post
+
 
 class PostSerializer(ModelSerializer):
     detail = HyperlinkedIdentityField(
@@ -35,8 +38,7 @@ class PostDetailSerialzer(ModelSerializer):
     class Meta:
         model = Post
         fields = '__all__'
-        read_only_fields =('id','user','post','create_at','width_field','height_field','likes_count','caption','private')
-        
+
     def get_user(self,obj):
         return obj.user.nickname
     
@@ -65,9 +67,30 @@ class CreatePostSerializer(ModelSerializer):
         )
         return post
 
+class EditPostSerializer(ModelSerializer):
+    class Meta:
+        model= Post
+        fields = [
+            'caption',
+            'private'
+        ]
 
-    # def get_user(self,obj):
-    #     return obj.user
+class JustLikeSerializer(ModelSerializer):
+    class Meta:
+        model = Post
+        fields =['likes']
 
-    # def get_likes(self,obj):
-    #     return obj.likes
+    def update(self, instance, validated_data):
+        post = instance
+    
+        like =[t.id for t in validated_data['likes']][0]
+        like = UserProfil.objects.get(id=like)
+       
+        if post.likes.filter(id=like.id).exists(): #already liked the content
+            post.likes.remove(like) #remove user from likes 
+
+        else:
+             post.likes.add(like) 
+
+        post.save()
+        return post

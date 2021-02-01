@@ -29,7 +29,7 @@ class UserProfil(models.Model):
         return count
 
     def __str__(self):
-        return f'of {self.user} '
+        return f'{self.user}'
 
 class UserFollowing(models.Model):
     user = models.ForeignKey(UserProfil,related_name='follower', on_delete=models.CASCADE)
