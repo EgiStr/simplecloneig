@@ -1,12 +1,20 @@
 
-from usercostumer.models import UserProfil
+
+
 from django.db.models import fields
 from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
 from rest_framework import serializers
+
+
 from posts.models import Post
+
+from usercostumer.api.serializers import UserProfilPostserializer
+
+from usercostumer.models import UserProfil
 
 
 class PostSerializer(ModelSerializer):
+
     detail = HyperlinkedIdentityField(
         view_name='api-post:detail',
         lookup_field='pk' ,  
@@ -26,27 +34,8 @@ class PostSerializer(ModelSerializer):
         ]
         
     def get_user(self,obj):
-        return obj.user.nickname
-    
-    def get_likes(self,obj):
-        return obj.likes.count()
-
-class PostSerializerProfil(ModelSerializer):
-    user = SerializerMethodField()
-    likes = SerializerMethodField()
-    class Meta:
-        model = Post
-        fields = [
-            'user',
-            'id',
-            'caption',
-            'post',
-            'likes',
-            'create_at',
-        ]
-        
-    def get_user(self,obj):
-        return obj.user.nickname
+        user = obj.user
+        return UserProfilPostserializer(user,context={'request':None}).data
     
     def get_likes(self,obj):
         return obj.likes.count()
@@ -60,7 +49,7 @@ class PostDetailSerialzer(ModelSerializer):
         fields = '__all__'
 
     def get_user(self,obj):
-        return obj.user.nickname
+        return UserProfilPostserializer(obj.user,context={'request':None}).data
     
     def get_likes_count(self,obj):
         return obj.likes.count()
@@ -77,7 +66,6 @@ class CreatePostSerializer(ModelSerializer):
             'post',
             'caption'
         ]
-        read_only_fields = ['id']
 
     def create(self, validated_data):
         post = Post.objects.create(
@@ -105,13 +93,17 @@ class JustLikeSerializer(ModelSerializer):
         post = instance
     
         like =[t.id for t in validated_data['likes']][0]
+
         like = UserProfil.objects.get(id=like)
        
-        if post.likes.filter(id=like.id).exists(): #already liked the content
+        if post.likes.filter(id=like.id).exists(): #already liked the Post
             post.likes.remove(like) #remove user from likes 
 
         else:
              post.likes.add(like) 
 
         post.save()
+
         return post
+
+

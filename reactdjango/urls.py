@@ -23,7 +23,7 @@ urlpatterns =[
   path('admin/',admin.site.urls),
   path("", include(('posts.urls', 'posts'), namespace='post')),
   path("api/", include(('posts.api.urls','posts.api'),namespace='api-post')),
-  path("auth/", include(('usercostumer.api.urls','usercostumer.api'),namespace='token')),
+  path("auth/", include(('usercostumer.api.urls','usercostumer.api'),namespace='auth')),
 ]
 
 
