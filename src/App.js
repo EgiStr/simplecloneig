@@ -22,10 +22,14 @@ function App() {
     }
   ]);
 
+  const myStyle = {
+    backgroundColor: "#ffebee",
+    paddingBottom: "20px"
+  }
   return (
-    <div style={{backgroundColor : "#ffebee"}}>
-      <Router>
-        <Navbar />
+    <Router>
+      <Navbar />
+      <div style={myStyle}>
         <div className="container">
           <Switch>
             <Route path="/" exact>
@@ -44,8 +48,8 @@ function App() {
             <Route path="/username" component={Profile} />
           </Switch>
         </div>
-      </Router>
-    </div>
+      </div>
+    </Router>
   )
 }
 
