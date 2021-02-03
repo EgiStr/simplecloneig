@@ -24,7 +24,8 @@ function App() {
 
   const myStyle = {
     backgroundColor: "#ffebee",
-    paddingBottom: "20px"
+    paddingBottom: "20px",
+    
   }
   return (
     <Router>
@@ -45,7 +46,7 @@ function App() {
               }
             </Route>
             <Route path="/message" component={Message} />
-            <Route path="/username" component={Profile} />
+            <Route path="/profile" component={Profile} />
           </Switch>
         </div>
       </div>

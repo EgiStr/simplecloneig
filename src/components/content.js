@@ -4,7 +4,7 @@ import Avatar from "@material-ui/core/Avatar";
 function Content({ username, captions, imageUrl, avatar }) {
     return (
         <div className="row">
-            <div className="col s8" style={{ backgroundColor: "white" }} >
+            <div className="col s8 box" style={{ backgroundColor: "white" }} >
                 <div className="head">
                     <Avatar
                         className="avatar"

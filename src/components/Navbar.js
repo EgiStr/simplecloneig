@@ -10,9 +10,9 @@ function Navbar() {
                         <ul class="right hide-on-med-and-down">
                             <li><a href="/"><i class="material-icons">home  </i></a></li>
                             <li><a href="/message"><i class="material-icons">message</i></a></li>
-                            <li><a href="/username"><i class="material-icons">people</i></a></li>
+                            <li><a href="/profile"><i class="material-icons">people</i></a></li>
                         </ul>
-                    </div>
+                    </div>                                                                                                  
                 </div>
             </nav>
         </div>
