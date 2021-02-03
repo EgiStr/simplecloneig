@@ -99,10 +99,11 @@ class JustLikeSerializer(ModelSerializer):
         model = Like
         fields =['post','user']
 
-    def update(self, instance, validated_data):
-
-        print(validated_data)
-
-        return instance
+    def create(self, validated_data):
+        Connect_like =  Like.objects.create(
+            user=validated_data['user'],
+            post = validated_data['post'],
+        )
+        return Connect_like
 
 
