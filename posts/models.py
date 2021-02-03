@@ -49,6 +49,14 @@ class Like(models.Model):
     user = models.ForeignKey(UserProfil, related_name='liker',on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['post','user'],  name="unique_likes")
+        ]
+        ordering = [ '-date_created']
+
+
+
     def __str__(self):
         return '{} : {}'.format(self.user, self.post)
     

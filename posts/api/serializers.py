@@ -50,7 +50,6 @@ class PostSerializer(ModelSerializer):
     
     def get_content_type_id(self,obj):
         content_type = obj.get_content_type
-        print(content_type._state)
         return content_type.id
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
@@ -99,10 +98,13 @@ class JustLikeSerializer(ModelSerializer):
         model = Like
         fields =['post','user']
 
-    def update(self, instance, validated_data):
+    def validate(self, attrs):
+        print(attrs.__dict__)
+        return attrs
+    # def update(self, instance, validated_data):
 
-        print(validated_data)
+    #     print(validated_data)
 
-        return instance
+    #     return instance
 
 
