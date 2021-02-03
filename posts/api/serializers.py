@@ -3,7 +3,7 @@ from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,
 from rest_framework import serializers
 
 
-from posts.models import Post
+from posts.models import Post,Like
 
 from usercostumer.api.serializers import UserProfilPostserializer
 from usercostumer.models import UserProfil
@@ -42,7 +42,7 @@ class PostSerializer(ModelSerializer):
         return UserProfilPostserializer(user,context={'request':None}).data
     
     def get_likes(self,obj):
-        return obj.likes.count()
+        return obj.liked_post.all().count()
 
     def get_comments(self,obj):
         comments_qs = Comments.objects.fillter_by_instance(obj)
@@ -96,25 +96,13 @@ class EditPostSerializer(ModelSerializer):
 
 class JustLikeSerializer(ModelSerializer):
     class Meta:
-        model = Post
-        fields =['likes']
+        model = Like
+        fields =['post','user']
 
     def update(self, instance, validated_data):
 
-        post = instance
-    
-        like =[t.id for t in validated_data['likes']][0]
+        print(validated_data)
 
-        like = UserProfil.objects.get(id=like)
-       
-        if post.likes.filter(id=like.id).exists(): #already liked the Post
-            post.likes.remove(like) #remove user from likes 
-
-        else:
-             post.likes.add(like) 
-
-        post.save()
-
-        return post
+        return instance
 
 

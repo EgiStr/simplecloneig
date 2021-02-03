@@ -23,7 +23,6 @@ class Post(models.Model):
     user = models.ForeignKey(UserProfil,related_name='author', on_delete=models.CASCADE,blank=True, null=True)
     post = models.ImageField(upload_to='media/image/post', height_field='height_field', width_field='width_field',blank=True, null=True)
     caption = models.TextField(blank=True, null=True)
-    likes =models.ManyToManyField(UserProfil,blank=True,related_name='likes')
     width_field = models.PositiveIntegerField(default=0,blank=True, null=True)
     height_field = models.PositiveIntegerField(default=0,blank=True, null=True)
     create_at = models.DateTimeField(auto_now=True, auto_now_add=False)
@@ -45,6 +44,13 @@ class Post(models.Model):
     def __str__(self):
         return 'post of {}. caption:{}'.format(self.user,self.caption)
      
+class Like(models.Model):
+    post = models.ForeignKey(Post, related_name='liked_post',on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfil, related_name='liker',on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '{} : {}'.format(self.user, self.post)
     
 # @receiver(post_save,sender=Post)
 # def post_save_user(instance,created,*args, **kwargs):

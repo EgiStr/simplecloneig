@@ -28,7 +28,7 @@ class PostDetailApiView(RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerialzer
 
-class LikePost(RetrieveUpdateAPIView):
+class LikePost(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = JustLikeSerializer
 
