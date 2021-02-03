@@ -1,9 +1,12 @@
-from usercostumer.models import UserProfil,UserFollowing
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # from usercostumer.models import UserProfil
 # Create your models here.
+from usercostumer.models import UserProfil,UserFollowing
+
 
 
 class PostManage(models.Manager):
@@ -33,6 +36,11 @@ class Post(models.Model):
     def get_total_like(self):
         return self.likes.count()
 
+    @property
+    def get_content_type(self):
+        instance = self
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        return content_type
 
     def __str__(self):
         return 'post of {}. caption:{}'.format(self.user,self.caption)

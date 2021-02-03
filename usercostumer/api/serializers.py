@@ -122,7 +122,7 @@ class FollowingOrWerSerializer(ModelSerializer):
         ]
     def validate(self, attrs):
         if attrs['user'] == attrs['following_user']:
-            raise ValidationError({'following':'you not allow to follow you self'})
+            raise serializers.ValidationError({'following':'you not allow to follow you self'})
         return attrs
     
     def create(self, validated_data):

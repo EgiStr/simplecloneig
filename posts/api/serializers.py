@@ -1,7 +1,4 @@
 
-
-
-from django.db.models import fields
 from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
 from rest_framework import serializers
 
@@ -9,11 +6,13 @@ from rest_framework import serializers
 from posts.models import Post
 
 from usercostumer.api.serializers import UserProfilPostserializer
-
 from usercostumer.models import UserProfil
 
+from comment.api.serializers import CommentChildrenSerializer
+from comment.models import Comments
 
 class PostSerializer(ModelSerializer):
+    
 
     detail = HyperlinkedIdentityField(
         view_name='api-post:detail',
@@ -21,6 +20,9 @@ class PostSerializer(ModelSerializer):
     )
     user = SerializerMethodField()
     likes = SerializerMethodField()
+    
+    comments = SerializerMethodField()
+    content_type_id = SerializerMethodField()
     class Meta:
         model = Post
         fields = [
@@ -31,6 +33,8 @@ class PostSerializer(ModelSerializer):
             'post',
             'likes',
             'create_at',
+            'content_type_id',      
+            'comments',
         ]
         
     def get_user(self,obj):
@@ -40,7 +44,14 @@ class PostSerializer(ModelSerializer):
     def get_likes(self,obj):
         return obj.likes.count()
 
-
+    def get_comments(self,obj):
+        comments_qs = Comments.objects.fillter_by_instance(obj)
+        return CommentChildrenSerializer(comments_qs,many=True,context ={'request':None}).data
+    
+    def get_content_type_id(self,obj):
+        content_type = obj.get_content_type
+        print(content_type._state)
+        return content_type.id
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
     likes_count = SerializerMethodField()
