@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from posts.models import Post,Like
 
-from usercostumer.api.serializers import UserCostumerSerializer
+from usercostumer.api.serializers import UserProfilPostserializer
 from usercostumer.models import UserProfil
 
 from comment.api.serializers import CommentChildrenSerializer
@@ -38,7 +38,7 @@ class PostSerializer(ModelSerializer):
         
     def get_user(self,obj):
         user = obj.user
-        return UserCostumerSerializer(user,context={'request':None}).data
+        return UserProfilPostserializer(user,context={'request':None}).data
     
     def get_likes(self,obj):
         return obj.liked_post.all().count()
@@ -49,9 +49,8 @@ class PostSerializer(ModelSerializer):
     
     def get_content_type_id(self,obj):
         content_type = obj.get_content_type
-        """ for replies comment  """
+        print(content_type._state)
         return content_type.id
-
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
     likes_count = SerializerMethodField()
