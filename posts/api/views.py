@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.mixins import DestroyModelMixin,CreateModelMixin
-from rest_framework.generics import ListAPIView,RetrieveAPIView,RetrieveUpdateDestroyAPIView,CreateAPIView,RetrieveUpdateAPIView
+from rest_framework.generics import DestroyAPIView, ListAPIView,RetrieveAPIView,RetrieveUpdateDestroyAPIView,CreateAPIView,RetrieveUpdateAPIView
 from usercostumer.models import UserProfil
 
 from rest_framework.permissions import IsAuthenticated
@@ -32,28 +32,12 @@ class PostDetailApiView(RetrieveAPIView):
     serializer_class = PostDetailSerialzer
 
 class LikePost(CreateAPIView,DestroyModelMixin):
-    queryset = Post.objects.all()
+    queryset = Like.objects.all()
     serializer_class = JustLikeSerializer
-    # def perform_create(self, serializer):
-    #     data = serializer.data
-        
-    #     try:
-    #         queryset = Like.objects.create(
-    #         user = data['user'],
-    #         post=data['post']
-    #             )
-    #     except: 
-    #         serializers.ValidationError({'error':'anda sudah like post'})
-    #     serializer.save(queryset)
-    """ lier gan belom lagi follower"""
-        # if queryset.exists():
-        # raise ValidationError('You have already signed up')
-        # serializer.save(user=self.request.user)
-
-    # def perform_destroy(self, instance):
-    #     print(instance)
-    #     pass
-
+ 
+class DeleteLike(DestroyAPIView):
+    queryset = Like.objects.all()
+    serializer_class = JustLikeSerializer
 
 class CreatePostAPiView(CreateAPIView):
     

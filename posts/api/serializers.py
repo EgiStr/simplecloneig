@@ -1,11 +1,10 @@
-
 from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
 from rest_framework import serializers
 
 
 from posts.models import Post,Like
 
-from usercostumer.api.serializers import UserProfilPostserializer
+from usercostumer.api.serializers import UserCostumerSerializer
 from usercostumer.models import UserProfil
 
 from comment.api.serializers import CommentChildrenSerializer
@@ -39,7 +38,7 @@ class PostSerializer(ModelSerializer):
         
     def get_user(self,obj):
         user = obj.user
-        return UserProfilPostserializer(user,context={'request':None}).data
+        return UserCostumerSerializer(user,context={'request':None}).data
     
     def get_likes(self,obj):
         return obj.liked_post.all().count()
@@ -50,8 +49,9 @@ class PostSerializer(ModelSerializer):
     
     def get_content_type_id(self,obj):
         content_type = obj.get_content_type
-        print(content_type._state)
+        """ for replies comment  """
         return content_type.id
+
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
     likes_count = SerializerMethodField()
@@ -95,15 +95,20 @@ class EditPostSerializer(ModelSerializer):
         ]
 
 class JustLikeSerializer(ModelSerializer):
+    unlike= HyperlinkedIdentityField(
+        view_name='api-post:like-delete',
+    )
     class Meta:
         model = Like
-        fields =['post','user']
+        fields =['unlike','post','user']
+    
 
     def create(self, validated_data):
         Connect_like =  Like.objects.create(
             user=validated_data['user'],
             post = validated_data['post'],
-        )
+            )
+
         return Connect_like
 
 
