@@ -126,11 +126,23 @@ class FollowingOrWerSerializer(ModelSerializer):
         return attrs
     
     def create(self, validated_data):
-        connect = UserFollowing.objects.create(
-            user = validated_data['user'],
-            following_user = validated_data['following_user']
-        )
-        return connect
+        Connention,created =  UserFollowing.objects.get_or_create(
+            user=validated_data['user'],
+            post = validated_data['following_user'],
+            )
+        if created:
+            # if create database it return query and skip delete 
+            return Connention
+            # else it get query it delete qeury
+        Connention.delete()
+
+        return validated_data
+       
+        # connect = UserFollowing.objects.create(
+        #     user = validated_data['user'],
+        #     following_user = validated_data['following_user']
+        # )
+        # return connect
 
 class registeruser(ModelSerializer):
     email = serializers.EmailField(

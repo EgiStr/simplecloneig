@@ -111,9 +111,10 @@ class JustLikeSerializer(ModelSerializer):
             )
         if created:
             return Connect_like
-        else:
-            Connect_like.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        Connect_like.delete()
+
+        return validated_data
        
             # Connect_like = Like.objects.filter(
             #     user=validated_data['user'],
