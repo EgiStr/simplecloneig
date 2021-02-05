@@ -1,7 +1,8 @@
+
 from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
 from rest_framework import serializers
-
-
+from rest_framework.response import Response
+from rest_framework import status
 from posts.models import Post,Like
 
 from usercostumer.api.serializers import UserProfilPostserializer
@@ -17,6 +18,7 @@ class PostSerializer(ModelSerializer):
         view_name='api-post:detail',
         lookup_field='pk' ,  
     )
+
     user = SerializerMethodField()
     likes = SerializerMethodField()
     
@@ -49,7 +51,7 @@ class PostSerializer(ModelSerializer):
     
     def get_content_type_id(self,obj):
         content_type = obj.get_content_type
-        print(content_type._state)
+        """ for make replies comment """
         return content_type.id
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
@@ -78,6 +80,8 @@ class CreatePostSerializer(ModelSerializer):
         ]
 
     def create(self, validated_data):
+        
+       
         post = Post.objects.create(
             user=validated_data['user'],
             caption=validated_data['caption'],
@@ -94,20 +98,30 @@ class EditPostSerializer(ModelSerializer):
         ]
 
 class JustLikeSerializer(ModelSerializer):
-    unlike= HyperlinkedIdentityField(
-        view_name='api-post:like-delete',
-    )
     class Meta:
         model = Like
-        fields =['unlike','post','user']
+        fields =['id','post','user']
     
 
     def create(self, validated_data):
-        Connect_like =  Like.objects.create(
+   
+        Connect_like,created =  Like.objects.get_or_create(
             user=validated_data['user'],
             post = validated_data['post'],
             )
+        if created:
+            return Connect_like
+        else:
+            Connect_like.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+       
+            # Connect_like = Like.objects.filter(
+            #     user=validated_data['user'],
+            #     post = validated_data['post'],
+            # )
+            # Connect_like.delete()
+            # return Response(status=status.HTTP_204_NO_CONTENT)
 
-        return Connect_like
+        
 
 
