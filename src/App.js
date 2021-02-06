@@ -3,6 +3,7 @@ import Content from './components/Content'
 import Navbar from './components/Navbar'
 import Message from './components/Message'
 import Profile from './components/Profile'
+import Login from './components/Login'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 
@@ -47,6 +48,7 @@ function App() {
             </Route>
             <Route path="/message" component={Message} />
             <Route path="/profile" component={Profile} />
+            <Route path="/login" component={Login} />
           </Switch>
         </div>
       </div>
