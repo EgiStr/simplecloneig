@@ -12,7 +12,6 @@
 }
 .box{
     border:1px solid lightgray;
-    margin-top:40px !important  ;
 }
 .icon__box{
     display: flex;

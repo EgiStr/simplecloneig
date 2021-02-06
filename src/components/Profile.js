@@ -1,7 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import '../Profile.css'
+import Posts from './Posts'
 function Profile() {
+    const [contents] = useState([
+        {
+            imageUrl: "https://lh3.googleusercontent.com/2Fz6Fn5zq_hh75oNLsyNqyGSHzPopHojN77Eu6GImw_3bb4JteONR_K8lnCY2nRbZQV9RD7ACVYvTHEEoW6oGt2GNkAVXzsGdHl1XI9JWwr9ojo3N7t5mYgqaux8lESdvi4mJTti4Ok=w2400"
+        },
+        {
+            imageUrl: "https://lh3.googleusercontent.com/2Fz6Fn5zq_hh75oNLsyNqyGSHzPopHojN77Eu6GImw_3bb4JteONR_K8lnCY2nRbZQV9RD7ACVYvTHEEoW6oGt2GNkAVXzsGdHl1XI9JWwr9ojo3N7t5mYgqaux8lESdvi4mJTti4Ok=w2400"
+        }
+    ]);
     return (
         <div>
             <div className="row header" >
@@ -32,9 +41,18 @@ function Profile() {
             </div>
             <div className="divider"></div>
             <div className="post_nav">
-                <div style={{ fontWeight: "600" }}><i className="material-icons tiny" style={{ marginRight: "4px" }}>grid_on</i>POSTS</div>
-                <div style={{}}><i className="material-icons tiny" style={{ marginRight: "4px", }}>turned_in_not</i>SAVED</div>
-                <div style={{}}><i className="material-icons tiny" style={{ marginRight: "4px" }}>person_pin</i>TAGGED</div>
+                <div className="post__nav active"><i className="material-icons tiny" >grid_on</i>POSTS</div>
+                <div className="post__nav"><i className="material-icons tiny" >turned_in_not</i>SAVED</div>
+                <div className="post__nav"><i className="material-icons tiny" >person_pin</i>TAGGED</div>
+            </div>
+            <div className="posts">
+                {
+                    contents.map(content => (
+                        <Posts
+                            imageUrl={content.imageUrl}
+                        />
+                    ))
+                }
             </div>
         </div>
     )
