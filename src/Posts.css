@@ -1,0 +1,8 @@
+.image_posts {
+    width: 100%;
+    object-fit: contain;
+}
+
+.Posts {
+    margin:20px;
+}
