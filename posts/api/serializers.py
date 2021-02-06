@@ -1,18 +1,28 @@
 
-from usercostumer.models import UserProfil
-from django.db.models import fields
 from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
 from rest_framework import serializers
-from posts.models import Post
 
+
+from posts.models import Post,Like
+
+from usercostumer.api.serializers import UserProfilPostserializer
+from usercostumer.models import UserProfil
+
+from comment.api.serializers import CommentChildrenSerializer
+from comment.models import Comments
 
 class PostSerializer(ModelSerializer):
+    
+
     detail = HyperlinkedIdentityField(
         view_name='api-post:detail',
         lookup_field='pk' ,  
     )
     user = SerializerMethodField()
     likes = SerializerMethodField()
+    
+    comments = SerializerMethodField()
+    content_type_id = SerializerMethodField()
     class Meta:
         model = Post
         fields = [
@@ -23,35 +33,24 @@ class PostSerializer(ModelSerializer):
             'post',
             'likes',
             'create_at',
+            'content_type_id',      
+            'comments',
         ]
         
     def get_user(self,obj):
-        return obj.user.nickname
+        user = obj.user
+        return UserProfilPostserializer(user,context={'request':None}).data
     
     def get_likes(self,obj):
-        return obj.likes.count()
+        return obj.liked_post.all().count()
 
-class PostSerializerProfil(ModelSerializer):
-    user = SerializerMethodField()
-    likes = SerializerMethodField()
-    class Meta:
-        model = Post
-        fields = [
-            'user',
-            'id',
-            'caption',
-            'post',
-            'likes',
-            'create_at',
-        ]
-        
-    def get_user(self,obj):
-        return obj.user.nickname
+    def get_comments(self,obj):
+        comments_qs = Comments.objects.fillter_by_instance(obj)
+        return CommentChildrenSerializer(comments_qs,many=True,context ={'request':None}).data
     
-    def get_likes(self,obj):
-        return obj.likes.count()
-
-
+    def get_content_type_id(self,obj):
+        content_type = obj.get_content_type
+        return content_type.id
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
     likes_count = SerializerMethodField()
@@ -60,7 +59,7 @@ class PostDetailSerialzer(ModelSerializer):
         fields = '__all__'
 
     def get_user(self,obj):
-        return obj.user.nickname
+        return UserProfilPostserializer(obj.user,context={'request':None}).data
     
     def get_likes_count(self,obj):
         return obj.likes.count()
@@ -77,7 +76,6 @@ class CreatePostSerializer(ModelSerializer):
             'post',
             'caption'
         ]
-        read_only_fields = ['id']
 
     def create(self, validated_data):
         post = Post.objects.create(
@@ -97,21 +95,16 @@ class EditPostSerializer(ModelSerializer):
 
 class JustLikeSerializer(ModelSerializer):
     class Meta:
-        model = Post
-        fields =['likes']
+        model = Like
+        fields =['post','user']
 
-    def update(self, instance, validated_data):
+    def validate(self, attrs):
+        print(attrs.__dict__)
+        return attrs
+    # def update(self, instance, validated_data):
 
-        post = instance
-    
-        like =[t.id for t in validated_data['likes']][0]
-        like = UserProfil.objects.get(id=like)
-       
-        if post.likes.filter(id=like.id).exists(): #already liked the content
-            post.likes.remove(like) #remove user from likes 
+    #     print(validated_data)
 
-        else:
-             post.likes.add(like) 
+    #     return instance
 
-        post.save()
-        return post
+

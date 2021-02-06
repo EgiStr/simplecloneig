@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
+from usercostumer.models import UserProfil
 
 # Create your models here.
 
@@ -17,7 +18,7 @@ class CommentManager(models.Manager):
         return qs
 
 class Comments(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,default=1)
+    user = models.ForeignKey(UserProfil,on_delete=models.CASCADE,default=1)
     content = models.TextField()
     content_type = models.ForeignKey(
         ContentType, on_delete=models.CASCADE, blank=True, null=True)
@@ -32,10 +33,10 @@ class Comments(models.Model):
         ordering = ["-timestamp"]
     
     def __str__(self):
-        return f'comment {self.user.username} to {self.content_object}'
+        return f'comment {self.user.nickname} to {self.content_object}'
 
     def __unicode__(self):
-        return str(self.user.username)
+        return str(self.user.nickname)
 
     def children(self):
         return Comments.objects.filter(parent=self)
