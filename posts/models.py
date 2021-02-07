@@ -50,17 +50,7 @@ class Like(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-<<<<<<< HEAD
         ordering = ['-date_created']
-=======
-        constraints = [
-            models.UniqueConstraint(fields=['post','user'],  name="unique_likes")
-        ]
-        ordering = [ '-date_created']
-
-
-
->>>>>>> 6bcd90665167c0e9282cc00169da383295234428
     def __str__(self):
         return '{} : {}'.format(self.user, self.post)
     
