@@ -29,6 +29,3 @@
 .post__nav:active{
     border-top: 1px solid black;
 }
-.posts{
-    display: grid;
-}
