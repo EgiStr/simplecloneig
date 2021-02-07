@@ -51,7 +51,10 @@ class PostSerializer(ModelSerializer):
     
     def get_content_type_id(self,obj):
         content_type = obj.get_content_type
+<<<<<<< HEAD
         """ for make replies comment """
+=======
+>>>>>>> 6bcd90665167c0e9282cc00169da383295234428
         return content_type.id
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
@@ -103,6 +106,7 @@ class JustLikeSerializer(ModelSerializer):
         fields =['id','post','user']
     
 
+<<<<<<< HEAD
     def create(self, validated_data):
    
         Connect_like,created =  Like.objects.get_or_create(
@@ -124,5 +128,15 @@ class JustLikeSerializer(ModelSerializer):
             # return Response(status=status.HTTP_204_NO_CONTENT)
 
         
+=======
+    def validate(self, attrs):
+        print(attrs.__dict__)
+        return attrs
+    # def update(self, instance, validated_data):
+
+    #     print(validated_data)
+
+    #     return instance
+>>>>>>> 6bcd90665167c0e9282cc00169da383295234428
 
 

@@ -38,6 +38,10 @@ class UserFollowing(models.Model):
     created= models.DateTimeField(auto_now=True, auto_now_add=False)
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user','following_user'],  name="unique_followers")
+        ]
+
         ordering =['-created']
     
     def __str__(self):

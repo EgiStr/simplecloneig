@@ -35,7 +35,7 @@ class PostProfilSerializer(ModelSerializer):
         return UserProfilPostserializer(obj.user,context={'request':None}).data
     
     def get_likes(self,obj):
-        return obj.likes.count()
+        return obj.liked_post.count()
 
 
 
@@ -70,6 +70,7 @@ class UserProfilPostserializer(ModelSerializer):
     class Meta:
         model = UserProfil
         fields = [
+            'id',
             'user_detail',
             'nickname',
             'profil',
@@ -126,10 +127,14 @@ class FollowingOrWerSerializer(ModelSerializer):
         return attrs
     
     def create(self, validated_data):
+
+        # build in funcation get_or_create make 2 return it self and created(True/False)
+
         Connention,created =  UserFollowing.objects.get_or_create(
             user=validated_data['user'],
             post = validated_data['following_user'],
             )
+            
         if created:
             # if create database it return query and skip delete 
             return Connention
