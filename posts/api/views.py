@@ -1,11 +1,14 @@
 
-from rest_framework.mixins import DestroyModelMixin,UpdateModelMixin
-from rest_framework.generics import ListAPIView,RetrieveAPIView,RetrieveUpdateDestroyAPIView,CreateAPIView,RetrieveUpdateAPIView
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from rest_framework import serializers
+from rest_framework.mixins import DestroyModelMixin,CreateModelMixin
+from rest_framework.generics import DestroyAPIView, ListAPIView,RetrieveAPIView,RetrieveUpdateDestroyAPIView,CreateAPIView,RetrieveUpdateAPIView
 from usercostumer.models import UserProfil
 
 from rest_framework.permissions import IsAuthenticated
 from posts.api.permission import IsOwnerOrReadOnly
-from posts.models import Post
+from posts.models import Post,Like
 from posts.api.serializers import (
                                     PostSerializer,
                                     PostDetailSerialzer,
@@ -28,11 +31,13 @@ class PostDetailApiView(RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerialzer
 
-class LikePost(CreateAPIView):
-    queryset = Post.objects.all()
+class LikePost(CreateAPIView,DestroyModelMixin):
+    queryset = Like.objects.all()
     serializer_class = JustLikeSerializer
-
-
+ 
+class DeleteLike(DestroyAPIView):
+    queryset = Like.objects.all()
+    serializer_class = JustLikeSerializer
 
 class CreatePostAPiView(CreateAPIView):
     
