@@ -5,19 +5,25 @@
 .head{
     display: flex;
     align-items: center;
-    padding: 20px 10px;
+    padding: 10px   
 }
 .avatar{
     margin-right:10px;
 }
 .box{
     border:1px solid lightgray;
+    margin-top: 20px;
+    background-color: white;
 }
 .icon__box{
     display: flex;
     justify-content: space-evenly;
-    padding: 20px 100px;
+    padding: 5px;
 }
 .icon{
     color: #2e81F4;
+    cursor: pointer;
+}
+.content{
+    display: flex;
 }

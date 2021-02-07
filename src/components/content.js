@@ -3,8 +3,7 @@ import "../Content.css";
 import Avatar from "@material-ui/core/Avatar";
 function Content({ username, captions, imageUrl, avatar }) {
     return (
-        <div >
-            <div className=" box" style={{ backgroundColor: "white" }} >
+            <div className="box">
                 <div className="head">
                     <Avatar
                         className="avatar"
@@ -21,9 +20,6 @@ function Content({ username, captions, imageUrl, avatar }) {
                 </div>
                 <h6 className="caption"><b>{username}</b> {captions}</h6>
             </div>
-            <div>
-            </div>
-        </div>
     )
 }
 

@@ -1,8 +1,14 @@
-.image_posts {
-    width: 100%;
-    object-fit: contain;
-}
 
 .Posts {
-    margin:20px;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 2vmin;
+    grid-auto-flow: dense;
+}
+.Posts .image_posts{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
