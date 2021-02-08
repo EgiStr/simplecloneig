@@ -96,7 +96,7 @@ class Login extends Component {
                 />
                 <button type='submit' onClick={this.handleSubmit}>kirim</button>
                 You dont have account? <a href="/register">sign up</a>   
-                
+
                 {content}
             </div>
         )

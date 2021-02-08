@@ -42,7 +42,6 @@ class Home extends Component {
         return <Redirect to='/login'/>
     }
     const data = this.state.data
-    console.log(data)
     return (
         <div className="container">
             <div className="row">

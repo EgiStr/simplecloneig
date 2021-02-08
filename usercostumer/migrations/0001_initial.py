@@ -43,4 +43,8 @@ class Migration(migrations.Migration):
             model_name='userfollowing',
             constraint=models.UniqueConstraint(fields=('user', 'following_user'), name='unique_followers'),
         ),
+        migrations.AddConstraint(
+            model_name='userfollowing',
+            constraint=models.UniqueConstraint(fields=('user', 'following_user'), name='unique_followers'),
+        ),
     ]
