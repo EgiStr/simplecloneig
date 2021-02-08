@@ -1,6 +1,6 @@
 import React from "react";
 // import Content from './components/content'
-import Navbar from "./components/Navbar";
+import {Navbar} from "./components/Navbar";
 import Message from "./components/Message";
 import Profile from "./components/Profile";
 import Login from "./components/login";

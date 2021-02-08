@@ -25,14 +25,10 @@ class Profile extends Component{
     }
 
     render(){
-        console.log(this.state.data);
         const data = this.state.data
         const follower = data.follower
         const following = data.following
         const posts  = data.post_data
-        console.log()
-        console.log()
-        console.log()
         return (
             <div className="container">
                 <div className="row header" >
@@ -73,6 +69,7 @@ class Profile extends Component{
                             return (
                             <Content 
                                 key={index}
+                                contentType = {item.content_type_id}
                                 postId   = {item.id}
                                 userId   = {item.user.id}
                                 username = {item.user.nickname}
@@ -80,6 +77,7 @@ class Profile extends Component{
                                 imageUrl = {`http://127.0.0.1:8000${item.post}`}
                                 avatar   = {item.user.profil}
                                 like     = {item.likes}
+                                comment    = {item.comments}
                                 className="ci"
                                 
                             />

@@ -2,24 +2,31 @@ import React ,{Component}from "react";
 import Avatar from "@material-ui/core/Avatar";
 
 import axios from 'axios'
+
+
 import { InView } from 'react-intersection-observer'
 import {Redirect} from 'react-router-dom'
+
+import Modal from './modal'
 
 import "./../content.css";
 
 class Content extends Component {
     constructor(props){
         super(props)
+
         this.state = {
             redirect:false,
             redirectUrl:'',
+     
         }
 
         this.handleLikeButton = this.handleLikeButton.bind(this)
+        
     }
 
-    handleProfilRedirect(Userid){
 
+    handleProfilRedirect(Userid){
         let url = `/profile/${Userid}`
         this.setState({
             redirect:true,
@@ -28,7 +35,6 @@ class Content extends Component {
     }
 
     preloadingImg(img){
-
         const src = img.getAttribute('data-src')
         if(!src){
             return
@@ -57,15 +63,15 @@ class Content extends Component {
     }
 
 
-
     render(){
-        
+        console.log(this.props)
         if(this.state.redirect){
             const url = this.state.redirectUrl
             return <Redirect to={url} />
         }
         const urlProfil = `http://127.0.0.1:8000${this.props.avatar}`;
         
+
         return (
 
         
@@ -85,8 +91,19 @@ class Content extends Component {
             </InView>
         <div className="icon__box">
            <p>{this.props.like}</p><a onClick={()=>{this.handleLikeButton(this.props.userId,this.props.postId)}}><i className="small material-icons icon">favorite</i></a> 
-          <i className="small material-icons icon">comment</i>
+        <div>
+            <a className="modal-trigger" href="#modal_id"><i className="small material-icons icon ">comment</i></a>
+                <Modal 
+                    username = {this.props.username}
+                    profil = {urlProfil}
+                    contentType={this.props.contentType}
+                    obj_id = {this.props.postId}
+                    comments = {this.props.comment}
+                />
+          </div>
+
           <i className="small material-icons icon ">near_me</i>
+         
         </div>
         <h6 className="caption">
           <b>{this.props.username}</b> {this.props.captions}

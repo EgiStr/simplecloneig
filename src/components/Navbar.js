@@ -14,6 +14,7 @@ function parseJwt (token) {
 
 function Navbar() {
 
+    
    
     if(localStorage.getItem('token') === null ){
         return <Redirect to={'/login'}/>
@@ -38,4 +39,4 @@ function Navbar() {
     )
 }
 
-export default Navbar
+export {Navbar,parseJwt}
