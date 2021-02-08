@@ -15,15 +15,14 @@ from usercostumer.models import UserProfil,UserFollowing
 from posts.models import Post
 
 class PostProfilSerializer(ModelSerializer):
-    detail = HyperlinkedIdentityField(
-        view_name='api-post:detail',
-    )
+    content_type_id = SerializerMethodField()
     user = SerializerMethodField()
     likes = SerializerMethodField()
     class Meta:
         model = Post
         fields = [
-            'detail',
+            'id',
+            'content_type_id',
             'user',
             'caption',
             'post',
@@ -36,6 +35,11 @@ class PostProfilSerializer(ModelSerializer):
     
     def get_likes(self,obj):
         return obj.liked_post.count()
+
+    def get_content_type_id(self,obj):
+        content_type = obj.get_content_type
+        """ for make replies comment """
+        return content_type.id
 
 
 

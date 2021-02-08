@@ -53,6 +53,7 @@ class PostSerializer(ModelSerializer):
         content_type = obj.get_content_type
         """ for make replies comment """
         return content_type.id
+        
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
     likes_count = SerializerMethodField()

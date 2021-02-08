@@ -94,9 +94,11 @@ class Login extends Component {
                     onChange={(event) => {this.handlePasswordChange(event)}}
                     placeholder='What password ? ....'
                 />
-                <button type='submit' onClick={this.handleSubmit}>kirim</button>
+                <button className="btn waves-effect waves-light" type="submit" onClick={this.handleSubmit}>Submit
+                    <i className="material-icons right">send</i>
+                </button>
                 You dont have account? <a href="/register">sign up</a>   
-                
+
                 {content}
             </div>
         )

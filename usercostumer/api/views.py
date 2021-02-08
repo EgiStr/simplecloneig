@@ -1,8 +1,6 @@
-from rest_framework import serializers
-from rest_framework import permissions
 from usercostumer.models import UserProfil,UserFollowing
-from rest_framework.generics import CreateAPIView, DestroyAPIView,RetrieveAPIView, RetrieveUpdateAPIView
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.generics import CreateAPIView, DestroyAPIView,RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated,AllowAny, IsAuthenticatedOrReadOnly
 
 from .serializers import registeruser,UserProfilSerialzer,FollowingOrWerSerializer
 
@@ -17,7 +15,7 @@ class RegisterUserApi(CreateAPIView):
 class UserProfilApiView(RetrieveAPIView):
     queryset = UserProfil.objects.all()
     serializer_class = UserProfilSerialzer
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [IsAuthenticatedOrReadOnly] 
 
 
 class UserFollowingApiView(CreateAPIView):
