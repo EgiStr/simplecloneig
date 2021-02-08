@@ -1,10 +1,17 @@
+from usercostumer.models import UserProfil
 from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
 
 from comment.models import Comments
 
 
-from usercostumer.api.serializers import UserProfilPostserializer
-
+class UserProfilPostserializer(ModelSerializer):
+    class Meta:
+        model = UserProfil
+        fields = [
+            'id',
+            'nickname',
+            'profil',
+        ]
 class UpdateOrDeleteCommentSerializer(ModelSerializer):
  
 

@@ -9,15 +9,16 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 
-
+from comment.api.serializers import CommentChildrenSerializer
 from usercostumer.models import UserProfil,UserFollowing
-
+from comment.models import Comments
 from posts.models import Post
 
 class PostProfilSerializer(ModelSerializer):
     content_type_id = SerializerMethodField()
     user = SerializerMethodField()
     likes = SerializerMethodField()
+    comments =SerializerMethodField()
     class Meta:
         model = Post
         fields = [
@@ -28,6 +29,7 @@ class PostProfilSerializer(ModelSerializer):
             'post',
             'likes',
             'create_at',
+            'comments',
         ]
         
     def get_user(self,obj):
@@ -41,6 +43,9 @@ class PostProfilSerializer(ModelSerializer):
         """ for make replies comment """
         return content_type.id
 
+    def get_comments(self,obj):
+        comments_qs = Comments.objects.fillter_by_instance(obj)
+        return CommentChildrenSerializer(comments_qs,many=True,context ={'request':None}).data
 
 
 
@@ -67,15 +72,10 @@ class FollowersSerializer(ModelSerializer):
 
 
 class UserProfilPostserializer(ModelSerializer):
-    user_detail = HyperlinkedIdentityField(
-        view_name='auth:profil',
-        lookup_field='pk' ,  
-    )
     class Meta:
         model = UserProfil
         fields = [
             'id',
-            'user_detail',
             'nickname',
             'profil',
         ]

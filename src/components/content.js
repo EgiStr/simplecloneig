@@ -1,13 +1,10 @@
 import React ,{Component}from "react";
 import Avatar from "@material-ui/core/Avatar";
-
 import axios from 'axios'
 
-
 import { InView } from 'react-intersection-observer'
-import {Redirect} from 'react-router-dom'
-
 import Modal from './modal'
+import {Redirect} from 'react-router-dom'
 
 import "./../content.css";
 
@@ -18,6 +15,8 @@ class Content extends Component {
         this.state = {
             redirect:false,
             redirectUrl:'',
+            comment :'',
+            buttonClass:'small material-icons icon',
      
         }
 
@@ -31,6 +30,7 @@ class Content extends Component {
         this.setState({
             redirect:true,
             redirectUrl:url,
+           
         })
     }
 
@@ -57,20 +57,25 @@ class Content extends Component {
             
         })
         .then(res => {
-            console.log(res.data)
+            if(this.state.buttonClass === 'small material-icons icon'){
+                this.setState({ buttonClass:'small material-icons icon red-text'})
+            }else{
+                this.setState({ buttonClass:'small material-icons icon'})
+            }
+            
         })
         .catch(e => {console.log(e)})
     }
 
 
     render(){
-        console.log(this.props)
+        console.log(this.props);
         if(this.state.redirect){
             const url = this.state.redirectUrl
             return <Redirect to={url} />
         }
-        const urlProfil = `http://127.0.0.1:8000${this.props.avatar}`;
         
+        const urlProfil = `http://127.0.0.1:8000${this.props.avatar}`;
 
         return (
 
@@ -90,10 +95,13 @@ class Content extends Component {
                 )}
             </InView>
         <div className="icon__box">
-           <p>{this.props.like}</p><a onClick={()=>{this.handleLikeButton(this.props.userId,this.props.postId)}}><i className="small material-icons icon">favorite</i></a> 
+           <p>{this.props.like}</p><a onClick={()=>{this.handleLikeButton(this.props.userId,this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
         <div>
-            <a className="modal-trigger" href="#modal_id"><i className="small material-icons icon ">comment</i></a>
+            <a className="modal-trigger" href={`#modal_id${this.props.id}`}><i className="small material-icons icon ">comment</i></a>
+     
                 <Modal 
+                    key ={this.props.id}
+                    id = {this.props.id}
                     username = {this.props.username}
                     profil = {urlProfil}
                     contentType={this.props.contentType}
