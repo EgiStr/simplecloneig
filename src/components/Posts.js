@@ -6,6 +6,7 @@ function Posts({ imageUrl }) {
         <img
             src={imageUrl}
             className="image_posts"
+            alt='gagal'
         />
     )
 }
