@@ -9,7 +9,7 @@ import {Redirect} from 'react-router-dom'
 
 import Modal from './modal'
 
-import "./../content.css";
+import "../Content.css";
 
 class Content extends Component {
     constructor(props){
