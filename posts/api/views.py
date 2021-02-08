@@ -1,14 +1,14 @@
-
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from rest_framework import serializers
-from rest_framework.mixins import DestroyModelMixin,CreateModelMixin
+from rest_framework.mixins import DestroyModelMixin
 from rest_framework.generics import DestroyAPIView, ListAPIView,RetrieveAPIView,RetrieveUpdateDestroyAPIView,CreateAPIView,RetrieveUpdateAPIView
-from usercostumer.models import UserProfil
-
 from rest_framework.permissions import IsAuthenticated
+
 from posts.api.permission import IsOwnerOrReadOnly
 from posts.models import Post,Like
+
+from usercostumer.models import UserProfil
+from .pagination import LimitPagination
+
+
 from posts.api.serializers import (
                                     PostSerializer,
                                     PostDetailSerialzer,
@@ -20,6 +20,7 @@ class PostApiViews(ListAPIView):
 
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = LimitPagination
     
     def get_queryset(self):
         nickname = UserProfil.objects.get(user=self.request.user)

@@ -2,6 +2,7 @@ import React , {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
 import Content from './content'
+
 class Home extends Component {
   constructor(props){
       super(props)
@@ -42,7 +43,7 @@ class Home extends Component {
         return <Redirect to='/login'/>
     }
     const data = this.state.data
-    console.log(data)
+    console.log(data);
     return (
         <div className="container">
             <div className="row">
@@ -50,14 +51,16 @@ class Home extends Component {
                     {data.map( (item ,i) => {
                         return (
                         <Content
-                                key      = {i}
-                                postId   = {item.id}
-                                userId   = {item.user.id}
-                                username = {item.user.nickname}
-                                captions = {item.caption}
-                                imageUrl = {item.post}
-                                avatar   = {item.user.profil}
-                                like     = {item.likes}
+                                key        = {i}
+                                contentType= {item.content_type_id}
+                                postId     = {item.id}
+                                userId     = {item.user.id}
+                                username   = {item.user.nickname}
+                                captions   = {item.caption}
+                                imageUrl   = {item.post}
+                                avatar     = {item.user.profil}
+                                like       = {item.likes}
+                                comment    = {item.comments}
                                 />)
                     })}
                 </div>
