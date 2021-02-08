@@ -20,6 +20,7 @@ function Navbar() {
         return <Redirect to={'/login'}/>
     }
     const token = parseJwt( localStorage.getItem('token'))
+    console.log(token.user_id);
 
     return (
         <div className="navbar-fixed">

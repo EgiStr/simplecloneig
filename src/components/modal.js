@@ -9,6 +9,9 @@ class Modal extends Component {
         super(props)
         this.state = {
             comment:'',
+            parentid : null,
+            reply : false,
+            getusername:'',
         }
         this.handleComment = this.handleComment.bind(this)
     }
@@ -67,21 +70,30 @@ class Modal extends Component {
     
             })
             .then(res => {
-                this.setState({comment:''})
+                this.setState({comment:'',parentid:null,getusername:'',reply:false})
                 console.log(res)
             })
             .catch(e => {console.log(e);})
         } 
         
+        
 
+    }
+    handleReplies(parent_id,username){
+        
+        this.setState({parentid:parent_id,getusername:username,reply:true})
+    }
+
+    handlecancle(){
+        this.setState({parentid:null,getusername:'',reply:false})
     }
 
     render(){
-        console.log(this.props.comments);
-        console.log(this.props.comments.user);
+        console.log(this.state.parentid);
+        // console.log(this.props.comments.user);
         const comments = this.props.comments
         return (
-            <div ref={ Modal => { this.Modal = Modal;}} id="modal_id" className="modal bottom-sheet">
+            <div ref={ Modal => { this.Modal = Modal;}} id={`modal_id${this.props.id}`} className="modal bottom-sheet">
                 <div className="modal-content">
                     <h4>Comment</h4>
 
@@ -93,12 +105,13 @@ class Modal extends Component {
                                     return (
                                     <li className="collection-item avatar">
                                         
-                                        <img src={`http://127.0.0.1:8000${item.user.profil}`} className="circle" />
+                                        <img src={`http://127.0.0.1:8000${item.user.profil}`} className="circle" alt="...."/>
                                         <span className="title">{item.user.nickname}</span>
                                         <p>
                                             {item.content}
                                         </p>
-                                        <a className="secondary-content btn" onClick={()=>{this.handleComment(item.id)}}><i className="material-icons">send</i></a>
+                                        <a className="secondary-content btn" onClick={()=>{this.handleReplies(item.id,item.user.nickname)}}><i className="material-icons">send</i></a>
+                                        {item.replies.length > 0 ? (<p>view replies {item.replies.length} </p>) : ( null)}
                                     </li>
                                     )
                                 })
@@ -111,6 +124,7 @@ class Modal extends Component {
                             <Avatar  className="avatar" alt="foto" src={this.props.profil} height="45" width="45" />
                         </div>
                         <div className="col s6 l5 post-btn-container">
+                            {this.state.reply ? (<p onClick={() => {this.handlecancle()}}>your replies {this.state.getusername} click to cancle</p>) : (null)}
                             <input
                                 value={this.state.comment}
                                 onChange={(event) => {this.handleCommentContent(event)}}
@@ -120,7 +134,7 @@ class Modal extends Component {
                     </div>
                 </div>
                 <div className="modal-footer">
-                    <a className="modal-close waves-effect waves-green btn-flat" onClick={() => {this.handleComment()}}>
+                    <a className="modal-close waves-effect waves-green btn-flat" onClick={() => {this.handleComment(this.state.parentid)}}>
                     Send 
                     </a>
                     <a className="modal-close waves-effect waves-green btn-flat" >

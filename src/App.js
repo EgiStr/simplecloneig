@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 function App() {
   return (
     <Router>
+      {/* {localStorage.getItem('token') === null ? window.location.reload() : null } */}
       <Navbar />
       {/* daerah content page atas*/}
       
