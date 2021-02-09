@@ -66,9 +66,11 @@ class Profile extends Component{
                 <div className="posts">
                     <div className="posts_wrap">
                         {posts ? (posts.map( (item,index)=> {
+                            console.log(item);
                             return (
                             <Content 
                                 key={index}
+                                id ={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
                                 contentType = {item.content_type_id}
                                 postId   = {item.id}
                                 userId   = {item.user.id}
@@ -77,7 +79,7 @@ class Profile extends Component{
                                 imageUrl = {`http://127.0.0.1:8000${item.post}`}
                                 avatar   = {item.user.profil}
                                 like     = {item.likes}
-                                comment    = {item.comments}
+                                comments    = {item.comments}
                                 className="ci"
                                 
                             />

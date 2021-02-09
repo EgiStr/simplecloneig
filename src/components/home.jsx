@@ -43,15 +43,15 @@ class Home extends Component {
         return <Redirect to='/login'/>
     }
     const data = this.state.data
-    console.log(data);
     return (
         <div className="container">
             <div className="row">
                 <div className="col s8">
                     {data.map( (item ,i) => {
-                        return (
-                        <Content
+                        return ( 
+                        <Content 
                                 key        = {i}
+                                id         = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
                                 contentType= {item.content_type_id}
                                 postId     = {item.id}
                                 userId     = {item.user.id}
