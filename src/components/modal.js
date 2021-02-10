@@ -16,10 +16,12 @@ class Modal extends Component {
         this.handleComment = this.handleComment.bind(this)
     }
     componentDidMount(){
+       
         this.setState({comment:''})
         const options = {
             onOpenStart: () => {
               console.log("Open Start");
+              this.refComment.autofocus = true;
             },
             onOpenEnd: () => {
               console.log("Open End");
@@ -38,6 +40,7 @@ class Modal extends Component {
             endingTop: "10%"
           };
           M.Modal.init(this.Modal, options);
+          console.log(this.props)
     }
 
     handleCommentContent(event){
@@ -46,11 +49,10 @@ class Modal extends Component {
     
     handleComment(parent = null){
 
-        let user,content_type,obj_id
-
+        let {contentType,obj_id} = this.props
+        let user
+        
         user = parseJwt(localStorage.getItem('token')).user_id
-        content_type = this.props.contentType
-        obj_id = this.props.obj_id
         let content = this.state.comment
 
         if(content !== ''){
@@ -62,7 +64,7 @@ class Modal extends Component {
                   },
                 data:{
                     user: user,
-                    content_type:content_type,
+                    content_type:contentType,
                     obj_id:obj_id,
                     content:content,
                     parent : parent,
@@ -89,7 +91,7 @@ class Modal extends Component {
     }
 
     render(){
-        console.log(this.state.parentid);
+
         // console.log(this.props.comments.user);
         const comments = this.props.comments
         return (
@@ -103,7 +105,7 @@ class Modal extends Component {
                             {comments ? (
                                 comments.map((item) => {
                                     return (
-                                    <li className="collection-item avatar">
+                                    <li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} className="collection-item avatar">
                                         
                                         <img src={`http://127.0.0.1:8000${item.user.profil}`} className="circle" alt="...."/>
                                         <span className="title">{item.user.nickname}</span>
@@ -126,6 +128,7 @@ class Modal extends Component {
                         <div className="col s6 l5 post-btn-container">
                             {this.state.reply ? (<p onClick={() => {this.handlecancle()}}>your replies {this.state.getusername} click to cancle</p>) : (null)}
                             <input
+                                ref={node => {this.refComment = node}}
                                 value={this.state.comment}
                                 onChange={(event) => {this.handleCommentContent(event)}}
                                 placeholder={`Add a comment To post. ${this.props.username}` }

@@ -1,6 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # from usercostumer.models import UserProfil
@@ -19,7 +18,6 @@ class PostManage(models.Manager):
         return qs
 
 class Post(models.Model):
-    
     user = models.ForeignKey(UserProfil,related_name='author', on_delete=models.CASCADE,blank=True, null=True)
     post = models.ImageField(upload_to='media/image/post', height_field='height_field', width_field='width_field',blank=True, null=True)
     caption = models.TextField(blank=True, null=True)
