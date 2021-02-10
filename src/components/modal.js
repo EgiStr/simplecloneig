@@ -17,7 +17,6 @@ class Modal extends Component {
     }
     componentDidMount(){
        
-        this.setState({comment:''})
         const options = {
             onOpenStart: () => {
               console.log("Open Start");
@@ -40,7 +39,6 @@ class Modal extends Component {
             endingTop: "10%"
           };
           M.Modal.init(this.Modal, options);
-          console.log(this.props)
     }
 
     handleCommentContent(event){
@@ -72,6 +70,7 @@ class Modal extends Component {
     
             })
             .then(res => {
+
                 this.setState({comment:'',parentid:null,getusername:'',reply:false})
                 console.log(res)
             })
@@ -82,7 +81,6 @@ class Modal extends Component {
 
     }
     handleReplies(parent_id,username){
-        
         this.setState({parentid:parent_id,getusername:username,reply:true})
     }
 

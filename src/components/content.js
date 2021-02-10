@@ -1,6 +1,7 @@
 import React ,{Component}from "react";
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
+import {parseJwt} from './Navbar'
 
 import { InView } from 'react-intersection-observer'
 import Modal from './modal'
@@ -11,8 +12,8 @@ import "./../content.css";
 class Content extends Component {
     constructor(props){
         super(props)
-
         this.state = {
+            likes : this.props.like,
             redirect:false,
             redirectUrl:'',
             comment :'',
@@ -42,8 +43,9 @@ class Content extends Component {
         img.src = src
     }
 
-    handleLikeButton(userId,postId){
+    handleLikeButton(postId){
 
+        const userId = parseJwt(localStorage.getItem('token')).user_id
         axios({
             method:'post',
             url: 'http://127.0.0.1:8000/api/like/',
@@ -57,6 +59,10 @@ class Content extends Component {
             
         })
         .then(res => {
+            // jiga ga ada id berarti menghapus
+            res.data.id === undefined ? this.setState({ likes : this.state.likes - 1}) : this.setState({ likes : this.state.likes+1})
+            
+            
             if(this.state.buttonClass === 'small material-icons icon'){
                 this.setState({ buttonClass:'small material-icons icon red-text'})
             }else{
@@ -69,6 +75,7 @@ class Content extends Component {
 
 
     render(){
+        
         if(this.state.redirect){
             const url = this.state.redirectUrl
             return <Redirect to={url} />
@@ -84,20 +91,23 @@ class Content extends Component {
           <Avatar  className="avatar" alt="foto" src={urlProfil} />
           <h6 onClick={()=> {this.handleProfilRedirect(this.props.userId)}}>{this.props.username}</h6>
         </div>
+
         {/* membuat post image menjadi loading lazy alias diloading jika post an dilayar */}
             <InView>
+                {/* daerah loading lazy */}
             {({ inView, ref, entry }) => (
                 <div ref={ref}>
                     {inView ? (this.preloadingImg(entry.target.firstChild)) : (null)}
-                    <img loading="auto" className="contentImage" data-src={this.props.imageUrl} alt="foto" />
+                    <img className="contentImage" data-src={this.props.imageUrl} alt="foto" />
                 </div>
                 )}
             </InView>
+
         <div className="icon__box">
-           <p>{this.props.like}</p><a onClick={()=>{this.handleLikeButton(this.props.userId,this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
-        <div>
+           <p>{this.state.likes}</p><a onClick={()=>{this.handleLikeButton(this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
+        <div>      {/* membuat modal aktif dengan memberi trigger uniq jadi masing masing post punya modal sendiri  */}
             <a className="modal-trigger" href={`#modal_id${this.props.id}`}><i className="small material-icons icon ">comment</i></a>
-     
+                {/* id dikirim sebagai penanda modal */}
                 <Modal 
                     key ={this.props.id}
                     id = {this.props.id}

@@ -3,9 +3,6 @@
 /build
 /staticfiles
 /.vscode
-
-
-
 /static
 
 *.pyc
