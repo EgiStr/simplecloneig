@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import '../login.css'
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -71,26 +72,32 @@ class Login extends Component {
     }
 
     return (
-      <div className="container">
-        <div className="input-field" >
-          <i className="material-icons prefix">account_circle</i>
+      <div className="container" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+        <h2>LOGIN</h2>
+        <div className="input-field">
+          <i className="material-icons prefix">person</i>
           <input
+            type="text"
             value={this.state.title}
             onChange={(event) => {
               this.handleTitleChange(event);
             }}
-            placeholder="What username ? ...."
-            id ="icon_prefix"
+            placeholder="What password ? ...."
+
           />
         </div>
-        <input
-          type="password"
-          value={this.state.password}
-          onChange={(event) => {
-            this.handlePasswordChange(event);
-          }}
-          placeholder="What password ? ...."
-        />
+        <div className="input-field">
+          <i className="material-icons prefix">https</i>
+          <input
+            type="password"
+            value={this.state.password}
+            onChange={(event) => {
+              this.handlePasswordChange(event);
+            }}
+            placeholder="What password ? ...."
+            id="icon_prefix"
+          />
+        </div>
         <button
           className="btn waves-effect waves-light"
           type="submit"
@@ -99,6 +106,14 @@ class Login extends Component {
           Submit
           <i className="material-icons right">send</i>
         </button>
+        <div style={{display:"flex",flexDirection:"row"}}>
+          <div className="icon_field">
+            <i className="material-icons">facebook</i>
+          </div>
+          <div className="icon_field">
+            <i className="material-icons">email</i>
+          </div>  
+        </div>
         You dont have account? <a href="/register">sign up</a>
         {content}
       </div>

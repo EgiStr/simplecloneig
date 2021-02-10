@@ -105,11 +105,7 @@ class Modal extends Component {
                                     return (
                                     <li className="collection-item avatar">
                                         
-<<<<<<< HEAD
-                                        <img src={`http://127.0.0.1:8000${item.user.profil}`} className="circle" alt="apa" />
-=======
                                         <img src={`http://127.0.0.1:8000${item.user.profil}`} className="circle" alt="...."/>
->>>>>>> 22bd91488a0f081e625334a036e4efc3b2f52c50
                                         <span className="title">{item.user.nickname}</span>
                                         <p>
                                             {item.content}
