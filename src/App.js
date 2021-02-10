@@ -6,6 +6,8 @@ import Profile from "./components/Profile";
 import Login from "./components/login";
 import Home from "./components/home";
 import Register from "./components/Register";
+import CreatePost from './components/createpost'
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route path="/message" component={Message} />
         <Route path="/profile/:id" component={Profile} />
+        <Route path="/create" component={CreatePost} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
       </Switch>
