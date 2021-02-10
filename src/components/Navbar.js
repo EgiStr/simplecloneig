@@ -20,8 +20,6 @@ function Navbar() {
         return <Redirect to={'/login'}/>
     }
     const token = parseJwt( localStorage.getItem('token'))
-    console.log(token.user_id);
-
     return (
         <div className="navbar-fixed">
             <nav>
@@ -30,7 +28,7 @@ function Navbar() {
                         <a href="/" className="brand-logo ">Logo</a>
                         <ul className="right hide-on-med-and-down">
                             <li><a href="/"><i className="material-icons">home  </i></a></li>
-                            <li><a href="/message"><i className="material-icons">message</i></a></li>
+                            <li><a href="/create"><i className="material-icons">Post</i></a></li>
                             <li><a href={`/profile/${token.user_id}`}><i className="material-icons">people</i></a></li>
                         </ul>
                     </div>                                                                                                  

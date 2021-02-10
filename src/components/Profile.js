@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
-
+import {parseJwt} from './Navbar'
 import Content from './content'
 import '../Profile.css'
 
@@ -25,6 +25,7 @@ class Profile extends Component{
     }
 
     render(){
+        const authUser = parseJwt(localStorage.getItem('token')).user_id
         const data = this.state.data
         const follower = data.follower
         const following = data.following
@@ -43,8 +44,7 @@ class Profile extends Component{
                     <div>
                         <div style={{ display: "flex" }}>
                             <h5 style={{ fontWeight: "350" }}>{data.nickname}</h5>
-                            <p className="btn_edit
-                            "> edit profile</p>
+                            <p className="btn_edit"> {authUser === parseInt(this.props.match.params.id,10) ? ('edit profile') : ('follow')}</p>
                         </div>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                             <h6 style={{ fontWeight: "300" }}>{data.post_count} Posts</h6>
@@ -66,10 +66,9 @@ class Profile extends Component{
                 <div className="posts">
                     <div className="posts_wrap">
                         {posts ? (posts.map( (item,index)=> {
-                            console.log(item);
                             return (
                             <Content 
-                                key={index}
+                                key={index * 1000 * Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
                                 id ={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
                                 contentType = {item.content_type_id}
                                 postId   = {item.id}
@@ -79,7 +78,7 @@ class Profile extends Component{
                                 imageUrl = {`http://127.0.0.1:8000${item.post}`}
                                 avatar   = {item.user.profil}
                                 like     = {item.likes}
-                                comments    = {item.comments}
+                                comment    = {item.comments}
                                 className="ci"
                                 
                             />

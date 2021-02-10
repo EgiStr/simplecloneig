@@ -69,7 +69,6 @@ class Content extends Component {
 
 
     render(){
-        console.log(this.props);
         if(this.state.redirect){
             const url = this.state.redirectUrl
             return <Redirect to={url} />
@@ -90,7 +89,7 @@ class Content extends Component {
             {({ inView, ref, entry }) => (
                 <div ref={ref}>
                     {inView ? (this.preloadingImg(entry.target.firstChild)) : (null)}
-                    <img loading="lazy" className="contentImage" data-src={this.props.imageUrl} alt="foto" />
+                    <img loading="auto" className="contentImage" data-src={this.props.imageUrl} alt="foto" />
                 </div>
                 )}
             </InView>
