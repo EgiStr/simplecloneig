@@ -1,12 +1,13 @@
 import React ,{Component,lazy,Suspense}from "react";
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
+import {parseJwt} from './Navbar'
 
 import { InView } from 'react-intersection-observer'
 
 import {Redirect} from 'react-router-dom'
 
-import "./../content.css";
+import "../Content.css";
 
 const Modal = lazy(()=> import('./modal'))
 
@@ -14,8 +15,8 @@ const Modal = lazy(()=> import('./modal'))
 class Content extends Component {
     constructor(props){
         super(props)
-
         this.state = {
+            likes : this.props.like,
             redirect:false,
             redirectUrl:'',
             likes : this.props.like,
@@ -46,8 +47,9 @@ class Content extends Component {
         img.src = src
     }
 
-    handleLikeButton(userId,postId){
+    handleLikeButton(postId){
 
+        const userId = parseJwt(localStorage.getItem('token')).user_id
         axios({
             method:'post',
             url: 'http://127.0.0.1:8000/api/like/',
@@ -64,6 +66,7 @@ class Content extends Component {
             // jiga ga ada id berarti menghapus
             res.data.id === undefined ? this.setState({ likes : this.state.likes - 1}) : this.setState({ likes : this.state.likes+1})
             
+            
             if(this.state.buttonClass === 'small material-icons icon'){
                 this.setState({ buttonClass:'small material-icons icon red-text'})
             }else{
@@ -76,6 +79,7 @@ class Content extends Component {
 
 
     render(){
+        
         if(this.state.redirect){
             const url = this.state.redirectUrl
             return <Redirect to={url} />
@@ -92,8 +96,10 @@ class Content extends Component {
           <Avatar  className="avatar" alt="foto" src={urlProfil} />
           <h6 onClick={()=> {this.handleProfilRedirect(this.props.userId)}}>{this.props.username}</h6>
         </div>
+
         {/* membuat post image menjadi loading lazy alias diloading jika post an dilayar */}
             <InView>
+                {/* daerah loading lazy */}
             {({ inView, ref, entry }) => (
                 <div ref={ref}>
                     {inView ? (this.preloadingImg(entry.target.firstChild)) : (null)}
@@ -101,6 +107,7 @@ class Content extends Component {
                 </div>
                 )}
             </InView>
+
         <div className="icon__box">
            <p>{this.state.likes}</p><a onClick={()=>{this.handleLikeButton(this.props.userId,this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
         <div>

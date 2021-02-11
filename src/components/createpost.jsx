@@ -12,7 +12,8 @@ import axios from 'axios'
 import 'react-image-crop/dist/ReactCrop.css'
 
 // validate data yang diinginkan
-const imageSize = 2520000
+const imageSize = 2520000 /* 2,4 mb */
+
 const accepFileType = 'image/x-png,image/png,image/jpg,image/jpeg,image/gif'
 const accepFileTypeArray = accepFileType.split(",").map( (item) => {return item.trim()})
 
@@ -64,14 +65,17 @@ class CreatePost extends Component {
         // validasi file
         if(files && files.length > 0){
             if(this.verifyFile(files)){
-                const currentFile = files[0]
                 
+                const currentFile = files[0]
+                // membuat fileReader untuk membuat base64
                 const reader = new FileReader()
                 
+                // menyimpan data ke url agar bisa di load di preview                
                 reader.addEventListener('load', () => {
                     this.setState({urlMentah : reader.result})
                 },false)
 
+                // membuat base64
                 reader.readAsDataURL(currentFile)
             }
         }
@@ -82,10 +86,11 @@ class CreatePost extends Component {
     }
 
     handleImageLoaded = (image) => {
-        console.log(image)
+        
     }
 
     handleCrop = (crop,pixelCrop) => {
+        
         // get canvas template
         let canvas = this.canvasRef.current
         const {urlMentah} =this.state
@@ -93,8 +98,11 @@ class CreatePost extends Component {
         // updata canvas with crop
         // menampilkan priview
         image64toCanvasRef(canvas,urlMentah,pixelCrop)
+        
         const exstensi = extractImageFileExtensionFromBase64(urlMentah)
+
         let filename = `image${this.state.caption}${Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}.${exstensi}`
+        
         // set databaru
         
         let dataBaru = this.canvasRef.current.toDataURL('image/'+exstensi)
@@ -105,12 +113,14 @@ class CreatePost extends Component {
             const file = base64StringtoFile(dataBaru,filename)          
             this.setState({urlJadi:file})
         }
+
     }
 
     Confirmfoto = () =>{
         this.setState({
-            // buat jadi ga ada
+            // membuat gambar crop ga ada
             urlMentah:null,
+
         })
     }
 
@@ -121,7 +131,7 @@ class CreatePost extends Component {
     handleSubmit = () => {
         const {urlJadi,caption} = this.state
         const user = parseJwt(localStorage.getItem('token')).user_id
-        var formData = new FormData()
+        let formData = new FormData()
         
         formData.append('post',urlJadi)      
         formData.append('user',user)
@@ -137,7 +147,7 @@ class CreatePost extends Component {
             })
         
         .then((res)=> {
-            console.log(res.data)
+            // jika succes redirect ke profil
             this.setState({redirect : true, urlJadi:null,caption:'',})
         })
         .catch(e=>{console.log(e.request.responseText)})
@@ -154,9 +164,11 @@ class CreatePost extends Component {
         return (
             <div>
                 <h1>masukan gambar</h1>
-                <Dropzone onDrop={this.handleOnDrop} accept={'image/*'} maxSize={imageSize} multiple={false}>
+
+                <Dropzone onDrop={this.handleOnDrop} accept={'image/*'} multiple={false}>
                 {({getRootProps, getInputProps}) => (
                     <section>
+                        {/* method drop zone untuk mendapatkan input */}
                     <div {...getRootProps()}>
                         <input {...getInputProps()} />
                         <p>Drag 'n' drop some files here, or click to select files</p>
@@ -166,10 +178,12 @@ class CreatePost extends Component {
                 </Dropzone>
 
                 <br/>
+
                 {this.state.imageUrl !== null ? (
                     <div>
                     {/* <p>priview image</p>
                     <img src={this.state.imageUrl} alt="foto" /> */}
+                    {/* handle crop file */}
                     <ReactCrop 
                         src={this.state.urlMentah} 
                         crop={this.state.crop} 
@@ -187,6 +201,7 @@ class CreatePost extends Component {
                 ) : (
                     <p></p>
                 )}
+
                 <input 
                     type="text"
                     onChange={this.handleCaption}

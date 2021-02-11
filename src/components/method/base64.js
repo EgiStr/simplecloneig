@@ -23,15 +23,17 @@ export function downloadBase64File (base64Data, filename) {
   
   // Base64 Image to Canvas with a Crop
   export function image64toCanvasRef (canvasRef, image64, pixelCrop) {
+    // membuat file image
     const image = new Image()
     image.src = image64
-    const height =image.naturalHeight
+    const height = image.naturalHeight
     const width =  image.naturalWidth
     let canvas = canvasRef // document.createElement('canvas');
     canvas.width = (pixelCrop.width/100) * width
     canvas.height =  (pixelCrop.height/100) * height
     const ctx = canvas.getContext('2d')
     
+    // membuat semua menjadi pixel > asalnya %
     ctx.drawImage(      
         image,
         (pixelCrop.y/100) * height ,
@@ -46,17 +48,8 @@ export function downloadBase64File (base64Data, filename) {
       )
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    // membuat base64 menjadi sebuah file
     export function base64StringtoFile (dataurl, filename) {
       var arr = dataurl.split(','),
       mime = arr[0].match(/:(.*?);/)[1],
@@ -75,7 +68,7 @@ export function downloadBase64File (base64Data, filename) {
     
     
     
-
+      // fungsi membuat base64 menjadi file blob
 //   export function makeblob (dataURL) {
 //     var BASE64_MARKER = ';base64,';
 //     if (dataURL.indexOf(BASE64_MARKER) == -1) {
@@ -89,6 +82,22 @@ export function downloadBase64File (base64Data, filename) {
 //     var raw = window.atob(parts[1]);
 //     var rawLength = raw.length;
 
+<<<<<<< HEAD
+//   export function makeblob (dataURL) {
+//     var BASE64_MARKER = ';base64,';
+//     if (dataURL.indexOf(BASE64_MARKER) == -1) {
+//         var parts = dataURL.split(',');
+//         var contentType = parts[0].split(':')[1];
+//         var raw = decodeURIComponent(parts[1]);
+//         return new Blob([raw], { type: contentType });
+//     }
+//     var parts = dataURL.split(BASE64_MARKER);
+//     var contentType = parts[0].split(':')[1];
+//     var raw = window.atob(parts[1]);
+//     var rawLength = raw.length;
+
+=======
+>>>>>>> b9556dca95256dec53baafa1c8024a637580b4e1
 //     var uInt8Array = new Uint8Array(rawLength);
 
 //     for (var i = 0; i < rawLength; ++i) {

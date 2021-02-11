@@ -2,7 +2,7 @@ import React from 'react'
 import '../Posts.css'
 
 function Posts({ imageUrl }) {
-    return (
+    return(
         <img
             src={imageUrl}
             loading = 'lazy'

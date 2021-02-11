@@ -42,10 +42,12 @@ class Home extends Component {
         <div className="container">
             <div className="row">
                 <div className="col s8">
+                    {/* data postingan */}
                     {data.map( (item ,i) => {
                         return ( 
                         <Content 
                                 key        = {i}
+                                            // membuat uniq key untuk modal
                                 id         = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
                                 contentType= {item.content_type_id}
                                 postId     = {item.id}

@@ -20,7 +20,6 @@ class Modal extends Component {
 
     componentDidMount(){
        
-        this.setState({comment:''})
         const options = {
             onOpenStart: () => {
               console.log("Open Start");
@@ -73,6 +72,7 @@ class Modal extends Component {
     
             })
             .then(res => {
+
                 this.setState({comment:'',parentid:null,getusername:'',reply:false})
         
             })

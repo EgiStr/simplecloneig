@@ -3,10 +3,8 @@
 /build
 /staticfiles
 /.vscode
-
-
-
 /static
+/env
 
 *.pyc
 *.sqlite3
