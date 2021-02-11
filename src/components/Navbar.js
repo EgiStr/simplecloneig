@@ -27,9 +27,10 @@ function Navbar() {
                     <div className="nav-wrapper">
                         <a href="/" className="brand-logo ">Logo</a>
                         <ul className="right hide-on-med-and-down">
-                            <li><a href="/"><i className="material-icons">home  </i></a></li>
-                            <li><a href="/create"><i className="material-icons">Post</i></a></li>
+                            <li><a href="/"><i className="material-icons">home</i></a></li>
+                            <li><a href="/create"><i className="material-icons">create</i></a></li>
                             <li><a href={`/profile/${token.user_id}`}><i className="material-icons">people</i></a></li>
+                            <li><a href={`/logout`}><i className="material-icons">logout</i></a></li>
                         </ul>
                     </div>                                                                                                  
                 </div>

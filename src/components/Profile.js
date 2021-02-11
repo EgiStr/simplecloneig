@@ -4,6 +4,8 @@ import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
 import {parseJwt} from './Navbar'
 import Content from './content'
+import {Redirect} from 'react-router-dom'
+
 import '../Profile.css'
 
 class Profile extends Component{
@@ -13,6 +15,7 @@ class Profile extends Component{
             follow : 'follow',
             handle : null, 
             redirect : false,
+            redirectUrl : '',
             data : [],
         }
     }
@@ -28,10 +31,9 @@ class Profile extends Component{
     }
 
     handleEditProfil = () => {
-        const id = this.props.match.params.id;
-        axios.get(`http://127.0.0.1:8000/auth/profil/${id}/edit/`)
-        .then( res => {console.log(res)})
-        .catch( e => console.log(e))
+        const url = `/account/edit`
+        this.setState({redirect:true,redirectUrl:url})
+        
     }
 
     handleFollow = () => {
@@ -58,12 +60,13 @@ class Profile extends Component{
     }
 
     render(){
+        if(this.state.redirect){
+          return <Redirect to={this.state.redirectUrl} />  
+        } 
         const authUser = parseJwt(localStorage.getItem('token')).user_id
-        const data = this.state.data
         const idUser = parseInt(this.props.match.params.id,10)
-        const follower = data.follower
-        const following = data.following
-        const posts  = data.post_data
+        const {data} = this.state
+        const {follower,following,post_data} = data
         return (
             <div className="container">
                 <div className="row header" >
@@ -101,7 +104,7 @@ class Profile extends Component{
                 </div>
                 <div className="posts">
                     <div className="posts_wrap">
-                        {posts ? (posts.map( (item,index)=> {
+                        {post_data ? (post_data.map( (item,index)=> {
                             return (
                             <Content 
                                 key={index * 1000 * Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}

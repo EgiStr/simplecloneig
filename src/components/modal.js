@@ -4,6 +4,7 @@ import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
 import {parseJwt} from './Navbar';
 
+
 class Modal extends Component {
     
     constructor(props){
@@ -23,13 +24,14 @@ class Modal extends Component {
         const options = {
             onOpenStart: () => {
               console.log("Open Start");
-              this.refComment.autofocus = true;
             },
             onOpenEnd: () => {
               console.log("Open End");
             },
             onCloseStart: () => {
               console.log("Close Start");
+              console.log(this.modalRef.scrollHeight )
+              console.log(this.modalRef.clientHeight )
             },
             onCloseEnd: () => {
               console.log("Close End");
@@ -51,10 +53,8 @@ class Modal extends Component {
     handleComment(parent = null){
 
         let {contentType,obj_id} = this.props
-        let user
-        
-        user = parseJwt(localStorage.getItem('token')).user_id
-        let content = this.state.comment
+        let {content} = this.state
+        const user = parseJwt(localStorage.getItem('token')).user_id
 
         if(content !== ''){
             axios({
@@ -74,7 +74,7 @@ class Modal extends Component {
             })
             .then(res => {
                 this.setState({comment:'',parentid:null,getusername:'',reply:false})
-                console.log(res)
+        
             })
             .catch(e => {console.log(e);})
         } 
@@ -93,7 +93,7 @@ class Modal extends Component {
         const comments = this.props.comments
         return (
             <div ref={ Modal => { this.Modal = Modal;}} id={`modal_id${this.props.id}`} className="modal bottom-sheet">
-                <div className="modal-content">
+                <div className="modal-content" ref={node => this.modalRef = node}>
                     <h4>Comment</h4>
 
                     <div className="row post-row">
@@ -101,15 +101,11 @@ class Modal extends Component {
                         <ul className="collection">
                             {comments ? (
                                 comments.map((item) => {
-                                    return (
-                                        
-                                    <li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} className="collection-item avatar">
-                                        
+                                    return (                           
+                                    <li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} className="collection-item avatar">                                       
                                         <img loading='lazy' src={`http://127.0.0.1:8000${item.user.profil}`} className="circle" alt="...."/>
                                         <span className="title">{item.user.nickname}</span>
-                                        <p>
-                                            {item.content}
-                                        </p>
+                                        <p>{item.content}</p>
                                         <a className="secondary-content btn" onClick={()=>{this.handleReplies(item.id,item.user.nickname)}}><i className="material-icons">send</i></a>
                                         {item.replies.length > 0 ? (<p>view replies {item.replies.length} </p>) : ( null)}
                                     </li>
