@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
 import ReactCrop from 'react-image-crop'
  
-import { image64toCanvasRef, extractImageFileExtensionFromBase64, makeblob,base64StringtoFile } from './method/base64'
+import { image64toCanvasRef, extractImageFileExtensionFromBase64,base64StringtoFile } from './method/base64'
 import {formatBytes} from './method/convert'
 import {parseJwt} from './Navbar'
 
@@ -96,8 +96,9 @@ class CreatePost extends Component {
         const exstensi = extractImageFileExtensionFromBase64(urlMentah)
         let filename = `image${this.state.caption}${Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}.${exstensi}`
         // set databaru
+        
         let dataBaru = this.canvasRef.current.toDataURL('image/'+exstensi)
-        if(dataBaru == 'data:,'){
+        if(dataBaru === 'data:,'){
             
         }else{
             // mengubah base64 mejadi file dan menyimpan ke state

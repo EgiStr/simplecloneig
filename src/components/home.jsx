@@ -32,12 +32,7 @@ class Home extends Component {
           this.setState({redirect:true})
       })
      }
-
- onSubmit(id){
-    this.props.history.push(`/profil/${id}`);
-    }
-
-
+     
   render(){
     if(this.state.redirect){
         return <Redirect to='/login'/>

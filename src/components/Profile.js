@@ -9,7 +9,9 @@ import '../Profile.css'
 class Profile extends Component{
     constructor(props){
         super(props)
-        this.state = { 
+        this.state = {
+            follow : 'follow',
+            handle : null, 
             redirect : false,
             data : [],
         }
@@ -17,6 +19,7 @@ class Profile extends Component{
 
     componentDidMount(){
         const id = this.props.match.params.id;
+      
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
         .then( res => {
             this.setState({data:res.data})
@@ -24,9 +27,40 @@ class Profile extends Component{
         .catch( e => {console.log(e);})
     }
 
+    handleEditProfil = () => {
+        const id = this.props.match.params.id;
+        axios.get(`http://127.0.0.1:8000/auth/profil/${id}/edit/`)
+        .then( res => {console.log(res)})
+        .catch( e => console.log(e))
+    }
+
+    handleFollow = () => {
+        
+        const diikuti = parseInt(this.props.match.params.id,10)
+        const pefollow = parseJwt(localStorage.getItem('token')).user_id
+        let form = new FormData() ; 
+        form.append('user', diikuti)
+        form.append('following_user',pefollow)
+        
+        axios.post('http://127.0.0.1:8000/auth/following/',
+            form,{
+                headers:{
+                    "Authorization": 'Bearer ' + localStorage.getItem('token')
+                }
+            }
+        )
+        .then( res => {
+            console.log(res.data)
+            res.data.id === undefined ?  this.setState({follow : 'follow'}) : this.setState({follow : 'unfollow'})
+        })
+        .catch( e => {console.log(e);} )
+
+    }
+
     render(){
         const authUser = parseJwt(localStorage.getItem('token')).user_id
         const data = this.state.data
+        const idUser = parseInt(this.props.match.params.id,10)
         const follower = data.follower
         const following = data.following
         const posts  = data.post_data
@@ -43,8 +77,10 @@ class Profile extends Component{
                     </div>
                     <div>
                         <div style={{ display: "flex" }}>
+                            
                             <h5 style={{ fontWeight: "350" }}>{data.nickname}</h5>
-                            <p className="btn_edit"> {authUser === parseInt(this.props.match.params.id,10) ? ('edit profile') : ('follow')}</p>
+                            <p onClick={authUser === idUser ? this.handleEditProfil : this.handleFollow} className="btn_edit">{authUser === idUser ? ('edit profile') : (this.state.follow)}</p> 
+                            
                         </div>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                             <h6 style={{ fontWeight: "300" }}>{data.post_count} Posts</h6>

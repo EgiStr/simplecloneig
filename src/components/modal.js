@@ -5,6 +5,7 @@ import axios from 'axios'
 import {parseJwt} from './Navbar';
 
 class Modal extends Component {
+    
     constructor(props){
         super(props)
         this.state = {
@@ -15,6 +16,7 @@ class Modal extends Component {
         }
         this.handleComment = this.handleComment.bind(this)
     }
+
     componentDidMount(){
        
         this.setState({comment:''})
@@ -40,7 +42,6 @@ class Modal extends Component {
             endingTop: "10%"
           };
           M.Modal.init(this.Modal, options);
-          console.log(this.props)
     }
 
     handleCommentContent(event){
@@ -81,14 +82,10 @@ class Modal extends Component {
         
 
     }
-    handleReplies(parent_id,username){
-        
-        this.setState({parentid:parent_id,getusername:username,reply:true})
-    }
+    handleReplies = (parent_id,username) => this.setState({parentid:parent_id,getusername:username,reply:true})
 
-    handlecancle(){
-        this.setState({parentid:null,getusername:'',reply:false})
-    }
+
+    handlecancle = ()=> this.setState({parentid:null,getusername:'',reply:false})
 
     render(){
 
@@ -105,9 +102,10 @@ class Modal extends Component {
                             {comments ? (
                                 comments.map((item) => {
                                     return (
+                                        
                                     <li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} className="collection-item avatar">
                                         
-                                        <img src={`http://127.0.0.1:8000${item.user.profil}`} className="circle" alt="...."/>
+                                        <img loading='lazy' src={`http://127.0.0.1:8000${item.user.profil}`} className="circle" alt="...."/>
                                         <span className="title">{item.user.nickname}</span>
                                         <p>
                                             {item.content}
@@ -121,11 +119,12 @@ class Modal extends Component {
                            
                         </ul>
                     </div>
-                    <div className="row post-row">
+                    {/* style={{position:'fixed',bottom:0,left:0,}} need fix position */}
+                    <div className="row post-row" >
                         <div className="col s3 l2 offset-l1">
                             <Avatar  className="avatar" alt="foto" src={this.props.profil} height="45" width="45" />
                         </div>
-                        <div className="col s6 l5 post-btn-container">
+                        <div className="col s6 l5 post-btn-container" >
                             {this.state.reply ? (<p onClick={() => {this.handlecancle()}}>your replies {this.state.getusername} click to cancle</p>) : (null)}
                             <input
                                 ref={node => {this.refComment = node}}

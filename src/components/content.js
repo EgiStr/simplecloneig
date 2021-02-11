@@ -1,12 +1,15 @@
-import React ,{Component}from "react";
+import React ,{Component,lazy,Suspense}from "react";
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
 
 import { InView } from 'react-intersection-observer'
-import Modal from './modal'
+
 import {Redirect} from 'react-router-dom'
 
 import "./../content.css";
+
+const Modal = lazy(()=> import('./modal'))
+
 
 class Content extends Component {
     constructor(props){
@@ -15,6 +18,7 @@ class Content extends Component {
         this.state = {
             redirect:false,
             redirectUrl:'',
+            likes : this.props.like,
             comment :'',
             buttonClass:'small material-icons icon',
      
@@ -57,6 +61,9 @@ class Content extends Component {
             
         })
         .then(res => {
+            // jiga ga ada id berarti menghapus
+            res.data.id === undefined ? this.setState({ likes : this.state.likes - 1}) : this.setState({ likes : this.state.likes+1})
+            
             if(this.state.buttonClass === 'small material-icons icon'){
                 this.setState({ buttonClass:'small material-icons icon red-text'})
             }else{
@@ -75,12 +82,13 @@ class Content extends Component {
         }
         
         const urlProfil = `http://127.0.0.1:8000${this.props.avatar}`;
-
+        
         return (
 
         
         <div className="box">
         <div className="head">
+            
           <Avatar  className="avatar" alt="foto" src={urlProfil} />
           <h6 onClick={()=> {this.handleProfilRedirect(this.props.userId)}}>{this.props.username}</h6>
         </div>
@@ -94,19 +102,20 @@ class Content extends Component {
                 )}
             </InView>
         <div className="icon__box">
-           <p>{this.props.like}</p><a onClick={()=>{this.handleLikeButton(this.props.userId,this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
+           <p>{this.state.likes}</p><a onClick={()=>{this.handleLikeButton(this.props.userId,this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
         <div>
             <a className="modal-trigger" href={`#modal_id${this.props.id}`}><i className="small material-icons icon ">comment</i></a>
-     
-                <Modal 
-                    key ={this.props.id}
-                    id = {this.props.id}
-                    username = {this.props.username}
-                    profil = {urlProfil}
-                    contentType={this.props.contentType}
-                    obj_id = {this.props.postId}
-                    comments = {this.props.comment}
-                />
+                <Suspense fallback={<div></div>}>
+                    <Modal 
+                        key ={this.props.id}
+                        id = {this.props.id}
+                        username = {this.props.username}
+                        profil = {urlProfil}
+                        contentType={this.props.contentType}
+                        obj_id = {this.props.postId}
+                        comments = {this.props.comment}
+                    />
+                </Suspense>
           </div>
 
           <i className="small material-icons icon ">near_me</i>

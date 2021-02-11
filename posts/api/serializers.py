@@ -178,7 +178,6 @@ class JustLikeSerializer(ModelSerializer):
 
     
     def validate(self, attrs):
-        print(attrs.__dict__)
         return attrs
     # def update(self, instance, validated_data):
 
