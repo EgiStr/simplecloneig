@@ -40,7 +40,7 @@ function Navbar() {
                         <ul id='dropdown1' class='dropdown-content'>
                             <li><a href={`/profile/${token.user_id}`}>Profile</a></li>
                             <li class="divider" tabindex="-1"></li>
-                            <li><a href="#!">Logout</a></li>
+                            <li><a href='/logout'>Logout</a></li>
                         </ul>
                     </div>
                 </div>

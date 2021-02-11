@@ -104,9 +104,9 @@ class CreatePost extends Component {
         let filename = `image${this.state.caption}${Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}.${exstensi}`
         
         // set databaru
-        let dataBaru = this.canvasRef.current.toDataURL('image/'+exstensi)
         
-        if (dataBaru === 'data:,'){
+        let dataBaru = this.canvasRef.current.toDataURL('image/'+exstensi)
+        if(dataBaru === 'data:,'){
             
         }else{
             // mengubah base64 mejadi file dan menyimpan ke state

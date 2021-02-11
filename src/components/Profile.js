@@ -4,14 +4,18 @@ import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
 import {parseJwt} from './Navbar'
 import Content from './content'
+import {Redirect} from 'react-router-dom'
+
 import '../Profile.css'
 
 class Profile extends Component{
     constructor(props){
         super(props)
         this.state = {
+            follow : 'follow',
             handle : null, 
             redirect : false,
+            redirectUrl : '',
             data : [],
         }
     }
@@ -27,7 +31,9 @@ class Profile extends Component{
     }
 
     handleEditProfil = () => {
-        console.log('hello')
+        const url = `/account/edit`
+        this.setState({redirect:true,redirectUrl:url})
+        
     }
 
     handleFollow = () => {
@@ -46,20 +52,21 @@ class Profile extends Component{
             }
         )
         .then( res => {
-
-            console.log(res);
+            console.log(res.data)
+            res.data.id === undefined ?  this.setState({follow : 'follow'}) : this.setState({follow : 'unfollow'})
         })
         .catch( e => {console.log(e);} )
 
     }
 
     render(){
+        if(this.state.redirect){
+          return <Redirect to={this.state.redirectUrl} />  
+        } 
         const authUser = parseJwt(localStorage.getItem('token')).user_id
-        const data = this.state.data
         const idUser = parseInt(this.props.match.params.id,10)
-        const follower = data.follower
-        const following = data.following
-        const posts  = data.post_data
+        const {data} = this.state
+        const {follower,following,post_data} = data
         return (
             <div className="container">
                 <div className="row header" >
@@ -75,7 +82,7 @@ class Profile extends Component{
                         <div style={{ display: "flex" }}>
                             
                             <h5 style={{ fontWeight: "350" }}>{data.nickname}</h5>
-                            <p onClick={authUser === idUser ? this.handleEditProfil : this.handleFollow} className="btn_edit">{authUser === idUser ? ('edit profile') : ('follow')}</p> 
+                            <p onClick={authUser === idUser ? this.handleEditProfil : this.handleFollow} className="btn_edit">{authUser === idUser ? ('edit profile') : (this.state.follow)}</p> 
                             
                         </div>
                         <div style={{ display: "flex", flexDirection: "row" }}>
@@ -97,7 +104,7 @@ class Profile extends Component{
                 </div>
                 <div className="posts">
                     <div className="posts_wrap">
-                        {posts ? (posts.map( (item,index)=> {
+                        {post_data ? (post_data.map( (item,index)=> {
                             return (
                             <Content 
                                 key={index * 1000 * Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}

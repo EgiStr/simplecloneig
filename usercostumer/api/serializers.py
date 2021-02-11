@@ -1,4 +1,5 @@
 
+from django.db.models.base import Model
 from django.db.models.deletion import SET_NULL
 
 from rest_framework.serializers import ModelSerializer,SerializerMethodField,HyperlinkedIdentityField
@@ -61,6 +62,7 @@ class FollowingSerializer(ModelSerializer):
     
     def get_user(self,obj):
         return obj.user.nickname
+
 class FollowersSerializer(ModelSerializer):
     following_user = SerializerMethodField()
     class Meta:
@@ -71,6 +73,19 @@ class FollowersSerializer(ModelSerializer):
         return obj.following_user.nickname
 
 
+class UserEditProfil(ModelSerializer):
+    class Meta:
+        model = UserProfil
+        fields =[
+            'bio',
+            'gender',
+            'profil',
+            'nomorHp',
+            'email',
+            'nickname',
+        ]
+        
+
 class UserProfilPostserializer(ModelSerializer):
     class Meta:
         model = UserProfil
@@ -79,6 +94,7 @@ class UserProfilPostserializer(ModelSerializer):
             'nickname',
             'profil',
         ]
+
 class UserProfilSerialzer(ModelSerializer):
     following = SerializerMethodField()
     follower = SerializerMethodField()
@@ -122,9 +138,11 @@ class FollowingOrWerSerializer(ModelSerializer):
     class Meta:
         model = UserFollowing
         fields = [
+            'id',
             'user',
             'following_user'
         ]
+
     def validate(self, attrs):
         if attrs['user'] == attrs['following_user']:
             raise serializers.ValidationError({'following':'you not allow to follow you self'})
@@ -134,16 +152,16 @@ class FollowingOrWerSerializer(ModelSerializer):
 
         # build in funcation get_or_create make 2 return it self and created(True/False)
 
-        Connention,created =  UserFollowing.objects.get_or_create(
+        Connent,created =  UserFollowing.objects.get_or_create(
             user=validated_data['user'],
-            post = validated_data['following_user'],
+            following_user = validated_data['following_user'],
             )
             
         if created:
             # if create database it return query and skip delete 
-            return Connention
+            return Connent
             # else it get query it delete qeury
-        Connention.delete()
+        Connent.delete()
 
         return validated_data
        

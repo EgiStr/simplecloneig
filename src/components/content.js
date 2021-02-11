@@ -1,13 +1,16 @@
-import React ,{Component}from "react";
+import React ,{Component,lazy,Suspense}from "react";
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
 import {parseJwt} from './Navbar'
 
 import { InView } from 'react-intersection-observer'
-import Modal from './modal'
+
 import {Redirect} from 'react-router-dom'
 
 import "../Content.css";
+
+const Modal = lazy(()=> import('./modal'))
+
 
 class Content extends Component {
     constructor(props){
@@ -16,6 +19,7 @@ class Content extends Component {
             likes : this.props.like,
             redirect:false,
             redirectUrl:'',
+            likes : this.props.like,
             comment :'',
             buttonClass:'small material-icons icon',
      
@@ -82,12 +86,13 @@ class Content extends Component {
         }
         
         const urlProfil = `http://127.0.0.1:8000${this.props.avatar}`;
-
+        
         return (
 
         
         <div className="box">
         <div className="head">
+            
           <Avatar  className="avatar" alt="foto" src={urlProfil} />
           <h6 onClick={()=> {this.handleProfilRedirect(this.props.userId)}}>{this.props.username}</h6>
         </div>
@@ -98,25 +103,26 @@ class Content extends Component {
             {({ inView, ref, entry }) => (
                 <div ref={ref}>
                     {inView ? (this.preloadingImg(entry.target.firstChild)) : (null)}
-                    <img className="contentImage" data-src={this.props.imageUrl} alt="foto" />
+                    <img loading="auto" src='data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAJAA4DASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAlEAABAgQEBwAAAAAAAAAAAAABAgMABAYRBRIhMRM0NXGBkbL/xAAVAQEBAAAAAAAAAAAAAAAAAAABA//EABoRAAICAwAAAAAAAAAAAAAAAAECABIDERP/2gAMAwEAAhEDEQA/AAaWpluWZM5OKYmV3HACX0hYJ1JIzaWNt/Rg+qMQcUzKsmWQXGhYvFGVat9DY7RHhvTF90fKoFq7nfAh57axkmKrjqBP/9k=' className="contentImage" data-src={this.props.imageUrl} alt="foto" />
                 </div>
                 )}
             </InView>
 
         <div className="icon__box">
-           <p>{this.state.likes}</p><a onClick={()=>{this.handleLikeButton(this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
-        <div>      {/* membuat modal aktif dengan memberi trigger uniq jadi masing masing post punya modal sendiri  */}
+           <p>{this.state.likes}</p><a onClick={()=>{this.handleLikeButton(this.props.userId,this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
+        <div>
             <a className="modal-trigger" href={`#modal_id${this.props.id}`}><i className="small material-icons icon ">comment</i></a>
-                {/* id dikirim sebagai penanda modal */}
-                <Modal 
-                    key ={this.props.id}
-                    id = {this.props.id}
-                    username = {this.props.username}
-                    profil = {urlProfil}
-                    contentType={this.props.contentType}
-                    obj_id = {this.props.postId}
-                    comments = {this.props.comment}
-                />
+                <Suspense fallback={<div></div>}>
+                    <Modal 
+                        key ={this.props.id}
+                        id = {this.props.id}
+                        username = {this.props.username}
+                        profil = {urlProfil}
+                        contentType={this.props.contentType}
+                        obj_id = {this.props.postId}
+                        comments = {this.props.comment}
+                    />
+                </Suspense>
           </div>
 
           <i className="small material-icons icon ">near_me</i>
