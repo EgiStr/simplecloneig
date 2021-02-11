@@ -7,7 +7,7 @@ import { InView } from 'react-intersection-observer'
 import Modal from './modal'
 import {Redirect} from 'react-router-dom'
 
-import "./../content.css";
+import "../Content.css";
 
 class Content extends Component {
     constructor(props){
