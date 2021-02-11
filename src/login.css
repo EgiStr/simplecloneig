@@ -1,16 +1,24 @@
 .container_login {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #ffcdd2;
+    background-color: #ffffff;
     height: 100%;
     background-position: center;
     background-size: cover;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 }
-
+.box_login{
+    display: flex;
+    flex-direction: column;
+    align-items: center ;
+    justify-content: center;
+    background: #F0F2F5;
+    padding : 40px;
+    border-radius: 5px;
+}
 .icon_box {
     display: flex;
     flex-direction: row;
@@ -23,17 +31,19 @@
     padding: 10px;
     border-radius: 50%;
     margin: 10px;
+    cursor: pointer;
 }
 
 .icon_field:hover {
-    background-color: antiquewhite;
+    background-color: gray;
 }
 
 .line {
+    padding-top: 20px;
     text-align: center;
 }
 
 .line span:after, .line span:before {
-    content: "\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+    content: "\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
     text-decoration: line-through;
 }
