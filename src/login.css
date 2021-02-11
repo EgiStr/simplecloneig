@@ -1,3 +1,32 @@
+.container_login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon_box {
+    display: flex;
+    flex-direction: row;
+}
+
 .icon_field {
-    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    border:1px solid gray;
+    padding:10px;
+    border-radius: 50%;
+    margin:10px ;
+}
+.icon_field:hover{
+    background-color: antiquewhite;
+}
+
+.line {
+    text-align: center;
+}
+
+.line span:after, .line span:before {
+    content: "\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+    text-decoration: line-through;
 }
