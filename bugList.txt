@@ -1,3 +1,5 @@
 2. system follow belum di validation jika sudah ada .
 {% comment %} issue {% endcomment %}
 3.mengeck apa kah post ini sudah di like user atau belum kalo sudah maka warna akan berubah
+4. login system dengan token yang benar -> sering logout sendiri
+ 
