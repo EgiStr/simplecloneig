@@ -1,8 +1,14 @@
 .container_login {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    background-color: #ffcdd2;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
 }
 
 .icon_box {
@@ -13,12 +19,13 @@
 .icon_field {
     display: flex;
     align-items: center;
-    border:1px solid gray;
-    padding:10px;
+    border: 1px solid gray;
+    padding: 10px;
     border-radius: 50%;
-    margin:10px ;
+    margin: 10px;
 }
-.icon_field:hover{
+
+.icon_field:hover {
     background-color: antiquewhite;
 }
 

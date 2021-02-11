@@ -72,8 +72,8 @@ class Login extends Component {
     }
 
     return (
-      <div className="container" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <h2>LOGIN</h2>
+      <div className="container_login">
+        <h5>Sign in</h5>
         <div className="input-field">
           <i className="material-icons prefix">person</i>
           <input
@@ -106,7 +106,8 @@ class Login extends Component {
           Submit
           <i className="material-icons right">send</i>
         </button>
-        <div style={{display:"flex",flexDirection:"row"}}>
+        <div className="line"><span>OR</span></div>
+        <div className="icon_box">
           <div className="icon_field">
             <i className="material-icons">facebook</i>
           </div>
