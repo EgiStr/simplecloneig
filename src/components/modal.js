@@ -3,7 +3,7 @@ import M from "materialize-css";
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
 import {parseJwt} from './Navbar';
-
+import Cookies from 'js-cookie'
 
 class Modal extends Component {
     
@@ -51,14 +51,14 @@ class Modal extends Component {
 
         let {contentType,obj_id} = this.props
         let content = this.state.comment
-        const user = parseJwt(localStorage.getItem('token')).user_id
-
+        const user = parseJwt(Cookies.get('access')).user_id
+        console.log(Cookies.get('access'))
         if(content !== ''){
             axios({
                 method:'POST',
                 url:'http://127.0.0.1:8000/comment/create/',
                 headers:{
-                    "Authorization": 'Bearer ' + localStorage.getItem('token')
+                    "Authorization": 'Bearer ' + Cookies.get('access')
                   },
                 data:{
                     user: user,
@@ -81,7 +81,6 @@ class Modal extends Component {
 
     }
     handleReplies = (parent_id,username) => this.setState({parentid:parent_id,getusername:username,reply:true})
-
 
     handlecancle = ()=> this.setState({parentid:null,getusername:'',reply:false})
 

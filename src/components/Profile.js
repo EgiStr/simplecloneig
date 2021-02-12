@@ -21,11 +21,9 @@ class Profile extends Component{
         }
     }
 
-    componentDidMount(){
+    componentDidMount(){ 
         if(!protectAuth()) this.setState({redirect:true,redirectUrl:'/login'})
-        
         const id = this.props.match.params.id;
-      
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
         .then( res => this.setState({data:res.data} ))
         .catch( e => console.log(e))
@@ -54,9 +52,9 @@ class Profile extends Component{
     }
 
     render(){
-        if(this.state.redirect){
-          return <Redirect to={this.state.redirectUrl} />  
-        } 
+       
+        if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />  
+        
         const authUser = parseJwt(Cookies.get('access')).user_id
         const idUser = parseInt(this.props.match.params.id,10)
         const {data} = this.state
