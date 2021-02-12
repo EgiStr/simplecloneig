@@ -6,10 +6,14 @@ import ReactCrop from 'react-image-crop'
 import { image64toCanvasRef, extractImageFileExtensionFromBase64,base64StringtoFile } from './method/base64'
 import {formatBytes} from './method/convert'
 import {parseJwt} from './Navbar'
+import Cookies from 'js-cookie'
+import {protectAuth} from './auth'
+
 
 import axios from 'axios'
 
 import 'react-image-crop/dist/ReactCrop.css'
+import { Redirect } from 'react-router-dom'
 
 // validate data yang diinginkan
 const imageSize = 2520000 /* 2,4 mb */
@@ -21,6 +25,7 @@ class CreatePost extends Component {
     constructor(props){
         super(props)
         this.state ={
+            redirectUrl:'',
             redirect : false,
             urlMentah : null,
             urlJadi : null,
@@ -35,6 +40,12 @@ class CreatePost extends Component {
             }
         }
         this.canvasRef = React.createRef()
+    }
+
+    componentDidMount(){
+        if(!protectAuth()){
+            this.setState({redirect:true,redirectUrl:'/login'})
+        }
     }
 
     // method validate foto
@@ -81,13 +92,9 @@ class CreatePost extends Component {
         }
     }
 
-    handleOnChange = (crop) => {
-        this.setState({crop : crop})
-    }
+    handleOnChange = (crop) => this.setState({crop : crop})
 
-    handleImageLoaded = (image) => {
-        
-    }
+    handleImageLoaded = (image) => {}
 
     handleCrop = (crop,pixelCrop) => {
         
@@ -116,21 +123,15 @@ class CreatePost extends Component {
 
     }
 
-    Confirmfoto = () =>{
-        this.setState({
-            // membuat gambar crop ga ada
-            urlMentah:null,
+    Confirmfoto = () => this.setState({urlMentah:null}) // membuat gambar crop jadi kosong 
+    
 
-        })
-    }
-
-    handleCaption = (event) => {
-        this.setState({caption:event.target.value})
-    }
+    handleCaption = (event) => this.setState({caption:event.target.value})
+    
 
     handleSubmit = () => {
         const {urlJadi,caption} = this.state
-        const user = parseJwt(localStorage.getItem('token')).user_id
+        const user = parseJwt(Cookies.get('access')).user_id
         let formData = new FormData()
         
         formData.append('post',urlJadi)      
@@ -141,7 +142,7 @@ class CreatePost extends Component {
         axios.post('http://127.0.0.1:8000/api/create/',
             formData,{
                 headers: {
-                    "Authorization": 'Bearer ' + localStorage.getItem('token'),
+                    "Authorization": 'Bearer ' + Cookies.get('access'),
                     'Content-Type': 'multipart/form-data'
                   }
             })
@@ -160,7 +161,7 @@ class CreatePost extends Component {
     // }
 
     render(){
-       
+       if(this.state.redirect) return <Redirect to={this.state.redirectUrl}/>
         return (
             <div>
                 <h1>masukan gambar</h1>

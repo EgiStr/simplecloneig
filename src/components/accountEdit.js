@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from 'react'
 import M from 'materialize-css/dist/js/materialize.min.js'
 import axios from 'axios'
-import { parseJwt } from './Navbar'
-import '../Edit.css'
-
+import {parseJwt} from './Navbar'
+import {protectAuth} from './auth'
+import Cookies from 'js-cookie'
+import {Redirect} from 'react-router-dom'
 
 class AccountEdit extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            bio: '',
+            redirectUrl:'',
+            redirect:false,
+            bio : '',
             username: '',
             email: '',
             phone: null,
@@ -18,11 +21,14 @@ class AccountEdit extends Component {
         }
     }
 
-    componentDidMount() {
-        const userId = parseJwt(localStorage.getItem('token')).user_id
-        axios.get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, {
-            headers: {
-                "Authorization": 'Bearer ' + localStorage.getItem('token'),
+    componentDidMount(){
+        if(!protectAuth){
+            this.setState({redirect:true,redirectUrl:'/login'})
+        }
+        const userId = parseJwt(Cookies.get('access')).user_id
+        axios.get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`,{
+            headers : {
+                "Authorization": 'Bearer ' + Cookies.get('access'),
             }
         })
             .then(res => {
@@ -55,21 +61,25 @@ class AccountEdit extends Component {
         }
     }
     handleSubmit = () => {
+        
+        const userId = parseJwt(Cookies.get('access')).user_id
+        const {email,phone,bio,username,gender,profil} = this.state
+        let formdata = new FormData() ;
+        formdata.append('bio',bio)
+        formdata.append('gender',gender)
+        formdata.append('nickname',username)
+        formdata.append('nomorHp',phone)
+        formdata.append('email',email)
+        if(profil.size === undefined){
 
-        const userId = parseJwt(localStorage.getItem('token')).user_id
-        const { email, phone, bio, username, gender, profil } = this.state
-        let formdata = new FormData();
-        formdata.append('bio', bio)
-        formdata.append('gender', gender)
-        formdata.append('nickname', username)
-        formdata.append('nomorHp', phone)
-        formdata.append('email', email)
-        // profil.size === undefined ? null : formdata.append('profil', profil)
-
+        }else{
+            formdata.append('profil',profil)
+        } 
+    
         axios.put(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`,
-            formdata, {
-            headers: {
-                "Authorization": 'Bearer ' + localStorage.getItem('token'),
+            formdata,{
+            headers : {
+                "Authorization": 'Bearer ' + Cookies.get('access'),
                 'Content-Type': 'multipart/form-data',
             }
         })
@@ -78,7 +88,8 @@ class AccountEdit extends Component {
     }
 
     render() {
-        const { username, email, phone, gender, bio } = this.state
+        if(this.state.redirect) return <Redirect to={this.state.redirectUrl}></Redirect>
+        const {username,email,phone,gender,bio} = this.state
         return (
             <Fragment>
                 <div className="container">
