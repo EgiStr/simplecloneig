@@ -5,7 +5,7 @@ import axios from 'axios'
 import {parseJwt} from './Navbar'
 import Content from './content'
 import {Redirect} from 'react-router-dom'
-import Cookies from './auth'
+import Cookies from 'js-cookie'
 import {protectAuth} from './auth'
 import '../Profile.css'
 

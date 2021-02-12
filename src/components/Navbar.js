@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
 import Cookies from 'js-cookie'
-import protectAuth from './auth'
+import {protectAuth} from './auth'
 
 function parseJwt(token) {
     var base64Url = token.split('.')[1];

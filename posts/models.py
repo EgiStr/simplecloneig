@@ -12,7 +12,7 @@ class PostManage(models.Manager):
     def get_post_homepage(self,nickname):
        
         users = [nickname,]
-        users +=  [UserProfil.objects.get(id=i) for i in  UserFollowing.objects.filter(user = nickname).values_list('following_user',flat=True)] 
+        users +=  [UserProfil.objects.get(id=i) for i in  UserFollowing.objects.filter(following_user = nickname).values_list('user',flat=True)] 
         qs = super(PostManage,self).filter(user__in=users).filter(private=False).order_by('-create_at')
     
         return qs

@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React from 'react'
 
 import Cookies from 'js-cookie'
 import {Redirect} from 'react-router-dom'
@@ -31,20 +31,31 @@ export const protectAuth = async () => {
 }
 
 export const resfeshLogin = async resfreshToken => {
-    const {token,setToken} = useState('')
 
-    let formData = new FormData() ;
-    formData.append('refresh',resfreshToken) 
-    axios.post('http://127.0.0.1:8000/auth/login/refresh/',
-    formData
-    )
-    .then( res =>{
-        setToken(res.data) 
+    return new Promise((resolve,reject) => {
+        let formData = new FormData() ;
+        formData.append('refresh',resfreshToken) 
+        axios.post('http://127.0.0.1:8000/auth/login/refresh/',formData)
+        .then( res => {
+            if(res.status < 300){
+                resolve(false)
+            }else{
+                const {access,refresh} = res.data
+                Cookies.set('access',access)
+                resolve(res.data)
+            }
+        })
     })
-    .catch(e => console.log(e))
-    Cookies.set('access',token.access)
-    Cookies.set('refresh',token.refresh)
-    return token
+    // axios.post('http://127.0.0.1:8000/auth/login/refresh/',
+    // formData
+    // )
+    // .then( res =>{
+         
+    // })
+    // .catch(e => console.log(e))
+    // Cookies.set('access',token.access)
+    // Cookies.set('refresh',token.refresh)
+    // return token
 }
 
 export const requestLogin = async (accessToken ,refreshToken) => {
