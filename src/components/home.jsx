@@ -2,6 +2,9 @@ import React , {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
 import Content from './content'
+import {protectAuth} from './auth'
+import Cookies from 'js-cookie'
+
 
 class Home extends Component {
   constructor(props){
@@ -13,14 +16,14 @@ class Home extends Component {
   }  
 
   componentDidMount(){
-      if(localStorage.getItem('token') === null ){
+      if(!protectAuth()){
           this.setState({redirect:true})
       }
       axios({
           method:'GET',
           url:'http://127.0.0.1:8000/api/',
           headers:{
-            "Authorization": 'Bearer ' + localStorage.getItem('token')
+            "Authorization": 'Bearer ' + Cookies.get('access')
           }
 
           
@@ -29,6 +32,7 @@ class Home extends Component {
           this.setState({data:res.data})
       })
       .catch( e => {
+          console.log(e.request)
           this.setState({redirect:true})
       })
      }

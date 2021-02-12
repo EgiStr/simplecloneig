@@ -5,7 +5,8 @@ import axios from 'axios'
 import {parseJwt} from './Navbar'
 import Content from './content'
 import {Redirect} from 'react-router-dom'
-
+import Cookies from './auth'
+import {protectAuth} from './auth'
 import '../Profile.css'
 
 class Profile extends Component{
@@ -21,25 +22,21 @@ class Profile extends Component{
     }
 
     componentDidMount(){
+        if(!protectAuth()) this.setState({redirect:true,redirectUrl:'/login'})
+        
         const id = this.props.match.params.id;
       
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
-        .then( res => {
-            this.setState({data:res.data})
-        })
-        .catch( e => {console.log(e);})
+        .then( res => this.setState({data:res.data} ))
+        .catch( e => console.log(e))
     }
 
-    handleEditProfil = () => {
-        const url = `/account/edit`
-        this.setState({redirect:true,redirectUrl:url})
-        
-    }
+    handleEditProfil = () => this.setState({redirect:true,redirectUrl:`/account/edit`})
 
     handleFollow = () => {
         
         const diikuti = parseInt(this.props.match.params.id,10)
-        const pefollow = parseJwt(localStorage.getItem('token')).user_id
+        const pefollow = parseJwt(Cookies.get('access')).user_id
         let form = new FormData() ; 
         form.append('user', diikuti)
         form.append('following_user',pefollow)
@@ -47,15 +44,12 @@ class Profile extends Component{
         axios.post('http://127.0.0.1:8000/auth/following/',
             form,{
                 headers:{
-                    "Authorization": 'Bearer ' + localStorage.getItem('token')
+                    "Authorization": 'Bearer ' + Cookies.get('access')
                 }
             }
         )
-        .then( res => {
-            console.log(res.data)
-            res.data.id === undefined ?  this.setState({follow : 'follow'}) : this.setState({follow : 'unfollow'})
-        })
-        .catch( e => {console.log(e);} )
+        .then( res => res.data.id === undefined ? this.setState({follow : 'follow'}) : this.setState({follow : 'unfollow'}))
+        .catch( e => console.log(e) )
 
     }
 
@@ -63,7 +57,7 @@ class Profile extends Component{
         if(this.state.redirect){
           return <Redirect to={this.state.redirectUrl} />  
         } 
-        const authUser = parseJwt(localStorage.getItem('token')).user_id
+        const authUser = parseJwt(Cookies.get('access')).user_id
         const idUser = parseInt(this.props.match.params.id,10)
         const {data} = this.state
         const {follower,following,post_data} = data

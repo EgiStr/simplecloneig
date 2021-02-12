@@ -26,24 +26,30 @@ export function downloadBase64File (base64Data, filename) {
     // membuat file image
     const image = new Image()
     image.src = image64
-    const height = image.naturalHeight
-    const width =  image.naturalWidth
+
+    // ubah persen ke pixel
+    const targetX = image.width * pixelCrop.x / 100;
+    const targetY = image.height * pixelCrop.y / 100;
+    const targetWidth = image.width * pixelCrop.width / 100;
+    const targetHeight = image.height * pixelCrop.height / 100;
+
     let canvas = canvasRef // document.createElement('canvas');
-    canvas.width = (pixelCrop.width/100) * width
-    canvas.height =  (pixelCrop.height/100) * height
+    canvas.width = (pixelCrop.width/100) * targetWidth
+    canvas.height =  (pixelCrop.height/100) * targetHeight
+
     const ctx = canvas.getContext('2d')
     
     // membuat semua menjadi pixel > asalnya %
     ctx.drawImage(      
         image,
-        (pixelCrop.y/100) * height ,
-        (pixelCrop.x/100) * width,
-        (pixelCrop.width/100) * width,
-        (pixelCrop.height/100) * height,
+        targetX,
+        targetY,
+        targetWidth,
+        targetHeight,
         0,
         0,
-        (pixelCrop.width/100) * width,
-        (pixelCrop.height/100) * height,
+        targetWidth,
+        targetHeight
         
       )
     }

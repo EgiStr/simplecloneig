@@ -1,5 +1,7 @@
-import React from 'react'
-import { Redirect } from 'react-router-dom'
+import React,{useEffect} from 'react'
+import { useHistory } from 'react-router-dom'
+import Cookies from 'js-cookie'
+import protectAuth from './auth'
 
 function parseJwt(token) {
     var base64Url = token.split('.')[1];
@@ -12,13 +14,15 @@ function parseJwt(token) {
 };
 
 function Navbar() {
-
-
-
-    if (localStorage.getItem('token') === null) {
-        return <Redirect to={'/login'} />
-    }
-    const token = parseJwt(localStorage.getItem('token'))
+    const history = useHistory()
+    
+    useEffect( () => {
+        if(!protectAuth()){
+            history.push('/login')
+        }
+    })
+   
+    const token = parseJwt(Cookies.get('access'))
 
         document.addEventListener('DOMContentLoaded', function () {
             const M = window.M;
