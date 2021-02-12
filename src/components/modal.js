@@ -29,8 +29,6 @@ class Modal extends Component {
             },
             onCloseStart: () => {
               console.log("Close Start");
-              console.log(this.modalRef.scrollHeight )
-              console.log(this.modalRef.clientHeight )
             },
             onCloseEnd: () => {
               console.log("Close End");
@@ -52,7 +50,7 @@ class Modal extends Component {
     handleComment(parent = null){
 
         let {contentType,obj_id} = this.props
-        let {content} = this.state
+        let content = this.state.comment
         const user = parseJwt(localStorage.getItem('token')).user_id
 
         if(content !== ''){
@@ -76,7 +74,7 @@ class Modal extends Component {
                 this.setState({comment:'',parentid:null,getusername:'',reply:false})
         
             })
-            .catch(e => {console.log(e);})
+            .catch(e => {console.log(e.request);})
         } 
         
         

@@ -26,24 +26,30 @@ export function downloadBase64File (base64Data, filename) {
     // membuat file image
     const image = new Image()
     image.src = image64
-    const height = image.naturalHeight
-    const width =  image.naturalWidth
+
+    // ubah persen ke pixel
+    const targetX = image.width * pixelCrop.x / 100;
+    const targetY = image.height * pixelCrop.y / 100;
+    const targetWidth = image.width * pixelCrop.width / 100;
+    const targetHeight = image.height * pixelCrop.height / 100;
+
     let canvas = canvasRef // document.createElement('canvas');
-    canvas.width = (pixelCrop.width/100) * width
-    canvas.height =  (pixelCrop.height/100) * height
+    canvas.width = (pixelCrop.width/100) * targetWidth
+    canvas.height =  (pixelCrop.height/100) * targetHeight
+
     const ctx = canvas.getContext('2d')
     
     // membuat semua menjadi pixel > asalnya %
     ctx.drawImage(      
         image,
-        (pixelCrop.y/100) * height ,
-        (pixelCrop.x/100) * width,
-        (pixelCrop.width/100) * width,
-        (pixelCrop.height/100) * height,
+        targetX,
+        targetY,
+        targetWidth,
+        targetHeight,
         0,
         0,
-        (pixelCrop.width/100) * width,
-        (pixelCrop.height/100) * height,
+        targetWidth,
+        targetHeight
         
       )
     }
@@ -82,7 +88,6 @@ export function downloadBase64File (base64Data, filename) {
 //     var raw = window.atob(parts[1]);
 //     var rawLength = raw.length;
 
-<<<<<<< HEAD
 //   export function makeblob (dataURL) {
 //     var BASE64_MARKER = ';base64,';
 //     if (dataURL.indexOf(BASE64_MARKER) == -1) {
@@ -96,8 +101,6 @@ export function downloadBase64File (base64Data, filename) {
 //     var raw = window.atob(parts[1]);
 //     var rawLength = raw.length;
 
-=======
->>>>>>> b9556dca95256dec53baafa1c8024a637580b4e1
 //     var uInt8Array = new Uint8Array(rawLength);
 
 //     for (var i = 0; i < rawLength; ++i) {

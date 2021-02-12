@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import Cookies from 'js-cookie'
+
 import '../login.css'
 class Login extends Component {
   constructor(props) {
@@ -34,10 +36,11 @@ class Login extends Component {
       })
 
       .then((res) => {
-        localStorage.setItem("token", res.data.access);
+        Cookies.set('access',res.data.access)
+        Cookies.set('refresh',res.data.refresh)
         this.setState({ redirect: true });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.log(e.request));
   }
 
   handleTitleChange(event) {

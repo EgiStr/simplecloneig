@@ -5,7 +5,7 @@ from django.dispatch import receiver
 # from usercostumer.models import UserProfil
 # Create your models here.
 from usercostumer.models import UserProfil,UserFollowing
-
+from PIL import Image
 
 
 class PostManage(models.Manager):
@@ -29,9 +29,21 @@ class Post(models.Model):
     """ feature ??? """
     objects = PostManage()
 
+    def save(self,*args, **kwargs):
+        super().save(*args,**kwargs)
+
+        # compress image with PIllow before upload to database
+        img = Image.open(self.post.path)
+        
+        myHeight , myWidht = img.size
+        img = img.resize((myHeight,myWidht),Image.ANTIALIAS)
+        
+        img.save(self.post.path)
+        
     @property
     def get_total_like(self):
         return self.likes.count()
+
 
     @property
     def get_content_type(self):
