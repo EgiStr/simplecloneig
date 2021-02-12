@@ -16,9 +16,6 @@ class Home extends Component {
   }  
 
   componentDidMount(){
-      if(!protectAuth()){
-          this.setState({redirect:true})
-      }
       axios({
           method:'GET',
           url:'http://127.0.0.1:8000/api/',
@@ -37,10 +34,13 @@ class Home extends Component {
       })
      }
      
+     
   render(){
-    if(this.state.redirect){
-        return <Redirect to='/login'/>
-    }
+    
+    if(!protectAuth) this.setState({redirect:true})
+    
+    if(this.state.redirect) return <Redirect to='/login'/>
+    
     const data = this.state.data
     return (
         <div className="container">
