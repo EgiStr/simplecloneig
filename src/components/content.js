@@ -7,7 +7,6 @@ import { InView } from 'react-intersection-observer'
 
 import {Redirect} from 'react-router-dom'
 
-import '../content.css'
 
 const Modal = lazy(()=> import('./modal'))
 

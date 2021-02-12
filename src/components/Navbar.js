@@ -1,7 +1,7 @@
-import React,{useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import Cookies from 'js-cookie'
-import protectAuth from './auth'
+import { Cookies } from 'js-cookie'
+import { protectAuth } from './auth'
 
 function parseJwt(token) {
     var base64Url = token.split('.')[1];
@@ -15,20 +15,20 @@ function parseJwt(token) {
 
 function Navbar() {
     const history = useHistory()
-    
-    useEffect( () => {
-        if(!protectAuth()){
+
+    useEffect(() => {
+        if (!protectAuth()) {
             history.push('/login')
         }
     })
-   
+
     const token = parseJwt(Cookies.get('access'))
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const M = window.M;
-            var elems = document.querySelectorAll('.dropdown-trigger');
-            M.Dropdown.init(elems, {});
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+        const M = window.M;
+        var elems = document.querySelectorAll('.dropdown-trigger');
+        M.Dropdown.init(elems, {});
+    });
 
     return (
         <div className="navbar-fixed">
