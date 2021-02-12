@@ -64,7 +64,11 @@ class AccountEdit extends Component {
         formdata.append('nickname',username)
         formdata.append('nomorHp',phone)
         formdata.append('email',email)
-        profil.size === undefined ? null : formdata.append('profil',profil)
+        if(profil.size === undefined){
+
+        }else{
+            formdata.append('profil',profil)
+        } 
     
         axios.put(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`,
             formdata,{

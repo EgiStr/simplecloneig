@@ -82,7 +82,6 @@ export function downloadBase64File (base64Data, filename) {
 //     var raw = window.atob(parts[1]);
 //     var rawLength = raw.length;
 
-<<<<<<< HEAD
 //   export function makeblob (dataURL) {
 //     var BASE64_MARKER = ';base64,';
 //     if (dataURL.indexOf(BASE64_MARKER) == -1) {
@@ -96,8 +95,6 @@ export function downloadBase64File (base64Data, filename) {
 //     var raw = window.atob(parts[1]);
 //     var rawLength = raw.length;
 
-=======
->>>>>>> b9556dca95256dec53baafa1c8024a637580b4e1
 //     var uInt8Array = new Uint8Array(rawLength);
 
 //     for (var i = 0; i < rawLength; ++i) {

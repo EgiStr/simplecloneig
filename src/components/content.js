@@ -7,7 +7,7 @@ import { InView } from 'react-intersection-observer'
 
 import {Redirect} from 'react-router-dom'
 
-import "../Content.css";
+import '../content.css'
 
 const Modal = lazy(()=> import('./modal'))
 
@@ -16,7 +16,6 @@ class Content extends Component {
     constructor(props){
         super(props)
         this.state = {
-            likes : this.props.like,
             redirect:false,
             redirectUrl:'',
             likes : this.props.like,
@@ -74,7 +73,7 @@ class Content extends Component {
             }
             
         })
-        .catch(e => {console.log(e)})
+        .catch(e => {console.log(e.request)})
     }
 
 
@@ -109,7 +108,7 @@ class Content extends Component {
             </InView>
 
         <div className="icon__box">
-           <p>{this.state.likes}</p><a onClick={()=>{this.handleLikeButton(this.props.userId,this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
+           <p>{this.state.likes}</p><a onClick={()=>{this.handleLikeButton(this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
         <div>
             <a className="modal-trigger" href={`#modal_id${this.props.id}`}><i className="small material-icons icon ">comment</i></a>
                 <Suspense fallback={<div></div>}>
