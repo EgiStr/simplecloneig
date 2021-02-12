@@ -22,7 +22,7 @@ function Navbar() {
         }
     })
 
-    const token = parseJwt(Cookies.get('access'))
+    const token = parseJwt(Cookies.get('access'));
 
     document.addEventListener('DOMContentLoaded', function () {
         const M = window.M;
