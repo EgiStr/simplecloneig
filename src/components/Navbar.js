@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{useState,useEffect} from 'react'
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
@@ -13,10 +13,14 @@ function parseJwt(token) {
 };
 
 function Navbar() {
-
-
-   if(Cookies.get('access') === undefined) return <Redirect to='/login'/>
-    const token = parseJwt(Cookies.get('access'))
+    const [token,setToken] = useState(Cookies.get('access'))
+    
+    useEffect( () => {
+        setToken(Cookies.get('access'))
+    },[])
+    
+    if(token === undefined) return <Redirect to='/login'/>
+    const jwt = parseJwt(token)
 
     document.addEventListener('DOMContentLoaded', function () {
             const M = window.M;
@@ -36,7 +40,7 @@ function Navbar() {
                             <li><a className='dropdown-trigger' data-target='dropdown1'><i className="material-icons">people</i></a></li>
                         </ul>
                         <ul id='dropdown1' className='dropdown-content'>
-                            <li><a href={`/profile/${token.user_id}`}>Profile</a></li>
+                            <li><a href={`/profile/${jwt.user_id}`}>Profile</a></li>
                             <li className="divider" tabIndex="-1"></li>
                             <li><a href='/logout'>Logout</a></li>
                         </ul>

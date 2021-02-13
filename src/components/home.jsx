@@ -10,34 +10,34 @@ class Home extends Component {
   constructor(props){
       super(props)
       this.state = {
+        access : Cookies.get('access'),
+        refresh : Cookies.get('refresh'),
         data : [],
         redirect: false,
       }
   }  
 
   componentDidMount(){
-      axios({
-          method:'GET',
-          url:'http://127.0.0.1:8000/api/',
-          headers:{
-            "Authorization": 'Bearer ' + Cookies.get('access')
-          }
-
-          
-      })
-      .then(res => {
-          this.setState({data:res.data})
-      })
-      .catch( e => {
-          console.log(e.request)
-          this.setState({redirect:true})
-      })
-     }
+    if(!protectAuth(this.state.access,this.state.refresh)) this.setState({redirect:true})
+    if(this.state.access !== undefined){
+        axios({
+            method:'GET',
+            url:'http://127.0.0.1:8000/api/',
+            headers:{
+              "Authorization": 'Bearer ' + this.state.access
+            }            
+        })
+        .then(res => this.setState({data:res.data}))
+        .catch( e => {
+            console.log(e.request)
+            this.setState({redirect:true})
+        })
+    }     
+}
      
      
   render(){
     
-    if(!protectAuth) this.setState({redirect:true})
     
     if(this.state.redirect) return <Redirect to='/login'/>
     

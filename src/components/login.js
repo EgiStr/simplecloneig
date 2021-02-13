@@ -15,6 +15,7 @@ class Login extends Component {
       notValide: false,
       redirect: false,
     };
+
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,6 +23,7 @@ class Login extends Component {
   }
 
   componentDidMount() {
+
     this.setState({ redirect: false });
   }
 

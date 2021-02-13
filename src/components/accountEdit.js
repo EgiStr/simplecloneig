@@ -2,16 +2,18 @@ import React, { Component, Fragment } from "react";
 import M from "materialize-css/dist/js/materialize.min.js";
 import axios from "axios";
 import { parseJwt } from "./Navbar";
-import { protectAuth } from "./auth";
 import Cookies from "js-cookie";
 import { Redirect } from "react-router-dom";
-import "../AccountEdit.css";
+import {protectAuth} from './auth'
 import Avatar from "@material-ui/core/Avatar";
+import "../AccountEdit.css";
 
 class AccountEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      access:Cookies.get('access'),
+      refresh:Cookies.get('refresh'),
       redirectUrl: "",
       redirect: false,
       bio: "",
@@ -24,14 +26,15 @@ class AccountEdit extends Component {
   }
 
   componentDidMount() {
-    if (!protectAuth) {
-      this.setState({ redirect: true, redirectUrl: "/login" });
-    }
-    const userId = parseJwt(Cookies.get("access")).user_id;
+  
+    if(!protectAuth(this.state.access,this.state.refresh)) this.setState({redirect:true,redirectUrl:'/login'})
+    
+    const userId = parseJwt(this.state.access).user_id;
+    
     axios
       .get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, {
         headers: {
-          Authorization: "Bearer " + Cookies.get("access"),
+          Authorization: "Bearer " + this.state.access,
         },
       })
       .then((res) => {
@@ -43,7 +46,6 @@ class AccountEdit extends Component {
           profil: res.data.profil,
           bio: res.data.bio,
         });
-        console.log(res.data);
       })
       .catch((e) => console.log(e));
     M.AutoInit();
@@ -64,7 +66,7 @@ class AccountEdit extends Component {
   };
 
   handleSubmit = () => {
-    const userId = parseJwt(Cookies.get("access")).user_id;
+    const userId = parseJwt(this.state.access).user_id;
     const { email, phone, bio, username, gender, profil } = this.state;
     let formdata = new FormData();
     formdata.append("bio", bio);
@@ -72,15 +74,15 @@ class AccountEdit extends Component {
     formdata.append("nickname", username);
     formdata.append("nomorHp", phone);
     formdata.append("email", email);
-    if (profil.size === undefined) {
-    } else {
+    if (profil.size === undefined) {}
+    else {
       formdata.append("profil", profil);
     }
 
     axios
       .put(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, formdata, {
         headers: {
-          Authorization: "Bearer " + Cookies.get("access"),
+          Authorization: "Bearer " + this.state.access,
           "Content-Type": "multipart/form-data",
         },
       })
