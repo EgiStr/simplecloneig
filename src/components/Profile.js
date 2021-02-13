@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
-import { parseJwt } from './Navbar'
+// import { parseJwt } from './Navbar'
 import Content from './content'
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
@@ -34,7 +34,7 @@ class Profile extends Component {
     handleFollow = () => {
 
         const diikuti = parseInt(this.props.match.params.id, 10)
-        const pefollow = parseJwt(Cookies.get('access')).user_id
+        const pefollow = Cookies.get('access').user_id
         let form = new FormData();
         form.append('user', diikuti)
         form.append('following_user', pefollow)
@@ -55,7 +55,7 @@ class Profile extends Component {
        
         if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />  
         
-        const authUser = parseJwt(Cookies.get('access')).user_id
+        const authUser = Cookies.get('access').user_id
         const idUser = parseInt(this.props.match.params.id, 10)
         const { data } = this.state
         const { follower, following, post_data } = data

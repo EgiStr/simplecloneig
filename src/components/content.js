@@ -1,7 +1,7 @@
 import React ,{Component,lazy,Suspense}from "react";
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
-import {parseJwt} from './Navbar'
+// import {parseJwt} from './Navbar'
 
 import { InView } from 'react-intersection-observer'
 
@@ -48,7 +48,7 @@ class Content extends Component {
 
     handleLikeButton(postId){
 
-        const userId = parseJwt(Cookies.get('access')).user_id
+        const userId = Cookies.get('access').user_id
         axios({
             method:'post',
             url: 'http://127.0.0.1:8000/api/like/',

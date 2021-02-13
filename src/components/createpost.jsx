@@ -5,7 +5,7 @@ import ReactCrop from 'react-image-crop'
  
 import { image64toCanvasRef, extractImageFileExtensionFromBase64,base64StringtoFile } from './method/base64'
 import {formatBytes} from './method/convert'
-import {parseJwt} from './Navbar'
+// import {parseJwt} from './Navbar'
 import Cookies from 'js-cookie'
 import {protectAuth} from './auth'
 
@@ -131,7 +131,7 @@ class CreatePost extends Component {
 
     handleSubmit = () => {
         const {urlJadi,caption} = this.state
-        const user = parseJwt(Cookies.get('access')).user_id
+        const user = Cookies.get('access').user_id
         let formData = new FormData()
         
         formData.append('post',urlJadi)      

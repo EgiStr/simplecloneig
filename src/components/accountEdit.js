@@ -25,7 +25,7 @@ class AccountEdit extends Component {
         if(!protectAuth){
             this.setState({redirect:true,redirectUrl:'/login'})
         }
-        const userId = parseJwt(Cookies.get('access')).user_id
+        const userId = Cookies.get('access').user_id
         axios.get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`,{
             headers : {
                 "Authorization": 'Bearer ' + Cookies.get('access'),
@@ -62,7 +62,7 @@ class AccountEdit extends Component {
     }
     handleSubmit = () => {
         
-        const userId = parseJwt(Cookies.get('access')).user_id
+        const userId = Cookies.get('access').user_id
         const {email,phone,bio,username,gender,profil} = this.state
         let formdata = new FormData() ;
         formdata.append('bio',bio)
