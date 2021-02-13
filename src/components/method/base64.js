@@ -88,8 +88,6 @@ export function downloadBase64File (base64Data, filename) {
 //     var raw = window.atob(parts[1]);
 //     var rawLength = raw.length;
 
-//   export function makeblob (dataURL) {
-//     var BASE64_MARKER = ';base64,';
 //     if (dataURL.indexOf(BASE64_MARKER) == -1) {
 //         var parts = dataURL.split(',');
 //         var contentType = parts[0].split(':')[1];
@@ -103,7 +101,6 @@ export function downloadBase64File (base64Data, filename) {
 
 //     var uInt8Array = new Uint8Array(rawLength);
 
-//     for (var i = 0; i < rawLength; ++i) {
 //         uInt8Array[i] = raw.charCodeAt(i);
 //     }
 

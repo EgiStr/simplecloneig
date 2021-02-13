@@ -8,7 +8,7 @@ import { InView } from 'react-intersection-observer'
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
-import '../content.css'
+import '../Content.css'
 
 const Modal = lazy(()=> import('./modal'))
 
