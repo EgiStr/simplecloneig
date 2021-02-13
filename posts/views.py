@@ -26,7 +26,7 @@ def index(reqeust):
 
         'posts':posts,
     }
-    return render(reqeust,'testing.html',context)
+    return render(reqeust,'index.html',context)
 
 
 def index2(request):

@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Cookies } from 'js-cookie'
 import { protectAuth } from './auth'
+=======
+import React from 'react'
+import { useHistory } from 'react-router-dom'
+import Cookies from 'js-cookie'
+>>>>>>> 723e71cf65edf4ba1889e54ace79082be77d991e
 
 function parseJwt(token) {
     var base64Url = token.split('.')[1];
@@ -15,6 +21,7 @@ function parseJwt(token) {
 
 function Navbar() {
     const history = useHistory()
+<<<<<<< HEAD
 
     useEffect(() => {
         if (!protectAuth()) {
@@ -28,6 +35,17 @@ function Navbar() {
         const M = window.M;
         var elems = document.querySelectorAll('.dropdown-trigger');
         M.Dropdown.init(elems, {});
+=======
+    
+    
+   if(Cookies.get('access') === undefined) history.push('/login')
+    const token = parseJwt(Cookies.get('access'))
+
+    document.addEventListener('DOMContentLoaded', function () {
+            const M = window.M;
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            M.Dropdown.init(elems, {});
+>>>>>>> 723e71cf65edf4ba1889e54ace79082be77d991e
     });
 
     return (

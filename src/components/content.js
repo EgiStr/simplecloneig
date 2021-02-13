@@ -6,6 +6,7 @@ import {parseJwt} from './Navbar'
 import { InView } from 'react-intersection-observer'
 
 import {Redirect} from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 
 const Modal = lazy(()=> import('./modal'))
@@ -47,7 +48,7 @@ class Content extends Component {
 
     handleLikeButton(postId){
 
-        const userId = parseJwt(localStorage.getItem('token')).user_id
+        const userId = parseJwt(Cookies.get('access')).user_id
         axios({
             method:'post',
             url: 'http://127.0.0.1:8000/api/like/',
@@ -56,7 +57,7 @@ class Content extends Component {
                 user:userId
             },
             headers:{
-                "Authorization": 'Bearer ' + localStorage.getItem('token')
+                "Authorization": 'Bearer ' + Cookies.get('access')
             }
             
         })

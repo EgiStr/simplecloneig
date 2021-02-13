@@ -4,9 +4,15 @@ import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
 import { parseJwt } from './Navbar'
 import Content from './content'
+<<<<<<< HEAD
 import { Redirect } from 'react-router-dom'
 import Cookies from './auth'
 import { protectAuth } from './auth'
+=======
+import {Redirect} from 'react-router-dom'
+import Cookies from 'js-cookie'
+import {protectAuth} from './auth'
+>>>>>>> 723e71cf65edf4ba1889e54ace79082be77d991e
 import '../Profile.css'
 
 class Profile extends Component {
@@ -21,11 +27,17 @@ class Profile extends Component {
         }
     }
 
+<<<<<<< HEAD
     componentDidMount() {
         if (!protectAuth()) this.setState({ redirect: true, redirectUrl: '/login' })
 
         const id = this.props.match.params.id;
 
+=======
+    componentDidMount(){ 
+        if(!protectAuth()) this.setState({redirect:true,redirectUrl:'/login'})
+        const id = this.props.match.params.id;
+>>>>>>> 723e71cf65edf4ba1889e54ace79082be77d991e
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
             .then(res => this.setState({ data: res.data }))
             .catch(e => console.log(e))
@@ -53,10 +65,17 @@ class Profile extends Component {
 
     }
 
+<<<<<<< HEAD
     render() {
         if (this.state.redirect) {
             return <Redirect to={this.state.redirectUrl} />
         }
+=======
+    render(){
+       
+        if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />  
+        
+>>>>>>> 723e71cf65edf4ba1889e54ace79082be77d991e
         const authUser = parseJwt(Cookies.get('access')).user_id
         const idUser = parseInt(this.props.match.params.id, 10)
         const { data } = this.state
