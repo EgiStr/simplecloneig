@@ -1,8 +1,9 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
 function parseJwt(token) {
+    console.log(token)
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
@@ -12,12 +13,17 @@ function parseJwt(token) {
     return JSON.parse(jsonPayload);
 };
 function Navbar() {
-    const history = useHistory()
+
     
     
+<<<<<<< HEAD
     if(Cookies.get('access') === undefined) history.push('/login')
     const token = Cookies.get('access');
     console.log(token)
+=======
+   if(Cookies.get('access') === undefined) return <Redirect to='/login'/>
+    const token = parseJwt(Cookies.get('access'))
+>>>>>>> 4f7bb1daf90e45d3bdcd86e0ae3ecf3bf16bb64f
 
     document.addEventListener('DOMContentLoaded', function () {
             const M = window.M;
