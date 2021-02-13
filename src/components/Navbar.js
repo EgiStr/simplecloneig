@@ -9,21 +9,16 @@ function parseJwt(token) {
     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
-    
+
     return JSON.parse(jsonPayload);
 };
+
 function Navbar() {
 
     
     
-<<<<<<< HEAD
-    if(Cookies.get('access') === undefined) history.push('/login')
-    const token = Cookies.get('access');
-    console.log(token)
-=======
    if(Cookies.get('access') === undefined) return <Redirect to='/login'/>
     const token = parseJwt(Cookies.get('access'))
->>>>>>> 4f7bb1daf90e45d3bdcd86e0ae3ecf3bf16bb64f
 
     document.addEventListener('DOMContentLoaded', function () {
             const M = window.M;
@@ -54,4 +49,4 @@ function Navbar() {
     )
 }
 
-export { Navbar }
+export { Navbar, parseJwt }

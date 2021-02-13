@@ -2,31 +2,23 @@ import React, { Component } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
-// import { parseJwt } from './Navbar'
+import {parseJwt} from './Navbar'
 import Content from './content'
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import {protectAuth} from './auth'
 import '../Profile.css'
 
-class Profile extends Component {
-    constructor(props) {
+class Profile extends Component{
+    constructor(props){
         super(props)
         this.state = {
-<<<<<<< HEAD
-            follow: 'follow',
-            handle: null,
-            redirect: false,
-            redirectUrl: '',
-            data: [],
-=======
 
             follow : 'follow',
             handle : null, 
             redirect : false,
             redirectUrl : '',
             data : [],
->>>>>>> 4f7bb1daf90e45d3bdcd86e0ae3ecf3bf16bb64f
         }
     }
 
@@ -36,29 +28,29 @@ class Profile extends Component {
         if(!protectAuth()) this.setState({redirect:true,redirectUrl:'/login'})
         const id = this.props.match.params.id;
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
-            .then(res => this.setState({ data: res.data }))
-            .catch(e => console.log(e))
+        .then( res => this.setState({data:res.data} ))
+        .catch( e => console.log(e))
     }
 
-    handleEditProfil = () => this.setState({ redirect: true, redirectUrl: `/account/edit` })
+    handleEditProfil = () => this.setState({redirect:true,redirectUrl:`/account/edit`})
 
     handleFollow = () => {
-
-        const diikuti = parseInt(this.props.match.params.id, 10)
-        const pefollow = Cookies.get('access').user_id
-        let form = new FormData();
+        
+        const diikuti = parseInt(this.props.match.params.id,10)
+        const pefollow = parseJwt(Cookies.get('access')).user_id
+        let form = new FormData() ; 
         form.append('user', diikuti)
-        form.append('following_user', pefollow)
-
+        form.append('following_user',pefollow)
+        
         axios.post('http://127.0.0.1:8000/auth/following/',
-            form, {
-            headers: {
-                "Authorization": 'Bearer ' + Cookies.get('access')
+            form,{
+                headers:{
+                    "Authorization": 'Bearer ' + Cookies.get('access')
+                }
             }
-        }
         )
-            .then(res => res.data.id === undefined ? this.setState({ follow: 'follow' }) : this.setState({ follow: 'unfollow' }))
-            .catch(e => console.log(e))
+        .then( res => res.data.id === undefined ? this.setState({follow : 'follow'}) : this.setState({follow : 'unfollow'}))
+        .catch( e => console.log(e) )
 
     }
 
@@ -66,10 +58,10 @@ class Profile extends Component {
        
         if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />  
         
-        const authUser = Cookies.get('access').user_id
-        const idUser = parseInt(this.props.match.params.id, 10)
-        const { data } = this.state
-        const { follower, following, post_data } = data
+        const authUser = parseJwt(Cookies.get('access')).user_id
+        const idUser = parseInt(this.props.match.params.id,10)
+        const {data} = this.state
+        const {follower,following,post_data} = data
         return (
             <div className="container">
                 <div className="row header" >
@@ -83,10 +75,10 @@ class Profile extends Component {
                     </div>
                     <div>
                         <div style={{ display: "flex" }}>
-
+                            
                             <h5 style={{ fontWeight: "350" }}>{data.nickname}</h5>
-                            <p onClick={authUser === idUser ? this.handleEditProfil : this.handleFollow} className="btn_edit">{authUser === idUser ? ('edit profile') : (this.state.follow)}</p>
-
+                            <p onClick={authUser === idUser ? this.handleEditProfil : this.handleFollow} className="btn_edit">{authUser === idUser ? ('edit profile') : (this.state.follow)}</p> 
+                            
                         </div>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                             <h6 style={{ fontWeight: "300" }}>{data.post_count} Posts</h6>
@@ -107,26 +99,26 @@ class Profile extends Component {
                 </div>
                 <div className="posts">
                     <div className="posts_wrap">
-                        {post_data ? (post_data.map((item, index) => {
+                        {post_data ? (post_data.map( (item,index)=> {
                             return (
-                                <Content
-                                    key={index * 1000 * Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
-                                    id={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
-                                    contentType={item.content_type_id}
-                                    postId={item.id}
-                                    userId={item.user.id}
-                                    username={item.user.nickname}
-                                    captions={item.caption}
-                                    imageUrl={`http://127.0.0.1:8000${item.post}`}
-                                    avatar={item.user.profil}
-                                    like={item.likes}
-                                    comment={item.comments}
-                                    className="ci"
-
-                                />
+                            <Content 
+                                key={index * 1000 * Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
+                                id ={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
+                                contentType = {item.content_type_id}
+                                postId   = {item.id}
+                                userId   = {item.user.id}
+                                username = {item.user.nickname}
+                                captions = {item.caption}
+                                imageUrl = {`http://127.0.0.1:8000${item.post}`}
+                                avatar   = {item.user.profil}
+                                like     = {item.likes}
+                                comment    = {item.comments}
+                                className="ci"
+                                
+                            />
                             )
-                        }))
-                            : (null)}
+                        })) 
+                        : (null)}   
                         {/* {
                             contents.map(content => (
                                 <Posts
@@ -148,9 +140,9 @@ class Profile extends Component {
 //         {
 //             imageUrl: "https://lh3.googleusercontent.com/2Fz6Fn5zq_hh75oNLsyNqyGSHzPopHojN77Eu6GImw_3bb4JteONR_K8lnCY2nRbZQV9RD7ACVYvTHEEoW6oGt2GNkAVXzsGdHl1XI9JWwr9ojo3N7t5mYgqaux8lESdvi4mJTti4Ok=w2400"
 //         }
-
+       
 //     ]);
-
+    
 // }
 
 export default Profile
