@@ -77,7 +77,7 @@ export const resfeshLogin = async resfreshToken => {
 }
 
 export const requestLogin = async (accessToken ,refreshToken) => {
-    let change = 3
+    let change = 1
     // membuat promise agar bisa mengunakan resolve // seperti return ajax
     const promise = new Promise((resolve,reject) => {
         // mengunakan home page agar dapat mengetest token
@@ -91,9 +91,11 @@ export const requestLogin = async (accessToken ,refreshToken) => {
                 if(e.request.response === '{"detail":"Given token not valid for any token type","code":"token_not_valid","messages":[{"token_class":"AccessToken","token_type":"access","message":"Token is invalid or expired"}]}'){
                     if(change === 0) {resolve(false)}
                     else{
-                        change -= 1
-                        const token = resfeshLogin(refreshToken)
-                        return requestLogin(token.access,token.refresh) 
+                        // change -= 1
+                        // const token = resfeshLogin(refreshToken)
+                        
+                        resolve(false)
+                        // return requestLogin(token.access,token.refresh) 
                     }
                 }else{
                     // jika bukan kadaluarsa maka login ulang

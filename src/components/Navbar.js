@@ -3,7 +3,6 @@ import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
 function parseJwt(token) {
-    console.log(token)
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
@@ -15,8 +14,7 @@ function parseJwt(token) {
 
 function Navbar() {
 
-    
-    
+
    if(Cookies.get('access') === undefined) return <Redirect to='/login'/>
     const token = parseJwt(Cookies.get('access'))
 

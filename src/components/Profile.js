@@ -27,6 +27,8 @@ class Profile extends Component{
         
         if(!protectAuth()) this.setState({redirect:true,redirectUrl:'/login'})
         const id = this.props.match.params.id;
+        let follow = parseJwt(Cookies.get('access'))
+        console.log(follow)
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
         .then( res => this.setState({data:res.data} ))
         .catch( e => console.log(e))

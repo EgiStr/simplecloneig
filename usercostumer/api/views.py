@@ -1,11 +1,12 @@
 from usercostumer.models import UserProfil,UserFollowing
-from rest_framework.generics import CreateAPIView, DestroyAPIView,RetrieveAPIView,RetrieveUpdateAPIView
+from rest_framework.generics import CreateAPIView, DestroyAPIView,RetrieveAPIView,RetrieveUpdateAPIView,ListAPIView
 from rest_framework.permissions import IsAuthenticated,AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework.filters import  SearchFilter,OrderingFilter
 
-from .serializers import registeruser,UserProfilSerialzer,FollowingOrWerSerializer,UserEditProfil
+from .serializers import registeruser,UserProfilSerialzer,FollowingOrWerSerializer,UserEditProfil,UserProfilPostserializer
 
 from posts.api.permission import IsOwnerOrReadOnly
-
+from posts.api.pagination import LimitPaginationSearch
 from django.contrib.auth.models import User
 
 class RegisterUserApi(CreateAPIView):
@@ -19,6 +20,16 @@ class UserProfilApiView(RetrieveAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly] 
 
 
+class UserSearchApiView(ListAPIView):
+    serializer_class= UserProfilPostserializer
+    permission_classes =[IsAuthenticatedOrReadOnly]
+    pagination_class = LimitPaginationSearch
+    filter_backends = [SearchFilter,OrderingFilter]
+    search_fields = ['nickname']
+
+    def get_queryset(self):
+        qs = UserProfil.objects.all()
+        return qs
 class UserFollowingApiView(CreateAPIView):
     queryset = UserFollowing.objects.all()
     serializer_class = FollowingOrWerSerializer
@@ -34,3 +45,5 @@ class UserUnfollowApiView(DestroyAPIView):
 class UserEditProfil(RetrieveUpdateAPIView):
     queryset= UserProfil.objects.all()
     serializer_class = UserEditProfil
+    permission_classes=[IsOwnerOrReadOnly]
+

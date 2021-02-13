@@ -9,7 +9,7 @@ import Register from "./components/Register";
 import CreatePost from './components/createpost'
 import Logout from './components/logout'
 import AccountEdit from './components/accountEdit'
-
+import SearchUser from './components/searchUser'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
@@ -29,6 +29,7 @@ function App() {
         <Route path="/logout" component={Logout} />
         <Route path="/account/edit" component={AccountEdit} />
         <Route path="/register" component={Register} />
+        <Route path="/seacrh" component={SearchUser} />
       </Switch>
     </Router>
   );
