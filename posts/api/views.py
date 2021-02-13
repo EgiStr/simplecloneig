@@ -51,5 +51,5 @@ class CreatePostAPiView(CreateAPIView):
 class PostEditApiView(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = EditPostSerializer
-    permission_classes = [IsOwnerOrReadOnly,]
+
 
