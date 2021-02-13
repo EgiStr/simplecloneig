@@ -13,6 +13,7 @@ class Profile extends Component{
     constructor(props){
         super(props)
         this.state = {
+
             follow : 'follow',
             handle : null, 
             redirect : false,
@@ -21,7 +22,9 @@ class Profile extends Component{
         }
     }
 
-    componentDidMount(){ 
+    componentDidMount(){
+        
+        
         if(!protectAuth()) this.setState({redirect:true,redirectUrl:'/login'})
         const id = this.props.match.params.id;
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
