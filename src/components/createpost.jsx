@@ -126,10 +126,11 @@ class CreatePost extends Component {
     Confirmfoto = () => this.setState({urlMentah:null}) // membuat gambar crop jadi kosong 
     
 
-    handleCaption = (event) => this.setState({caption:event.target.value})
+    handleCaption = event => this.setState({caption:event.target.value})
     
 
     handleSubmit = () => {
+
         const {urlJadi,caption} = this.state
         const user = parseJwt(Cookies.get('access')).user_id
         let formData = new FormData()

@@ -22,7 +22,9 @@ class AccountEdit extends Component {
       phone: null,
       gender: "",
       profil: null,
+      profilpriview: null,
     };
+    this.avatarRef = React.createRef()
   }
 
   componentDidMount() {
@@ -30,24 +32,29 @@ class AccountEdit extends Component {
     if(!protectAuth(this.state.access,this.state.refresh)) this.setState({redirect:true,redirectUrl:'/login'})
     
     const userId = parseJwt(this.state.access).user_id;
-    
-    axios
-      .get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, {
-        headers: {
-          Authorization: "Bearer " + this.state.access,
-        },
-      })
-      .then((res) => {
-        this.setState({
-          username: res.data.nickname,
-          email: res.data.email,
-          phone: res.data.nomorHp,
-          gender: res.data.gender,
-          profil: res.data.profil,
-          bio: res.data.bio,
-        });
-      })
-      .catch((e) => console.log(e));
+    if(!this.state.access){
+
+      axios
+        .get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, {
+          headers: {
+            Authorization: "Bearer " + this.state.access,
+          },
+        })
+        .then((res) => {
+          this.setState({
+            username: res.data.nickname,
+            email: res.data.email,
+            phone: res.data.nomorHp,
+            gender: res.data.gender,
+            profil: res.data.profil,
+            profilpriview: res.data.profil,
+            bio: res.data.bio,
+          });
+        })
+        .catch((e) => console.log(e));
+      }else{
+      this.setState({redirect:true})        
+    }
     M.AutoInit();
   }
 
@@ -61,6 +68,16 @@ class AccountEdit extends Component {
     if (event.target.files[0].size > 2097152) {
       alert("this file to big low 2mb please");
     } else {
+      const image =event.target.files[0]
+
+      const reader = new FileReader()
+  
+          // menyimpan data ke url agar bisa di load di preview                
+      reader.addEventListener('load', () => {
+        this.setState({profilpriview:reader.result})
+      },false)
+          // membuat base64
+      reader.readAsDataURL(image)
       this.setState({ profil: event.target.files[0] });
     }
   };
@@ -86,15 +103,12 @@ class AccountEdit extends Component {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((res) => console.log(res))
-      .catch((e) => {
-        console.error(e);
-      });
+      .then( res => console.log(res))
+      .catch( e => console.error(e))
   };
 
   render() {
-    if (this.state.redirect)
-      return <Redirect to={this.state.redirectUrl}></Redirect>;
+    if (this.state.redirect) return <Redirect to={this.state.redirectUrl}></Redirect>
     const { username, email, phone, gender, bio } = this.state;
     return (
       <Fragment>
@@ -107,6 +121,8 @@ class AccountEdit extends Component {
             <div className="col s9">
               <div className="head_edit">
                 <Avatar
+                  ref={this.avatarRef}
+                  src={this.state.profilpriview}
                   className="avatar"
                   alt="foto"
                   style={{ width: "40px", height: "40px" }}
@@ -114,7 +130,7 @@ class AccountEdit extends Component {
                 <div>
                   <p>username</p>
                   <div>
-                    <label for="files">
+                    <label htmlFor="files">
                       Change Profile Photo
                     </label>
                     <input

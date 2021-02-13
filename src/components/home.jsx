@@ -27,7 +27,9 @@ class Home extends Component {
               "Authorization": 'Bearer ' + this.state.access
             }            
         })
-        .then(res => this.setState({data:res.data}))
+        .then(res => {this.setState({data:res.data})
+        console.log(res)
+      })
         .catch( e => {
             console.log(e.request)
             this.setState({redirect:true})
