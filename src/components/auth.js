@@ -1,4 +1,4 @@
-import React from 'react'
+import React  from 'react'
 
 import Cookies from 'js-cookie'
 import {Redirect} from 'react-router-dom'
@@ -18,11 +18,11 @@ export const LoginAuth = async (AccessToken , RefresToken) => {
     return {access:AccessToken,refresh:RefresToken}
 }
 
-export const protectAuth = async () => {
+export const protectAuth = async (access,refresh) => {
     // memanggil cookies
-    let accesToken = Cookies.get("access")
-    let refreshToken = Cookies.get('refresh')
-    
+    let accesToken = access
+    let refreshToken = refresh
+
     // mengecek apa token kadaluarsa atau tidak pernah login
     let AccessToken = await LoginAuth(accesToken,refreshToken)
     
@@ -41,7 +41,6 @@ export const protectAuth = async () => {
 }
 
 export const resfeshLogin = async resfreshToken => {
-
     console.log('refresh token')
     // membuat Promise karna tidak bisa memakai UseState
     return new Promise((resolve,reject) => {
@@ -77,11 +76,12 @@ export const resfeshLogin = async resfreshToken => {
 }
 
 export const requestLogin = async (accessToken ,refreshToken) => {
+    const token = accessToken
     let change = 1
     // membuat promise agar bisa mengunakan resolve // seperti return ajax
     const promise = new Promise((resolve,reject) => {
         // mengunakan home page agar dapat mengetest token
-        axios.get('http://127.0.0.1:8000/api/',{headers:{"Authorization": 'Bearer ' + accessToken}})
+        axios.get('http://127.0.0.1:8000/api/',{headers:{"Authorization": 'Bearer ' + token  }})
         // jika berhasil maka hasilnya true / dan user sudah auth
         .then(e => resolve(true))
         .catch( e => {
@@ -92,10 +92,13 @@ export const requestLogin = async (accessToken ,refreshToken) => {
                     if(change === 0) {resolve(false)}
                     else{
                         // change -= 1
-                        // const token = resfeshLogin(refreshToken)
-                        
+                        // const token = resfeshLogin(refresh)
+                        // console.log(token)
+                        // if(!token){
                         resolve(false)
-                        // return requestLogin(token.access,token.refresh) 
+                        // }else{
+                        //     return requestLogin(token.access,token.refresh) 
+                        // }
                     }
                 }else{
                     // jika bukan kadaluarsa maka login ulang
