@@ -4,7 +4,7 @@ import axios from "axios";
 import { parseJwt } from "./Navbar";
 import Cookies from "js-cookie";
 import { Redirect } from "react-router-dom";
-import {protectAuth} from './auth'
+import { protectAuth } from "./auth";
 import Avatar from "@material-ui/core/Avatar";
 import "../AccountEdit.css";
 
@@ -12,8 +12,8 @@ class AccountEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      access:Cookies.get('access'),
-      refresh:Cookies.get('refresh'),
+      access: Cookies.get("access"),
+      refresh: Cookies.get("refresh"),
       redirectUrl: "",
       redirect: false,
       bio: "",
@@ -24,37 +24,34 @@ class AccountEdit extends Component {
       profil: null,
       profilpriview: null,
     };
-    this.avatarRef = React.createRef()
+    this.avatarRef = React.createRef();
   }
 
   componentDidMount() {
-  
-    if(!protectAuth(this.state.access,this.state.refresh)) this.setState({redirect:true,redirectUrl:'/login'})
-    
-    const userId = parseJwt(this.state.access).user_id;
-    if(!this.state.access){
+    if (!protectAuth(this.state.access, this.state.refresh))
+      this.setState({ redirect: true, redirectUrl: "/login" });
 
-      axios
-        .get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, {
-          headers: {
-            Authorization: "Bearer " + this.state.access,
-          },
-        })
-        .then((res) => {
-          this.setState({
-            username: res.data.nickname,
-            email: res.data.email,
-            phone: res.data.nomorHp,
-            gender: res.data.gender,
-            profil: res.data.profil,
-            profilpriview: res.data.profil,
-            bio: res.data.bio,
-          });
-        })
-        .catch((e) => console.log(e));
-      }else{
-      this.setState({redirect:true})        
-    }
+    const userId = parseJwt(this.state.access).user_id;
+
+    axios
+      .get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, {
+        headers: {
+          Authorization: "Bearer " + this.state.access,
+        },
+      })
+      .then((res) => {
+        this.setState({
+          username: res.data.nickname,
+          email: res.data.email,
+          phone: res.data.nomorHp,
+          gender: res.data.gender,
+          profil: res.data.profil,
+          profilpriview: res.data.profil,
+          bio: res.data.bio,
+        });
+      })
+      .catch((e) => console.log(e));
+
     M.AutoInit();
   }
 
@@ -68,16 +65,20 @@ class AccountEdit extends Component {
     if (event.target.files[0].size > 2097152) {
       alert("this file to big low 2mb please");
     } else {
-      const image =event.target.files[0]
+      const image = event.target.files[0];
 
-      const reader = new FileReader()
-  
-          // menyimpan data ke url agar bisa di load di preview                
-      reader.addEventListener('load', () => {
-        this.setState({profilpriview:reader.result})
-      },false)
-          // membuat base64
-      reader.readAsDataURL(image)
+      const reader = new FileReader();
+
+      // menyimpan data ke url agar bisa di load di preview
+      reader.addEventListener(
+        "load",
+        () => {
+          this.setState({ profilpriview: reader.result });
+        },
+        false
+      );
+      // membuat base64
+      reader.readAsDataURL(image);
       this.setState({ profil: event.target.files[0] });
     }
   };
@@ -91,8 +92,8 @@ class AccountEdit extends Component {
     formdata.append("nickname", username);
     formdata.append("nomorHp", phone);
     formdata.append("email", email);
-    if (profil.size === undefined) {}
-    else {
+    if (profil.size === undefined) {
+    } else {
       formdata.append("profil", profil);
     }
 
@@ -103,12 +104,13 @@ class AccountEdit extends Component {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then( res => console.log(res))
-      .catch( e => console.error(e))
+      .then((res) => console.log(res))
+      .catch((e) => console.error(e));
   };
 
   render() {
-    if (this.state.redirect) return <Redirect to={this.state.redirectUrl}></Redirect>
+    if (this.state.redirect)
+      return <Redirect to={this.state.redirectUrl}></Redirect>;
     const { username, email, phone, gender, bio } = this.state;
     return (
       <Fragment>
@@ -119,91 +121,107 @@ class AccountEdit extends Component {
               <a className="nav_edit">Change Password</a>
             </div>
             <div className="col s9">
-              <div className="head_edit">
-                <Avatar
-                  ref={this.avatarRef}
-                  src={this.state.profilpriview}
-                  className="avatar"
-                  alt="foto"
-                  style={{ width: "40px", height: "40px" }}
-                />
-                <div>
-                  <p>username</p>
-                  <div>
-                    <label htmlFor="files">
-                      Change Profile Photo
-                    </label>
-                    <input
-                      onChange={this.handleProfil}
-                      type="file"
-                      style={{visibility:"hidden"}}
-                      accept={"image/*"}
-                      id="files"
-                    />
+              <div className="edit_body">
+                <div className="head_edit">
+                  <Avatar
+                    ref={this.avatarRef}
+                    src={this.state.profilpriview}
+                    className="avatar"
+                    alt="foto"
+                    style={{ width: "40px", height: "40px" }}
+                  />
+                  <div className="edit_right">
+                    <p>username</p>
+                    <div className="change_edit">
+                      <label htmlFor="files">Change Profile Photo</label>
+                      <input
+                        onChange={this.handleProfil}
+                        type="file"
+                        style={{ visibility: "hidden" }}
+                        accept={"image/*"}
+                        id="files"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  placeholder="username"
-                  id="username"
-                  onChange={this.handleUsername}
-                  value={username === null ? "" : username}
-                  type="text"
-                  className="validate"
-                />
-                <label htmlFor="username">UserName</label>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  placeholder="email"
-                  id="email"
-                  type="email"
-                  onChange={this.handleEmail}
-                  value={email === null ? "" : email}
-                  className="validate"
-                />
-                <label htmlFor="email">Email</label>
-              </div>
-              <div className="input-field col s12">
-                <textarea
-                  id="textarea1"
-                  className="materialize-textarea"
-                  onChange={this.handleBio}
-                  value={bio === null ? "" : bio}
-                  placeholder="Bio"
-                  ref={(node) => (this.textareRef = node)}
-                ></textarea>
-                <label htmlFor="textarea1">Bio</label>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  placeholder="Phone Number"
-                  id="Phone_Number"
-                  onChange={this.handlePhone}
-                  value={phone === null ? "" : phone}
-                  type="tel"
-                  className="validate"
-                />
-                <label htmlFor="Phone_Number">Phone Number</label>
-              </div>
-              <div className="input-field col s12">
-                <select
-                  onChange={this.handleGender}
-                  defaultValue={gender === "" ? "DEFAULT" : gender}
-                >
-                  <option value="DEFAULT" disabled>
-                    Choose a Your Gender
-                  </option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                </select>
-                <label>Gender Select</label>
-              </div>
-              <div className="file-field input-field col s12">
-                <button className="btn" onClick={this.handleSubmit}>
-                  send
-                </button>
+                <div className="form">
+                  <div className="input">
+                    <label htmlFor="username">Name</label>
+                    <input type="text" className="browser-default" />
+                  </div>
+                  <div className="input">
+                    <label htmlFor="username">Username</label>
+                    <input type="text" className="browser-default" />
+                  </div>
+                  <div className="input">
+                    <label htmlFor="username">Email</label>
+                    <input type="email" className="browser-default" />
+                  </div>
+                  <div className="input">
+                    <label htmlFor="username">Username</label>
+                    <input type="text" className="browser-default" />
+                  </div>
+                </div>
+
+                {/* <div className="input">
+                  <label htmlFor="username">UserName</label>
+                  <input
+                    placeholder="username"
+                    id="username"
+                    onChange={this.handleUsername}
+                    value={username === null ? "" : username}
+                    type="text"
+                  />
+                </div>
+                <div className="input">
+                  <input
+                    placeholder="email"
+                    id="email"
+                    type="email"
+                    onChange={this.handleEmail}
+                    value={email === null ? "" : email}
+                  />
+                  <label htmlFor="email">Email</label>
+                </div>
+                <div className="input">
+                  <textarea
+                    id="textarea1"
+                    onChange={this.handleBio}
+                    value={bio === null ? "" : bio}
+                    placeholder="Bio"
+                    type="textarea"
+                    ref={(node) => (this.textareRef = node)}
+                  ></textarea>
+                  <label htmlFor="textarea1">Bio</label>
+                </div>
+                <div className="input">
+                  <input
+                    placeholder="Phone Number"
+                    id="Phone_Number"
+                    onChange={this.handlePhone}
+                    value={phone === null ? "" : phone}
+                    type="tel"
+                  />
+                  <label htmlFor="Phone_Number">Phone Number</label>
+                </div>
+                <div className="input ">
+                  <select
+                    onChange={this.handleGender}
+                    defaultValue={gender === "" ? "DEFAULT" : gender}
+                  >
+                    <option value="DEFAULT" disabled>
+                      Choose a Your Gender
+                    </option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                  <label>Gender Select</label>
+                </div>
+                <div className="input">
+                  <button className="btn" onClick={this.handleSubmit}>
+                    send
+                  </button>
+                </div> */}
               </div>
             </div>
           </div>

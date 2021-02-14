@@ -2,25 +2,61 @@
   border: 1px solid #dbdbdb;
   margin-top: 30px;
 }
-
 .col.s3 {
   display: flex;
   flex-direction: column;
 }
 .nav_edit {
-  margin-top:10px;
+  margin-top: 10px;
   padding: 15px;
   color: #262626;
 }
-.nav_edit:hover{
-    background: #dbdbdb;
-    border-radius:10px;
+.nav_edit:hover {
+  background: #dbdbdb;
+  border-radius: 10px;
 }
 .col.s9 {
   border-left: 1px solid #dbdbdb;
 }
-.head_edit{
+.edit_body {
+  padding: 20px !important;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items:center;
+}
+.head_edit{
+  display:flex;
+  align-items:center;
+}
+.edit_right p {
+  font-size: 1.3rem;
+  margin-bottom: -10px;
+}
+.edit_right .change_edit label {
+  color: #1ca1f7;
+  cursor: pointer !important;
+  font-size: 0.9rem;
+}
+.edit_right .change_edit {
+  margin-bottom: 20px !important;
+}
+.browser-default{
+  display: table-cell;
+  width:400px;
+  height:30px;
+}
+.form{
+  display:table;
+}
+.input{
+  margin:10px;
+  display:table-row
+}
+.input label {
+  display:table-cell;
+  font-size:1.1rem;
+  color:#262626;
+  font-weight: 500;
+  margin-right:20px;
+  direction: rtl;
 }

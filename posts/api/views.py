@@ -2,7 +2,6 @@ from rest_framework.mixins import DestroyModelMixin
 from rest_framework.generics import DestroyAPIView, ListAPIView,RetrieveAPIView,RetrieveUpdateDestroyAPIView,CreateAPIView,RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from posts.api.permission import IsOwnerOrReadOnly
 from posts.models import Post,Like
 
 from usercostumer.models import UserProfil
