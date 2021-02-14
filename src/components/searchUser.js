@@ -11,11 +11,11 @@ export const SearchUser = () => {
     useEffect(() => {
         axios.get(`http://127.0.0.1:8000/auth/search/?search=${search}`)
         .then(res => {
-            setData(res.data)
+            setData(res.data.results)
         })
         .catch(e => console.log(e))
     },[search])
-
+    
     const redirect = (id) => history.push(`/profile/${id}`)
     return (
         <div>  
@@ -23,7 +23,7 @@ export const SearchUser = () => {
             <input onChange={(event)=>{setSearch(event.target.value)}}></input>        
 
              <ul className="collection">
-
+            {console.log(data)}
             {data.length > 0 ? data.map((item) => {
                 return (<li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} onClick={() => {redirect(item.id)}} className="collection-item avatar">                                       
                 <img loading='lazy' src={item.profil} className="circle" alt="...."/>

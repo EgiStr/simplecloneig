@@ -23,9 +23,9 @@ function Navbar() {
     const jwt = parseJwt(token)
 
     document.addEventListener('DOMContentLoaded', function () {
-            const M = window.M;
-            var elems = document.querySelectorAll('.dropdown-trigger');
-            M.Dropdown.init(elems, {});
+        const M = window.M;
+        var elems = document.querySelectorAll('.dropdown-trigger');
+        M.Dropdown.init(elems, {});
     });
 
     return (
