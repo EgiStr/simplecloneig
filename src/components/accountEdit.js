@@ -144,23 +144,21 @@ class AccountEdit extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="form">
-                  <div className="input">
-                    <label htmlFor="username">Name</label>
-                    <input type="text" className="browser-default" />
-                  </div>
-                  <div className="input">
-                    <label htmlFor="username">Username</label>
-                    <input type="text" className="browser-default" />
-                  </div>
-                  <div className="input">
-                    <label htmlFor="username">Email</label>
-                    <input type="email" className="browser-default" />
-                  </div>
-                  <div className="input">
-                    <label htmlFor="username">Username</label>
-                    <input type="text" className="browser-default" />
-                  </div>
+                <div className="input">
+                  <label htmlFor="username">Name</label>
+                  <input type="text" className="browser-default" />
+                </div>
+                <div className="input">
+                  <label htmlFor="username">Username</label>
+                  <input type="text" className="browser-default" />
+                </div>
+                <div className="input">
+                  <label htmlFor="username">Email</label>
+                  <input type="email" className="browser-default" />
+                </div>
+                <div className="input">
+                  <label htmlFor="username">Username</label>
+                  <input type="text" className="browser-default" />
                 </div>
 
                 {/* <div className="input">

@@ -17,13 +17,11 @@
 }
 .col.s9 {
   border-left: 1px solid #dbdbdb;
-}
-.edit_body {
-  padding: 20px !important;
   display: flex;
   flex-direction: column;
   align-items:center;
 }
+
 .head_edit{
   display:flex;
   align-items:center;
@@ -39,11 +37,13 @@
 }
 .edit_right .change_edit {
   margin-bottom: 20px !important;
+  margin-left: 35px;
 }
 .browser-default{
   display: table-cell;
   width:400px;
   height:30px;
+  margin-left: 40px;
 }
 .form{
   display:table;

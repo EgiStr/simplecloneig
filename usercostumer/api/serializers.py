@@ -94,6 +94,16 @@ class UserProfilPostserializer(ModelSerializer):
             'nickname',
             'profil',
         ]
+class ChangePasswordSerializer(serializers.Serializer):
+    model = User
+
+    """
+    Serializer for password change endpoint.
+    """
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True, validators=[validate_password])
+    new_password2 = serializers.CharField(write_only=True,required=True)
+    
 
 class UserProfilSerialzer(ModelSerializer):
     following = SerializerMethodField()
@@ -178,6 +188,7 @@ class registeruser(ModelSerializer):
                 UniqueValidator(queryset=User.objects.all())
                 ]
     )
+
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
 

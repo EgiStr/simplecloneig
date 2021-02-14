@@ -22,6 +22,11 @@ export const home = () => {
   const [redirect,setRedirect] = useState(false)
   const [page,setPage] = useState(1)
   const [data,hasMore,loading] = FecthData(page,access)
+
+  useEffect(() => {
+      
+      protectAuth(access,refresh).then(e => !e ? setRedirect(true) : setRedirect(false))    
+  },[])
   
   const observer = useRef(null)
  
@@ -34,12 +39,6 @@ export const home = () => {
       })
     if (node) observer.current.observe(node)
   }, [loading,hasMore])
-
-
-
-  useEffect(() => {
-    protectAuth(access,refresh).then(e => !e ? setRedirect(true) : setRedirect(false))    
-  },[])
   
   if(redirect) return <Redirect to='/login'/>
   

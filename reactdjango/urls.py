@@ -18,6 +18,7 @@ from django.urls import path,include
 
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.views import PasswordChangeView
 
 urlpatterns =[
   path('admin/',admin.site.urls),
@@ -25,6 +26,7 @@ urlpatterns =[
   path("api/", include(('posts.api.urls','posts.api'),namespace='api-post')),
   path("auth/", include(('usercostumer.api.urls','usercostumer.api'),namespace='auth')),
   path("comment/", include(('comment.api.urls', 'comment.api'),namespace='comment')),
+
 ]
 
 
