@@ -7,11 +7,9 @@ import Cookies from 'js-cookie'
 import FecthData from './fetchData'
 
 
+import axios from 'axios'
 
-
-
-
-
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 
 export const home = () => {
@@ -24,10 +22,11 @@ export const home = () => {
   const [data,hasMore,loading] = FecthData(page,access)
 
   useEffect(() => {
-      
-      protectAuth(access,refresh).then(e => !e ? setRedirect(true) : setRedirect(false))    
+      // window.location.reload()
+      protectAuth(access,refresh).then(e => e ? '' : window.location.reload() )    
   },[])
   
+
   const observer = useRef(null)
  
   const lastBookElementRef = useCallback ( node => {   
@@ -76,6 +75,7 @@ export const home = () => {
                                   key        = {i}
                                               // membuat uniq key untuk modal
                                   id         = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
+                                  token      = {access}
                                   contentType= {item.content_type_id}
                                   postId     = {item.id}
                                   userId     = {item.user.id}
