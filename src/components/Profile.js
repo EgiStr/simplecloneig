@@ -24,7 +24,7 @@ class Profile extends Component{
     }
 
     componentDidMount(){
-    
+        
         const id = this.props.match.params.id;
         if(!protectAuth(this.state.access,this.state.refresh)) this.setState({redirect:true,redirectUrl:'/login'})
         
