@@ -20,8 +20,10 @@ export const LoginAuth = async (AccessToken , RefresToken) => {
 
 export const protectAuth = async (access,refresh) => {
     // memanggil cookies
-    let accesToken = access
-    let refreshToken = refresh
+    
+    
+    const accesToken = access
+    const refreshToken = refresh
 
     // mengecek apa token kadaluarsa atau tidak pernah login
     let AccessToken = await LoginAuth(accesToken,refreshToken)
@@ -31,33 +33,37 @@ export const protectAuth = async (access,refresh) => {
         return <Redirect to="/login" />
     }else{
         // jika pernah login maka akan mengambil pecahan dan di refresh
-        let accessToken = AccessToken.access
-        let refreshToken = AccessToken.refresh
+        const accessToken2 = AccessToken.access
+        const refreshToken2 = AccessToken.refresh
 
         // mengetest apa token valid atau ga jika valid maka bernilai true jika tidak false
-        return await requestLogin(accessToken,refreshToken)
+        return await requestLogin(accessToken2,refreshToken2)
         
     }
 }
 
 export const resfeshLogin = async resfreshToken => {
-    console.log('refresh token')
+    
+    console.log(resfreshToken)
+    if(!resfreshToken){
+        return false
+    }
     // membuat Promise karna tidak bisa memakai UseState
     return new Promise((resolve,reject) => {
         // membuat post request untuk membuat token baru mengunakan resfresh token
         axios.post('http://127.0.0.1:8000/auth/login/refresh/',{refresh:resfreshToken})
         .then( res => {
             // jika gagal maka false / null
-            if(res.statusText !== "OK"){
+            if(res.statusText === "OK"){
                 // memakai resolve karna ini adalah promise
-                resolve(false)
-            }else{
-                // jika valid dan berhasil maka akan membuat cookies baru
                 const {access,refresh} = res.data
                 Cookies.set('access',access)
                 Cookies.set('refresh',refresh)
                 // mengirim access dan refresh
                 resolve(res.data)
+            }else{
+                // jika valid dan berhasil maka akan membuat cookies baru
+                resolve(false)
             }
             // gagal berarti salah dan terpaksa login ulang
         }).catch(e => resolve(false))
@@ -76,8 +82,10 @@ export const resfeshLogin = async resfreshToken => {
 }
 
 export const requestLogin = async (accessToken ,refreshToken) => {
+    
     const token = accessToken
-    let change = 1
+    const refresh = refreshToken
+    
     // membuat promise agar bisa mengunakan resolve // seperti return ajax
     const promise = new Promise((resolve,reject) => {
         // mengunakan home page agar dapat mengetest token
@@ -89,17 +97,22 @@ export const requestLogin = async (accessToken ,refreshToken) => {
             if(e.request.status === 401){
                 // kalau emang kadaluarsa maka akan refresh dan test ulang
                 if(e.request.response === '{"detail":"Given token not valid for any token type","code":"token_not_valid","messages":[{"token_class":"AccessToken","token_type":"access","message":"Token is invalid or expired"}]}'){
-                    if(change === 0) {resolve(false)}
-                    else{
-                        // change -= 1
-                        // const token = resfeshLogin(refresh)
-                        // console.log(token)
-                        // if(!token){
-                        resolve(false)
-                        // }else{
-                        //     return requestLogin(token.access,token.refresh) 
-                        // }
-                    }
+  
+                    
+    
+                        const token = resfeshLogin(refresh)
+                        token.then(e => {
+                            if(!e){
+                                resolve(false)
+                            }else{
+                                console.log(e.access,e.refresh)
+                                return requestLogin(e.access,e.refresh) 
+                            }
+                        })
+                        
+                        
+                    
+                    
                 }else{
                     // jika bukan kadaluarsa maka login ulang
                     resolve(false)

@@ -9,12 +9,17 @@ import Cookies from 'js-cookie'
 import {protectAuth} from './auth'
 import '../Profile.css'
 
+
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
+
 class Profile extends Component{
     constructor(props){
         super(props)
         this.state = {
             access: Cookies.get('access'),
             refresh: Cookies.get('refresh'),
+            follower:[],
+            following:[],
             follow : 'follow',
             handle : null, 
             redirect : false,
@@ -26,23 +31,34 @@ class Profile extends Component{
     componentDidMount(){
         
         const id = this.props.match.params.id;
-        if(!protectAuth(this.state.access,this.state.refresh)) this.setState({redirect:true,redirectUrl:'/login'})
+        protectAuth(this.state.access,this.state.refresh).then(e => !e ? window.location.reload(): this.setState({redirect:false}))
         
         if(this.state.access !== undefined){
+            // axios.get(`http://127.0.0.1:8000/auth/follower/${id}/`,{headers:{
+            //     "Authorization": 'Bearer ' + this.state.access
+            // }})
+            // .then( res => this.setState({follower:res.data}))
+            // .catch(e => console.log(e.request))
+            
+            // axios.get(`http://127.0.0.1:8000/auth/following/${id}/`,{headers:{
+            //     "Authorization": 'Bearer ' + this.state.access
+            // }})
+            // .then( res => this.setState({following:res.data}))
+            // .catch(e => console.log(e.request))
+
             axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
             .then( res => this.setState({data:res.data}))
             .catch( e => console.log(e))
         }
-        let follow = parseJwt(Cookies.get('access'))
-        console.log(follow)
+       
     }
 
-    handleEditProfil = () => this.setState({redirect:true,redirectUrl:`/account/edit`})
+    handleEditProfil = () => this.setState({redirect:true,redirectUrl:'/account/edit'})
 
     handleFollow = () => {
         
         const diikuti = parseInt(this.props.match.params.id,10)
-        const pefollow = parseJwt(Cookies.get('access')).user_id
+        const pefollow = parseJwt(this.state.access).user_id
         
         let form = new FormData() ; 
         form.append('user', diikuti)
@@ -62,14 +78,16 @@ class Profile extends Component{
 
     render(){
 
-       
+    
+    
         if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />  
         
         const authUser = parseJwt(this.state.access).user_id
         const idUser = parseInt(this.props.match.params.id,10)
         const data = this.state.data
-
+        
         const {follower,following,post_data} = data
+    
         return (
             <div className="container">
                 <div className="row header" >

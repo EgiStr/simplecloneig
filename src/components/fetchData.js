@@ -1,7 +1,5 @@
 import {useEffect, useState} from 'react'
 import axios from 'axios'
-import { set } from 'js-cookie'
-
 
 export default function FecthData(page,access) {
 
@@ -25,7 +23,7 @@ export default function FecthData(page,access) {
             setLoading(false)
             setHasMore(res.data.next === null )
             setData(prev => [...prev].concat(res.data.results))
-            console.log(res.data.next !== null)
+            
         })
         .catch(e => setHasMore(false))
     },[page])
