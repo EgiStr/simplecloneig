@@ -6,7 +6,15 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from reactdjango.views import MyObtainTokenPairView
 
 
-from .views import RegisterUserApi,UserProfilApiView,UserFollowingApiView,UserUnfollowApiView,UserEditProfil,UserSearchApiView,ChangePasswordApiView
+from .views import (RegisterUserApi,
+                    UserProfilApiView,
+                    UserFollowingApiView,
+                    UserUnfollowApiView,
+                    UserEditProfil,
+                    UserSearchApiView,
+                    ChangePasswordApiView,
+                    DetailUserFollowingApiView,
+                    DetailUserFollowerApiView,)
 
 urlpatterns = [
     path("login/", MyObtainTokenPairView.as_view(), name="login"),
@@ -15,6 +23,8 @@ urlpatterns = [
     path("search/",UserSearchApiView.as_view(),name="filter"),
     path("profil/<int:pk>/", UserProfilApiView.as_view(), name="profil"),
     path("following/", UserFollowingApiView.as_view(), name="following"),
+    path("following/<int:pk>/", DetailUserFollowingApiView.as_view(), name="following-detail"),
+    path("follower/<int:pk>/", DetailUserFollowerApiView.as_view(), name="follower-detail"),
     path('unfollow/<int:pk>/',UserUnfollowApiView.as_view(),name='unfollow'),
     path("profil/<int:pk>/edit/", UserEditProfil.as_view(), name="editProfil"),
     path("password/change/", ChangePasswordApiView.as_view(),name="passwordChange"),

@@ -52,13 +52,10 @@ class PostProfilSerializer(ModelSerializer):
 
 
 class FollowingSerializer(ModelSerializer):
-    unfollow = HyperlinkedIdentityField(
-        view_name='auth:unfollow',
-    )
     user = SerializerMethodField()
     class Meta:
         model = UserFollowing
-        fields = ("unfollow","id", "user", "created")
+        fields = ("id", "user", "created")
     
     def get_user(self,obj):
         return obj.user.nickname
