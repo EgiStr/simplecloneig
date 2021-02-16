@@ -114,116 +114,103 @@ class AccountEdit extends Component {
     const { username, email, phone, gender, bio } = this.state;
     return (
       <Fragment>
-        <div className="container">
-          <div className="row box_edit">
-            <div className="col s3">
-              <a className="nav_edit">Edit Profile</a>
-              <a className="nav_edit">Change Password</a>
-            </div>
-            <div className="col s9">
-              <div className="edit_body">
-                <div className="head_edit">
-                  <Avatar
-                    ref={this.avatarRef}
-                    src={this.state.profilpriview}
-                    className="avatar"
-                    alt="foto"
-                    style={{ width: "40px", height: "40px" }}
-                  />
-                  <div className="edit_right">
-                    <p>username</p>
-                    <div className="change_edit">
-                      <label htmlFor="files">Change Profile Photo</label>
-                      <input
-                        onChange={this.handleProfil}
-                        type="file"
-                        style={{ visibility: "hidden" }}
-                        accept={"image/*"}
-                        id="files"
-                      />
-                    </div>
+          <div className="col s9">
+            <div className="container" style={{paddingTop:"20px"}}>
+              <div className="head_edit">
+                <Avatar
+                  ref={this.avatarRef}
+                  src={this.state.profilpriview}
+                  className="avatar"
+                  alt="foto"
+                />
+                <div className="edit_right">
+                  <p>username</p>
+                  <div className="change_edit">
+                    <label htmlFor="files">Change Profile Photo</label>
+                    <input
+                      onChange={this.handleProfil}
+                      type="file"
+                      style={{ visibility: "hidden" }}
+                      accept={"image/*"}
+                      id="files"
+                    />
                   </div>
                 </div>
-                <div className="input">
-                  <label htmlFor="username">Name</label>
-                  <input type="text" className="browser-default" />
-                </div>
-                <div className="input">
-                  <label htmlFor="username">Username</label>
-                  <input type="text" className="browser-default" />
-                </div>
-                <div className="input">
-                  <label htmlFor="username">Email</label>
-                  <input type="email" className="browser-default" />
-                </div>
-                <div className="input">
-                  <label htmlFor="username">Username</label>
-                  <input type="text" className="browser-default" />
-                </div>
-
-                {/* <div className="input">
-                  <label htmlFor="username">UserName</label>
-                  <input
-                    placeholder="username"
-                    id="username"
-                    onChange={this.handleUsername}
-                    value={username === null ? "" : username}
-                    type="text"
-                  />
-                </div>
-                <div className="input">
-                  <input
-                    placeholder="email"
-                    id="email"
-                    type="email"
-                    onChange={this.handleEmail}
-                    value={email === null ? "" : email}
-                  />
-                  <label htmlFor="email">Email</label>
-                </div>
-                <div className="input">
-                  <textarea
-                    id="textarea1"
-                    onChange={this.handleBio}
-                    value={bio === null ? "" : bio}
-                    placeholder="Bio"
-                    type="textarea"
-                    ref={(node) => (this.textareRef = node)}
-                  ></textarea>
-                  <label htmlFor="textarea1">Bio</label>
-                </div>
-                <div className="input">
-                  <input
-                    placeholder="Phone Number"
-                    id="Phone_Number"
-                    onChange={this.handlePhone}
-                    value={phone === null ? "" : phone}
-                    type="tel"
-                  />
-                  <label htmlFor="Phone_Number">Phone Number</label>
-                </div>
-                <div className="input ">
-                  <select
-                    onChange={this.handleGender}
-                    defaultValue={gender === "" ? "DEFAULT" : gender}
-                  >
-                    <option value="DEFAULT" disabled>
-                      Choose a Your Gender
+              </div>
+              <div className="input">
+                <label>Name</label>
+                <input
+                  placeholder="Name"
+                  type="text"
+                  className="browser-default fr" />
+              </div>
+              <div className="input">
+                <label>Username</label>
+                <input
+                  type="text"
+                  className="browser-default fr"
+                  placeholder="Username"
+                  id="username"
+                  onChange={this.handleUsername}
+                  value={username === null ? "" : username}
+                />
+              </div>
+              <div className="input">
+                <label>Bio</label>
+                <textarea
+                  onChange={this.handleBio}
+                  value={bio === null ? "" : bio}
+                  placeholder="Bio"
+                  type="textarea"
+                  ref={(node) => (this.textareRef = node)}
+                  className="browser-default fr"
+                />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", color: "#bfbfbf", width: "355px", fontSize: "0.7rem", margin: "40px 0 20px 70px" }}>
+                <b>Personal Information</b>
+                <p>Provide your personal information, even if the account is used for a business, a pet or something else. This won't be a part of your public profile.</p>
+              </div>
+              <div className="input">
+                <label>Email</label>
+                <input
+                  placeholder="Email"
+                  onChange={this.handleEmail}
+                  value={email === null ? "" : email}
+                  type="email"
+                  className="browser-default fr"
+                />
+              </div>
+              <div className="input">
+                <label>Phone</label>
+                <input
+                  placeholder="Phone Number"
+                  onChange={this.handlePhone}
+                  value={phone === null ? "" : phone}
+                  type="tel"
+                  className="browser-default fr"
+                />
+              </div>
+              <div className="input ">
+                <label>Gender</label>
+                <select
+                  onChange={this.handleGender}
+                  defaultValue={gender === "" ? "DEFAULT" : gender}
+                  className="browser-default fr"
+                >
+                  <option value="DEFAULT" disabled>
+                    Choose a Your Gender
                     </option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
-                  <label>Gender Select</label>
-                </div>
-                <div className="input">
-                  <button className="btn" onClick={this.handleSubmit}>
-                    send
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+              <div className="input">
+                <button className="btn" onClick={this.handleSubmit}>
+                  send
                   </button>
-                </div> */}
               </div>
             </div>
           </div>
-        </div>
       </Fragment>
     );
   }

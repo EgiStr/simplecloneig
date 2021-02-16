@@ -8,9 +8,9 @@ import Home from "./components/home";
 import Register from "./components/Register";
 import CreatePost from './components/createpost'
 import Logout from './components/logout'
-import AccountEdit from './components/accountEdit'
 import SearchUser from './components/searchUser'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import editProfile from "./components/editProfile";
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
         <Route path="/create" component={CreatePost} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
-        <Route path="/account/edit" component={AccountEdit} />
+        <Route path="/account" component={editProfile} />
         <Route path="/register" component={Register} />
         <Route path="/seacrh" component={SearchUser} />
       </Switch>
