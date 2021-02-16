@@ -20,6 +20,9 @@
   background: #dbdbdb;
   border-radius: 10px;
 }
+.nav_edit:visited{
+  background: #dbdbdb;
+}
 
 .col.s9 {
   border-left: 1px solid #dbdbdb;
@@ -27,14 +30,13 @@
 
 .head_edit {
   display: flex;
-  align-items: center;
   flex-grow: 1;
 }
 
 .edit_right p {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin-bottom: 0;
-  margin-left: 15px;
+  margin-left: 30px;
 }
 
 .edit_right .change_edit label {
@@ -45,7 +47,7 @@
 
 .edit_right .change_edit {
   margin-bottom: 20px !important;
-  margin-left: 15px;
+  margin-left: 30px;
 }
 
 .fr {
@@ -62,12 +64,12 @@
 .input {
   display: flex;
   justify-content: flex-end;
-  margin:10px 60px;
+  margin:10px 35px;
   
 }
 
 .input label {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #262626;
   font-weight: 500;
   text-align: right;

@@ -5,11 +5,10 @@ import '../Password.css'
 
 function changePassword() {
     return (
-        <div className="col s9">
+        <div className="col s9" style={{padding:"40px"}}>
             <Container>
                 <div className="head_edit">
                     <Avatar
-                        className="avatar"
                         alt="foto"
                     />
                     <div className="edit_right">
@@ -36,6 +35,10 @@ function changePassword() {
                         type="password"
                         className="browser-default rf"
                     />
+                </div>
+                <div className="input-password">
+                    <a>Forgot Password?</a>
+                    <button className="btn btn-primary">change Password</button>
                 </div>
             </Container>
         </div>
