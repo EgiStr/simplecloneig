@@ -18,4 +18,4 @@ function editProfile() {
     )
 }
 
-export default editProfile
+export default editProfile;

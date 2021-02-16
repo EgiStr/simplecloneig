@@ -7,12 +7,12 @@ function changePassword() {
     return (
         <div className="col s9" style={{padding:"40px"}}>
             <Container>
-                <div className="head_edit">
+                <div className="head_edit" style={{padding:"20px"}}>
                     <Avatar
                         alt="foto"
                     />
-                    <div className="edit_right">
-                        <p>username</p>
+                    <div className="edit_right" >
+                        <p style={{marginTop:"5px"}}>username</p>
                     </div>
                 </div>
                 <div className="input-password">
@@ -45,4 +45,4 @@ function changePassword() {
     )
 }
 
-export default changePassword
+export default changePassword;
