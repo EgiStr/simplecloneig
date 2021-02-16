@@ -1,0 +1,14 @@
+.caption{
+    background: #f0f2f5;
+    color:#65676b;
+}
+.caption:hover{
+    background: #dbdbdb;
+}
+.imageVid:hover{
+    background: #f0f2f5;
+}
+.imageVid{
+    padding:8px;
+    border-radius:50px;
+}
