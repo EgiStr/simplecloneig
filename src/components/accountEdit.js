@@ -3,10 +3,13 @@ import M from "materialize-css/dist/js/materialize.min.js";
 import axios from "axios";
 import { parseJwt } from "./Navbar";
 import Cookies from "js-cookie";
-import { Redirect } from "react-router-dom";
+
 import { protectAuth } from "./auth";
 import Avatar from "@material-ui/core/Avatar";
 import "../AccountEdit.css";
+
+
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 class AccountEdit extends Component {
   constructor(props) {
@@ -28,8 +31,9 @@ class AccountEdit extends Component {
   }
 
   componentDidMount() {
-    if (!protectAuth(this.state.access, this.state.refresh))
-      this.setState({ redirect: true, redirectUrl: "/login" });
+    console.log(this.state.access)
+    protectAuth(this.state.access,this.state.refresh).then(e => !e ? window.location.reload() : null )
+      
 
     const userId = parseJwt(this.state.access).user_id;
 
@@ -109,8 +113,6 @@ class AccountEdit extends Component {
   };
 
   render() {
-    if (this.state.redirect)
-      return <Redirect to={this.state.redirectUrl}></Redirect>;
     const { username, email, phone, gender, bio } = this.state;
     return (
       <Fragment>

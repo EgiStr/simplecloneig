@@ -5,6 +5,8 @@ import axios from 'axios'
 import {parseJwt} from './Navbar';
 import Cookies from 'js-cookie'
 
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
+
 class Modal extends Component {
     
     constructor(props){
@@ -52,7 +54,7 @@ class Modal extends Component {
         let {contentType,obj_id} = this.props
         let content = this.state.comment
         const user = parseJwt(Cookies.get('access')).user_id
-        console.log(Cookies.get('access'))
+      
         if(content !== ''){
             axios({
                 method:'POST',

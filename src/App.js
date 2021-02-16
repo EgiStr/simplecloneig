@@ -12,6 +12,7 @@ import SearchUser from './components/searchUser'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import editProfile from "./components/editProfile";
 
+
 function App() {
   return (
     <Router>
@@ -29,7 +30,7 @@ function App() {
         <Route path="/logout" component={Logout} />
         <Route path="/account" component={editProfile} />
         <Route path="/register" component={Register} />
-        <Route path="/seacrh" component={SearchUser} />
+        <Route path="/search" component={SearchUser} />
       </Switch>
     </Router>
   );
