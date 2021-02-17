@@ -117,28 +117,101 @@ class AccountEdit extends Component {
     const { username, email, phone, gender, bio } = this.state;
     return (
       <Fragment>
-        <div className="col s9">
-          <div className="container" style={{ paddingTop: "20px" }}>
-            <div className="head_edit">
-              <Avatar
-                ref={this.avatarRef}
-                src={this.state.profilpriview}
-                className="avatar"
-                alt="foto"
-                style={{ marginTop: "27px" }}
-              />
-              <div className="edit_right">
-                <p>{username}</p>
-                <div className="change_edit">
-                  <label htmlFor="files">Change Profile Photo</label>
-                  <input
-                    onChange={this.handleProfil}
-                    type="file"
-                    style={{ visibility: "hidden" }}
-                    accept={"image/*"}
-                    id="files"
-                  />
+          <div className="col s9">
+            <div className="container" style={{paddingTop:"20px"}}>
+              <div className="head_edit">
+                <Avatar
+                  ref={this.avatarRef}
+                  src={this.state.profilpriview}
+                  className="avatar"
+                  alt="foto"
+                  style={{marginTop:"27px"}}
+                />
+                <div className="edit_right">
+                  <p>{username}</p>
+                  <div className="change_edit">
+                    <label htmlFor="files">Change Profile Photo</label>
+                    <input
+                      onChange={this.handleProfil}
+                      type="file"
+                      style={{ visibility: "hidden" }}
+                      accept={"image/*"}
+                      id="files"
+                    />
+                  </div>
                 </div>
+              </div>
+              <div className="input">
+                <label>Name</label>
+                <input
+                  placeholder="Name"
+                  type="text"
+                  className="browser-default fr" />
+              </div>
+              <div className="input">
+                <label>Username</label>
+                <input
+                  type="text"
+                  className="browser-default fr"
+                  placeholder="Username"
+                  id="username"
+                  onChange={this.handleUsername}
+                  value={username === null ? "" : username}
+                />
+              </div>
+              <div className="input">
+                <label>Bio</label>
+                <textarea
+                  onChange={this.handleBio}
+                  value={bio === null ? "" : bio}
+                  placeholder="Bio"
+                  type="textarea"
+                  ref={(node) => (this.textareRef = node)}
+                  className="browser-default fr"
+                />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", color: "#bfbfbf", width: "355px", fontSize: "0.7rem", padding: "40px 0 20px 70px" }}>
+                <b>Personal Information</b>
+                <p>Provide your personal information, even if the account is used for a business, a pet or something else. This won't be a part of your public profile.</p>
+              </div>
+              <div className="input">
+                <label>Email</label>
+                <input
+                  placeholder="Email"
+                  onChange={this.handleEmail}
+                  value={email === null ? "" : email}
+                  type="email"
+                  className="browser-default fr"
+                />
+              </div>
+              <div className="input">
+                <label>Phone</label>
+                <input
+                  placeholder="Phone Number"
+                  onChange={this.handlePhone}
+                  value={phone === null ? "" : phone}
+                  type="tel"
+                  className="browser-default fr"
+                />
+              </div>
+              <div className="input ">
+                <label>Gender</label>
+                <select
+                  onChange={this.handleGender}
+                  defaultValue={gender === "" ? "DEFAULT" : gender}
+                  className="browser-default fr"
+                >
+                  <option value="DEFAULT" disabled>
+                    Choose a Your Gender
+                    </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+              <div className="input">
+                <button className="btn" onClick={this.handleSubmit}>
+                  send
+                  </button>
               </div>
             </div>
             <div className="input">
@@ -228,7 +301,6 @@ class AccountEdit extends Component {
               </button>
             </div>
           </div>
-        </div>
       </Fragment>
     );
   }

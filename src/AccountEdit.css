@@ -30,6 +30,7 @@
 
 .head_edit {
   display: flex;
+  flex-grow: 1;
 }
 
 .edit_right p {
