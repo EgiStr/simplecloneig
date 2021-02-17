@@ -1,17 +1,17 @@
 import React from "react";
 // import Content from './components/content'
-import {Navbar} from "./components/Navbar";
-import Message from "./components/Message";
-import Profile from "./components/Profile";
-import Login from "./components/login";
-import Home from "./components/home";
-import Register from "./components/Register";
-import CreatePost from './components/createpost'
-import Logout from './components/logout'
-import editProfile from './components/editProfile'
-import SearchUser from './components/searchUser'
+import {Navbar} from "./components/navbar/Navbar";
+import Message from "./massage/Message";
+import Profile from "./components/profil/Profile";
+import Login from "./components/auth/login";
+import Home from "./components/home/home";
+import Register from "./components/auth/Register";
+import CreatePost from './components/createpost/createpost'
+import Logout from './components/auth/logout'
+import editProfile from './components/profil/editProfile'
+import SearchUser from './components/navbar/searchUser'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import editProfile from "./components/editProfile";
+
 
 
 function App() {

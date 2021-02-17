@@ -1,6 +1,6 @@
 import React from 'react'
-import AccountEdit from './accountEdit'
 import { BrowserRouter as Switch, Route } from 'react-router-dom'
+import AccountEdit from './accountEdit'
 import changePassword from './changePassword'
 
 function editProfile() {

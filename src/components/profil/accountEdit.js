@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
 import M from "materialize-css/dist/js/materialize.min.js";
 import axios from "axios";
-import { parseJwt } from "./Navbar";
+import { parseJwt } from "../navbar/Navbar";
 import Cookies from "js-cookie";
 
-import { protectAuth } from "./auth";
+import { protectAuth } from "../auth/auth";
 import Avatar from "@material-ui/core/Avatar";
-import "../AccountEdit.css";
+import "../../AccountEdit.css";
 
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + Cookies.get("access");
@@ -25,26 +25,27 @@ class AccountEdit extends Component {
       phone: null,
       gender: "",
       profil: null,
+      respone : null,
       profilpriview: null,
     };
     this.avatarRef = React.createRef();
   }
 
   componentDidMount() {
-    console.log(this.state.access);
+
     protectAuth(this.state.access, this.state.refresh).then((e) =>
       !e ? window.location.reload() : null
     );
 
     const userId = parseJwt(this.state.access).user_id;
 
-    axios
-      .get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, {
+    axios.get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, {
         headers: {
           Authorization: "Bearer " + this.state.access,
         },
       })
       .then((res) => {
+        
         this.setState({
           username: res.data.nickname,
           email: res.data.email,
@@ -89,6 +90,7 @@ class AccountEdit extends Component {
   };
 
   handleSubmit = () => {
+
     const userId = parseJwt(this.state.access).user_id;
     const { email, phone, bio, username, gender, profil } = this.state;
     let formdata = new FormData();
@@ -102,15 +104,14 @@ class AccountEdit extends Component {
       formdata.append("profil", profil);
     }
 
-    axios
-      .put(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, formdata, {
+    axios.put(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, formdata, {
         headers: {
           Authorization: "Bearer " + this.state.access,
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((res) => console.log(res))
-      .catch((e) => console.error(e));
+      .then((res) => this.setState({respone:res.statusText}))
+      .catch((e) => this.setState({respone:e.request.statusText}));
   };
 
   render() {
@@ -199,8 +200,8 @@ class AccountEdit extends Component {
                 <select
                   onChange={this.handleGender}
                   defaultValue={gender === "" ? "DEFAULT" : gender}
-                  className="browser-default fr"
-                >
+                  className="browser-default fr" >
+                  
                   <option value="DEFAULT" disabled>
                     Choose a Your Gender
                     </option>
@@ -213,92 +214,7 @@ class AccountEdit extends Component {
                   send
                   </button>
               </div>
-            </div>
-            <div className="input">
-              <label>Name</label>
-              <input
-                placeholder="Name"
-                type="text"
-                className="browser-default fr"
-              />
-            </div>
-            <div className="input">
-              <label>Username</label>
-              <input
-                type="text"
-                className="browser-default fr"
-                placeholder="Username"
-                id="username"
-                onChange={this.handleUsername}
-                value={username === null ? '' : username}
-              />
-            </div>
-            <div className="input">
-              <label>Bio</label>
-              <textarea
-                onChange={this.handleBio}
-                value={bio === null ? "" : bio}
-                placeholder="Bio"
-                type="textarea"
-                ref={(node) => (this.textareRef = node)}
-                className="browser-default fr"
-              />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-end",
-                color: "#bfbfbf",
-                width: "355px",
-                fontSize: "0.7rem",
-              }}
-            >
-              <b>Personal Information</b>
-              <p>
-                Provide your personal information, even if the account is used
-                for a business, a pet or something else. This won't be a part of
-                your public profile.
-              </p>
-            </div>
-            <div className="input">
-              <label>Email</label>
-              <input
-                placeholder="Email"
-                onChange={this.handleEmail}
-                value={email === null ? "" : email}
-                type="email"
-                className="browser-default fr"
-              />
-            </div>
-            <div className="input">
-              <label>Phone</label>
-              <input
-                placeholder="Phone Number"
-                onChange={this.handlePhone}
-                value={phone === null ? "" : phone}
-                type="tel"
-                className="browser-default fr"
-              />
-            </div>
-            <div className="input ">
-              <label>Gender</label>
-              <select
-                onChange={this.handleGender}
-                defaultValue={gender === "" ? "DEFAULT" : gender}
-                className="browser-default fr"
-              >
-                <option value="DEFAULT" disabled>
-                  Choose a Your Gender
-                </option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </div>
-            <div className="input">
-              <button className="btn" onClick={this.handleSubmit}>
-                send
-              </button>
+              {this.state.respone === null ? '' : this.state.respone}
             </div>
           </div>
       </Fragment>

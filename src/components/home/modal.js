@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import M from "materialize-css";
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
-import {parseJwt} from './Navbar';
+import {parseJwt} from '../navbar/Navbar';
 import Cookies from 'js-cookie'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')

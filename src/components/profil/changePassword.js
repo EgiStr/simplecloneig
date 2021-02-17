@@ -3,9 +3,9 @@ import Avatar from '@material-ui/core/Avatar'
 import { Container } from '@material-ui/core'
 import axios from 'axios' ;
 import Cookies from 'js-cookie'
-import {protectAuth} from './auth'
+import {protectAuth} from '../auth/auth'
 
-import '../Password.css'
+import '../../Password.css'
 
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')

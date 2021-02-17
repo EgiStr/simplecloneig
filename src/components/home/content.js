@@ -8,9 +8,9 @@ import { InView } from 'react-intersection-observer'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
-import {has_like} from '../action/auth'
+import {like_post_with,unlike_post_with} from '../../action/auth'
 
-import '../content.css'
+import '../../content.css'
 
 const Modal = lazy(()=> import('./modal'))
 
@@ -23,21 +23,15 @@ class Content extends Component {
             redirectUrl:'',
             likes : this.props.like,
             comment :'',
-            buttonClass:'small material-icons icon',
+            buttonLikeClass:'small material-icons icon red-text',
+            buttonNotClass:'small material-icons icon',
      
         }
         
     }
     
-    
-    componentDidMount(){
-        this.props.has_like(localStorage.getItem('like').split(",").map(Number),this.props.postId)
-            
-        this.props.has_like_post ? this.setState({ buttonClass:'small material-icons icon red-text'}) : this.setState({ buttonClass:'small material-icons icon'}) 
-    }
-
+       
     handleProfilRedirect = (Userid) => this.setState({redirect:true,redirectUrl:`/profile/${Userid}`})
-    
     
     preloadingImg = (img) => {
         const src = img.getAttribute('data-src')
@@ -61,26 +55,26 @@ class Content extends Component {
         })
         .then(res => {
             // jiga ga ada id berarti menghapus
+            const prev = localStorage.getItem('like').split(",").map(Number)
+    
             res.data.id === undefined ? this.setState({ likes : this.state.likes - 1}) : this.setState({ likes : this.state.likes+1})            
-        
-            if(this.state.buttonClass === 'small material-icons icon'){
-                this.setState({ buttonClass:'small material-icons icon red-text'})
-            }else{
-                this.setState({ buttonClass:'small material-icons icon'})
-            }
+            res.data.id === undefined ? this.props.unlike_post_with(prev,this.props.postId) : this.props.like_post_with(prev,this.props.postId)        
+            res.data.id === undefined ? this.setState({buttonLikeClass :'small material-icons icon',buttonNotClass:'small material-icons icon'}) 
+                                      : this.setState({buttonLikeClass :'small material-icons icon red-text',buttonNotClass:'small material-icons icon red-text'})
             
         })
-        .catch(e => {console.log(e.request)})
+        .catch(e => {console.log(e)})
     }
     
     render(){
         
         if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />
-        
+        const has_like = localStorage.getItem('like').split(",").map(Number).includes(this.props.postId)
         const urlProfil = `http://127.0.0.1:8000${this.props.avatar}`;
         
-        return (
 
+        
+        return (
         <div className="box">
             <div className="head">             
                 <Avatar 
@@ -89,7 +83,6 @@ class Content extends Component {
                         src={urlProfil} 
                 />        
                 <h6 onClick={()=> {this.handleProfilRedirect(this.props.userId)}}>{this.props.username}</h6>
-            
             </div>
 
         {/* membuat post image menjadi loading lazy alias diloading jika post an dilayar */}
@@ -98,37 +91,43 @@ class Content extends Component {
             {({ inView, ref, entry }) => (
                 <div ref={ref}>
                     {inView ? (this.preloadingImg(entry.target.firstChild)) : (null)}
+                                            {/* placeholder burik  */}
                     <img loading="auto" src='data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAJAA4DASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAlEAABAgQEBwAAAAAAAAAAAAABAgMABAYRBRIhMRM0NXGBkbL/xAAVAQEBAAAAAAAAAAAAAAAAAAABA//EABoRAAICAwAAAAAAAAAAAAAAAAECABIDERP/2gAMAwEAAhEDEQA/AAaWpluWZM5OKYmV3HACX0hYJ1JIzaWNt/Rg+qMQcUzKsmWQXGhYvFGVat9DY7RHhvTF90fKoFq7nfAh57axkmKrjqBP/9k=' className="contentImage" data-src={this.props.imageUrl} alt="foto" />
                 </div>
                 )}
             </InView>
 
-        <div className="icon__box">
-           <p>{this.state.likes}</p><a onClick={()=>{this.handleLikeButton(this.props.postId)}}><i className={this.state.buttonClass}>favorite</i></a> 
-        <div>
-            <a className="modal-trigger" href={`#modal_id${this.props.id}`}><i className="small material-icons icon ">comment</i></a>
-                <Suspense fallback={<div></div>}>
-                    <Modal 
-                        key ={this.props.id}
-                        id = {this.props.id}
-                        username = {this.props.username}
-                        profil = {urlProfil}
-                        contentType={this.props.contentType}
-                        obj_id = {this.props.postId}
-                        comments = {this.props.comment}
-                    />
-                </Suspense>
+            <div className="icon__box">
+                <p>{this.state.likes}</p> 
+                {has_like ? (
+                    <a onClick={()=>{this.handleLikeButton(this.props.postId)}}><i className={this.state.buttonLikeClass}>favorite</i></a>
+                    ) : (
+                    <a onClick={()=>{this.handleLikeButton(this.props.postId)}}><i className={this.state.buttonNotClass}>favorite</i></a>
+                )}
+            <div>
+                {/* comment  */}
+                <a className="modal-trigger" href={`#modal_id${this.props.id}`}><i className="small material-icons icon ">comment</i></a>
+                    {/* lazy loading modal dengan react */}
+                    <Suspense fallback={<div></div>}>
+                        <Modal 
+                            key ={this.props.id}
+                            id = {this.props.id}
+                            username = {this.props.username}
+                            profil = {urlProfil}
+                            contentType={this.props.contentType}
+                            obj_id = {this.props.postId}
+                            comments = {this.props.comment}
+                        />
+                    </Suspense>
           </div>
-
+                        {/* feature */}
           <i className="small material-icons icon ">near_me</i>
-         
         </div>
         <h6 className="caption">
           <b>{this.props.username}</b> {this.props.captions}
         </h6>
       </div>
-        )
-    }
+    )}
 }
 
 
@@ -139,9 +138,8 @@ class Content extends Component {
 // }
 const mapStateToProps = state => {
    return { 
-       has_like_post : state.auth.has_like,
     
        user_id :state.auth.user.user_id,
 }}
 
-export default connect(mapStateToProps,{has_like})(Content);
+export default connect(mapStateToProps,{like_post_with,unlike_post_with})(Content);

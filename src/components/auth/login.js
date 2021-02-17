@@ -3,13 +3,13 @@ import { Redirect } from "react-router-dom";
 import Cookies from 'js-cookie'
 
 import {connect} from 'react-redux'
-import {loginUser} from '../action/auth'
-import { get_post_like } from '../action/auth'
+import {loginUser} from '../../action/auth'
+import { get_post_like } from '../../action/auth'
 
 
 import axios from "axios";
 
-import '../login.css'
+import '../../login.css'
 class Login extends Component {
   constructor(props) {
     super(props);
