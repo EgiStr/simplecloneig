@@ -5,11 +5,8 @@ import axios from 'axios'
 import Content from './content'
 import Cookies from 'js-cookie'
 
-import {connect} from 'react-redux'
-
-
 import FecthData from './fetchData'
-import {protectAuth} from './auth'
+import {protectAuth} from '../auth/auth'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
@@ -86,7 +83,6 @@ export const home = () => {
                                   token      = {access}
                                   contentType= {item.content_type_id}
                                   postId     = {item.id}
-                               
                                   userId     = {item.user.id}
                                   username   = {item.user.nickname}
                                   captions   = {item.caption}
@@ -97,7 +93,19 @@ export const home = () => {
                                   />)
                         }
                     }) : null}
-                    {loading && 'loading & Relog if take so long'}
+                   
+                    {loading ?  <div>
+                                    <div className="spinner-layer spinner-red">
+                                      <div className="circle-clipper left">
+                                        <div className="circle"></div>
+                                      </div><div className="gap-patch">
+                                        <div className="circle"></div>
+                                      </div><div className="circle-clipper right">
+                                        <div className="circle"></div>
+                                      </div>
+                                      <p>realod if take to long</p>
+                                    </div>
+                                </div> : null }
                 </div>
             </div>
         </div>
@@ -174,12 +182,5 @@ export const home = () => {
 //     )
 //   }
 // }; 
-const mapStateToProps = state => {
-  return {
 
-    post_like : state.auth.like_post
-  }
-}
-
-
-export default connect(mapStateToProps)(home) ;
+export default home ;

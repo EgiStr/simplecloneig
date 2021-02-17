@@ -1,4 +1,4 @@
-import {parseJwt} from '../components/Navbar'
+import {parseJwt} from '../components/navbar/Navbar'
 
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -44,6 +44,31 @@ export const has_like = (mylike,post) => (dispatch,getstate) => {
         dispatch({
             type:'IS_HAS_LIKE',
         })
+    
+    }else{
+        dispatch({type:'NOT_HAS_LIKE'})
     }
 
+}
+
+export const like_post_with = (prev,post_id) => (dispatch) => {
+
+   dispatch({
+       type:'LIKE_POST',
+       payload:{
+           post_id : post_id,
+           prev:prev
+       }
+   })
+}
+
+export const unlike_post_with = (prev,post_id) => (dispatch) => {
+
+    dispatch({
+        type:'UNLIKE_POST',
+        payload:{
+            post_id : post_id,
+            prev   : prev,
+        }
+    })
 }

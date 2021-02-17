@@ -3,13 +3,13 @@ import React, { Component } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
 
-import Content from './content'
+import Content from '../home/content'
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
-import {protectAuth} from './auth'
-import {getFollower,is_follow} from '../action/follow'
+import {protectAuth} from '../auth/auth'
+import {getFollower,is_follow} from '../../action/follow'
 import {connect} from 'react-redux'
-import '../Profile.css'
+import '../../Profile.css'
 
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
@@ -31,12 +31,11 @@ class Profile extends Component{
 
     componentDidMount(){
         protectAuth(this.state.access,this.state.refresh).then(e => !e ? window.location.reload(): this.setState({redirect:false}))
+        this.props.getFollower(this.state.access)
 
         const id = this.props.match.params.id;
         
-        this.props.getFollower(this.state.access)
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
-
         .then( res => {
             this.props.is_follow(res.data.follower.map(e => e.id))
             this.setState({data:res.data})

@@ -1,14 +1,21 @@
-import {parseJwt} from '../../components/Navbar'
+import {parseJwt} from '../../components/navbar/Navbar'
 import Cookies from 'js-cookie'
 
-const like_Post = (likePost,post) => {
-    likePost.unshift(post) 
-    return likePost
- }
+const like_Post = (prev,post) => {
+    
+    prev.push(Number(post))
 
- const unLike_Post = (likePost,post) => {
-     likePost.filter(lp => lp.post.id,post)
-     return likePost
+    localStorage.setItem('like',prev)
+    return prev
+}
+
+const unLike_Post = (prev,post) => {
+    
+    
+    const newlike = prev.filter(v => v !== post)
+    
+    localStorage.setItem('like',newlike)
+    return prev
  }
 
  const access = Cookies.get('access') === undefined ? null : parseJwt(Cookies.get('access'))
@@ -34,7 +41,7 @@ const auth = (state = initialState,action) => {
             }
             
         case 'LOGIN_SUCCESS':
-            console.log('login success',py)
+           
             return {
                 ...state,
                 is_auth:true,
@@ -52,17 +59,25 @@ const auth = (state = initialState,action) => {
                 ...state,
                 has_like:true,
             }
+        case 'NOT_HAS_LIKE':
+            return {
+                ...state,
+                has_like:false
+            }
            
         case 'LIKE_POST':
+        
             return {...state,
-                like_post:like_Post(state.like_post,py)
+                like_post:like_Post(py.prev,py.post_id)
             }
-          
+            
         case 'UNLIKE_POST':
-            return {...state,
-                like_post:unLike_Post(state.like_Post,py)
+        
+            return {
+                ...state,
+                like_post: unLike_Post(py.prev,py.post_id)
             }
-          
+            
         default:
             return state
         

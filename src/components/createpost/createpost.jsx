@@ -3,12 +3,12 @@ import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
 import ReactCrop from 'react-image-crop'
 
-import { image64toCanvasRef, extractImageFileExtensionFromBase64, base64StringtoFile } from './method/base64'
-import { formatBytes } from './method/convert'
-import { parseJwt } from './Navbar'
+import { image64toCanvasRef, extractImageFileExtensionFromBase64, base64StringtoFile } from '../method/base64'
+import { formatBytes } from '../method/convert'
+import { parseJwt } from '../navbar/Navbar'
 import Cookies from 'js-cookie'
-import { protectAuth } from './auth'
-import '../cp.css'
+import { protectAuth } from '../auth/auth'
+import '../../cp.css'
 
 
 import axios from 'axios'

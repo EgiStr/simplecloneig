@@ -59,6 +59,8 @@ export const resfeshLogin = async resfreshToken => {
                 const {access,refresh} = res.data
                 Cookies.set('access',access)
                 Cookies.set('refresh',refresh)
+                window.location.reload()
+                window.location.reload()
                 // mengirim access dan refresh
                 resolve(res.data)
             }else{
@@ -97,8 +99,7 @@ export const requestLogin = async (accessToken ,refreshToken) => {
             if(e.request.status === 401){
                 // kalau emang kadaluarsa maka akan refresh dan test ulang
                 if(e.request.response === '{"detail":"Given token not valid for any token type","code":"token_not_valid","messages":[{"token_class":"AccessToken","token_type":"access","message":"Token is invalid or expired"}]}'){
-  
-                    
+
     
                         const token = resfeshLogin(refresh)
                         token.then(e => {
