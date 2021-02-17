@@ -1,62 +1,76 @@
 .box_edit {
+  display: table;
+  min-width: 70%;
   border: 1px solid #dbdbdb;
-  margin-top: 30px;
+  margin-top: 20px;
 }
+
 .col.s3 {
   display: flex;
   flex-direction: column;
 }
+
 .nav_edit {
   margin-top: 10px;
   padding: 15px;
   color: #262626;
 }
+
 .nav_edit:hover {
   background: #dbdbdb;
   border-radius: 10px;
 }
-.col.s9 {
-  border-left: 1px solid #dbdbdb;
-  display: flex;
-  flex-direction: column;
-  align-items:center;
+.nav_edit:visited{
+  background: #dbdbdb;
 }
 
-.head_edit{
-  display:flex;
-  align-items:center;
+.col.s9 {
+  border-left: 1px solid #dbdbdb;
 }
+
+.head_edit {
+  display: flex;
+}
+
 .edit_right p {
-  font-size: 1.3rem;
-  margin-bottom: -10px;
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  margin-left: 30px;
 }
+
 .edit_right .change_edit label {
   color: #1ca1f7;
   cursor: pointer !important;
   font-size: 0.9rem;
 }
+
 .edit_right .change_edit {
   margin-bottom: 20px !important;
-  margin-left: 35px;
+  margin-left: 30px;
 }
-.browser-default{
-  display: table-cell;
-  width:400px;
-  height:30px;
-  margin-left: 40px;
+
+.fr {
+  min-width:355px;
+  /* rgb(38, 38, 38) */
+  max-width: 355px;
+  padding: 5px;
+  resize:vertical;
+  height: 35px;
+  border-radius: 6px ;
+  border:1px solid #dbdbdb;
 }
-.form{
-  display:table;
+
+.input {
+  display: flex;
+  justify-content: flex-end;
+  margin:10px 35px;
+  
 }
-.input{
-  margin:10px;
-  display:table-row
-}
+
 .input label {
-  display:table-cell;
-  font-size:1.1rem;
-  color:#262626;
+  font-size: 1rem;
+  color: #262626;
   font-weight: 500;
-  margin-right:20px;
-  direction: rtl;
+  text-align: right;
+  margin-right: 40px;
 }

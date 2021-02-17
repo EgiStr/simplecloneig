@@ -1,13 +1,15 @@
 import React , {useState,useEffect,useRef,useCallback} from 'react'
 import {Redirect} from 'react-router-dom'
+import axios from 'axios'
 
 import Content from './content'
-import {protectAuth} from './auth'
 import Cookies from 'js-cookie'
+
+import {connect} from 'react-redux'
+
+
 import FecthData from './fetchData'
-
-
-import axios from 'axios'
+import {protectAuth} from './auth'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
@@ -16,19 +18,23 @@ export const home = () => {
   
   const [access] = useState(Cookies.get('access'))
   const [refresh] = useState(Cookies.get('refresh'))
-
+  
   const [redirect,setRedirect] = useState(false)
   const [page,setPage] = useState(1)
+
+  // fetch data dari api
   const [data,hasMore,loading] = FecthData(page,access)
 
   useEffect(() => {
       // window.location.reload()
-      protectAuth(access,refresh).then(e => e ? '' : window.location.reload() )    
+      protectAuth(access,refresh).then(e => e ? '' : setRedirect(true))
+
+
   },[])
   
-
+  
+  // infinite scroll
   const observer = useRef(null)
- 
   const lastBookElementRef = useCallback ( node => {   
     if (loading) return
     if (observer.current) observer.current.disconnect()
@@ -49,20 +55,22 @@ export const home = () => {
                     {data.length > 0 ? data.map( (item ,i) => {
                         if(data.length === i + 1){
                           return ( 
+                            // membuat terakhir terobserve
                           <div ref={lastBookElementRef} key={i}>
                             <Content 
-                                  key        = {i}
+                                  key         = {i}
                                               // membuat uniq key untuk modal
-                                  id         = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
-                                  contentType= {item.content_type_id}
-                                  postId     = {item.id}
-                                  userId     = {item.user.id}
-                                  username   = {item.user.nickname}
-                                  captions   = {item.caption}
-                                  imageUrl   = {item.post}
-                                  avatar     = {item.user.profil}
-                                  like       = {item.likes}
-                                  comment    = {item.comments}
+                                  id          = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
+                                  contentType = {item.content_type_id}
+                                  postId      = {item.id}
+                               
+                                  userId      = {item.user.id}
+                                  username    = {item.user.nickname}
+                                  captions    = {item.caption}
+                                  imageUrl    = {item.post}
+                                  avatar      = {item.user.profil}
+                                  like        = {item.likes}
+                                  comment     = {item.comments}
                                   />
                           </div>
 
@@ -78,6 +86,7 @@ export const home = () => {
                                   token      = {access}
                                   contentType= {item.content_type_id}
                                   postId     = {item.id}
+                               
                                   userId     = {item.user.id}
                                   username   = {item.user.nickname}
                                   captions   = {item.caption}
@@ -88,7 +97,7 @@ export const home = () => {
                                   />)
                         }
                     }) : null}
-                    {loading && 'loading'}
+                    {loading && 'loading & Relog if take so long'}
                 </div>
             </div>
         </div>
@@ -165,5 +174,12 @@ export const home = () => {
 //     )
 //   }
 // }; 
+const mapStateToProps = state => {
+  return {
 
-export default home ;
+    post_like : state.auth.like_post
+  }
+}
+
+
+export default connect(mapStateToProps)(home) ;

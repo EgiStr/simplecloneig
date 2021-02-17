@@ -8,11 +8,7 @@ export default function FecthData(page,access) {
     const [data, setData] = useState({})
     const [hasMore, setHasMore] = useState(false)
 
-  
-    
     useEffect( () => {
-        
-
         
         axios.get(`http://127.0.0.1:8000/api/?page=${page}`,
         {headers:{

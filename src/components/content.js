@@ -1,12 +1,14 @@
 import React ,{Component,lazy,Suspense}from "react";
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
-import {parseJwt} from './Navbar'
+
 
 import { InView } from 'react-intersection-observer'
 
+import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
+import {has_like} from '../action/auth'
 
 import '../content.css'
 
@@ -24,49 +26,43 @@ class Content extends Component {
             buttonClass:'small material-icons icon',
      
         }
-
-        this.handleLikeButton = this.handleLikeButton.bind(this)
         
     }
-
-
-    handleProfilRedirect(Userid){
-        let url = `/profile/${Userid}`
-        this.setState({
-            redirect:true,
-            redirectUrl:url,
-           
-        })
+    
+    
+    componentDidMount(){
+        this.props.has_like(localStorage.getItem('like').split(",").map(Number),this.props.postId)
+            
+        this.props.has_like_post ? this.setState({ buttonClass:'small material-icons icon red-text'}) : this.setState({ buttonClass:'small material-icons icon'}) 
     }
 
-    preloadingImg(img){
+    handleProfilRedirect = (Userid) => this.setState({redirect:true,redirectUrl:`/profile/${Userid}`})
+    
+    
+    preloadingImg = (img) => {
         const src = img.getAttribute('data-src')
-        if(!src){
-            return
-        }
+        if(!src) return
         img.src = src
     }
-
-    handleLikeButton(postId){
-
-        const userId = parseJwt(Cookies.get('access')).user_id
+    
+    handleLikeButton = (postId) => {
         axios({
             method:'post',
             url: 'http://127.0.0.1:8000/api/like/',
-            data:{
+            data:
+            {
                 post:postId,
-                user:userId
+                user:this.props.user_id
             },
-            headers:{
+            headers:
+            {
                 "Authorization": 'Bearer ' + Cookies.get('access')
             }
-            
         })
         .then(res => {
             // jiga ga ada id berarti menghapus
-            res.data.id === undefined ? this.setState({ likes : this.state.likes - 1}) : this.setState({ likes : this.state.likes+1})
-            
-            
+            res.data.id === undefined ? this.setState({ likes : this.state.likes - 1}) : this.setState({ likes : this.state.likes+1})            
+        
             if(this.state.buttonClass === 'small material-icons icon'){
                 this.setState({ buttonClass:'small material-icons icon red-text'})
             }else{
@@ -76,26 +72,25 @@ class Content extends Component {
         })
         .catch(e => {console.log(e.request)})
     }
-
-
+    
     render(){
         
-        if(this.state.redirect){
-            const url = this.state.redirectUrl
-            return <Redirect to={url} />
-        }
+        if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />
         
         const urlProfil = `http://127.0.0.1:8000${this.props.avatar}`;
         
         return (
 
-        
         <div className="box">
-        <div className="head">
+            <div className="head">             
+                <Avatar 
+                        className="avatar" 
+                        alt="foto" 
+                        src={urlProfil} 
+                />        
+                <h6 onClick={()=> {this.handleProfilRedirect(this.props.userId)}}>{this.props.username}</h6>
             
-          <Avatar  className="avatar" alt="foto" src={urlProfil} />
-          <h6 onClick={()=> {this.handleProfilRedirect(this.props.userId)}}>{this.props.username}</h6>
-        </div>
+            </div>
 
         {/* membuat post image menjadi loading lazy alias diloading jika post an dilayar */}
             <InView>
@@ -142,5 +137,11 @@ class Content extends Component {
       
 //   );
 // }
+const mapStateToProps = state => {
+   return { 
+       has_like_post : state.auth.has_like,
+    
+       user_id :state.auth.user.user_id,
+}}
 
-export default Content;
+export default connect(mapStateToProps,{has_like})(Content);
