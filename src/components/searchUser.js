@@ -7,14 +7,26 @@ export const SearchUser = () => {
     const [data,setData] = useState({})
     const history = useHistory()
     // send api went search change
+    useEffect(() => {
+    setData({})
+    }, [search])
     // dengan kata lain live seacrh
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/auth/search/?search=${search}`)
+      
+        var cancel;
+
+        axios.get(`http://127.0.0.1:8000/auth/search/?search=${search}`,
+        {
+            cancelToken :  new axios.CancelToken(c => cancel = c)
+        })
         .then(res => {
             setData(res.data.results)
         })
-        .catch(e => console.log(e))
+        .catch(e => axios.isCancel(e) ? console.log('im cancel') : console.log(e.request))
+     return () => cancel()
     },[search])
+
+    
     
     const redirect = (id) => history.push(`/profile/${id}`)
     return (

@@ -1,24 +1,16 @@
 
-from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
-from rest_framework import serializers
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.serializers import ModelSerializer,SerializerMethodField
+from rest_framework import fields, serializers
 from posts.models import Post,Like
 
 from usercostumer.api.serializers import UserProfilPostserializer
-from usercostumer.models import UserProfil
+
 
 from comment.api.serializers import CommentChildrenSerializer
 from comment.models import Comments
 
 class PostSerializer(ModelSerializer):
     
-
-    detail = HyperlinkedIdentityField(
-        view_name='api-post:detail',
-        lookup_field='pk' ,  
-    )
-
     user = SerializerMethodField()
     likes = SerializerMethodField()
     
@@ -27,7 +19,7 @@ class PostSerializer(ModelSerializer):
     class Meta:
         model = Post
         fields = [
-            'detail',
+            
             'id',
             'user',
             'caption',
@@ -66,65 +58,73 @@ class PostDetailSerialzer(ModelSerializer):
     
     def get_likes_count(self,obj):
         return obj.likes.count()
-class Base64ImageField(serializers.ImageField):
-    """
-    A Django REST framework field for handling image-uploads through raw post data.
-    It uses base64 for encoding and decoding the contents of the file.
 
-    Heavily based on
-    https://github.com/tomchristie/django-rest-framework/pull/1268
+class UserLikePost(ModelSerializer):
+    post = SerializerMethodField()
+    class Meta:
+        model = Like
+        fields = [
+            'id',
+            'post'
+        ]
+    def get_post(self,obj):
+        return obj.post.id
 
-    Updated for Django REST framework 3.
-    """
+# class Base64ImageField(serializers.ImageField):
+#     """
+#     A Django REST framework field for handling image-uploads through raw post data.
+#     It uses base64 for encoding and decoding the contents of the file.
 
-    def to_internal_value(self, data):
-        from django.core.files.base import ContentFile
-        import base64
-        import six
-        import uuid
+#     Heavily based on
+#     https://github.com/tomchristie/django-rest-framework/pull/1268
 
-        # Check if this is a base64 string
-        if isinstance(data, six.string_types):
-            # Check if the base64 string is in the "data:" format
-            if 'data:' in data and ';base64,' in data:
-                # Break out the header from the base64 content
-                header, data = data.split(';base64,')
+#     Updated for Django REST framework 3.
+#     """
 
-            # Try to decode the file. Return validation error if it fails.
-            try:
-                decoded_file = base64.b64decode(data)
-            except TypeError:
-                self.fail('invalid_image')
+#     def to_internal_value(self, data):
+#         from django.core.files.base import ContentFile
+#         import base64
+#         import six
+#         import uuid
 
-            # Generate file name:
-            file_name = str(uuid.uuid4())[:12] # 12 characters are more than enough.
-            # Get the file name extension:
-            file_extension = self.get_file_extension(file_name, decoded_file)
+#         # Check if this is a base64 string
+#         if isinstance(data, six.string_types):
+#             # Check if the base64 string is in the "data:" format
+#             if 'data:' in data and ';base64,' in data:
+#                 # Break out the header from the base64 content
+#                 header, data = data.split(';base64,')
 
-            complete_file_name = "%s.%s" % (file_name, file_extension, )
+#             # Try to decode the file. Return validation error if it fails.
+#             try:
+#                 decoded_file = base64.b64decode(data)
+#             except TypeError:
+#                 self.fail('invalid_image')
 
-            data = ContentFile(decoded_file, name=complete_file_name)
+#             # Generate file name:
+#             file_name = str(uuid.uuid4())[:12] # 12 characters are more than enough.
+#             # Get the file name extension:
+#             file_extension = self.get_file_extension(file_name, decoded_file)
 
-        return super(Base64ImageField, self).to_internal_value(data)
+#             complete_file_name = "%s.%s" % (file_name, file_extension, )
 
-    def get_file_extension(self, file_name, decoded_file):
-        import imghdr
+#             data = ContentFile(decoded_file, name=complete_file_name)
 
-        extension = imghdr.what(file_name, decoded_file)
-        extension = "jpg" if extension == "jpeg" else extension
+#         return super(Base64ImageField, self).to_internal_value(data)
 
-        return extension
+#     def get_file_extension(self, file_name, decoded_file):
+#         import imghdr
+
+#         extension = imghdr.what(file_name, decoded_file)
+#         extension = "jpg" if extension == "jpeg" else extension
+
+#         return extension
 
 
 
 class CreatePostSerializer(ModelSerializer):
     user = serializers.ModelField
-
-    # user = SerializerMethodField()
+    
     class Meta:
-        
-       
-
         model = Post
         fields = [
             'user',
@@ -133,7 +133,7 @@ class CreatePostSerializer(ModelSerializer):
         ]
 
     def create(self, validated_data):
-        print(self.data)
+    
         post = Post.objects.create(
             user=validated_data['user'],
             caption=validated_data['caption'],
@@ -153,7 +153,6 @@ class JustLikeSerializer(ModelSerializer):
     class Meta:
         model = Like
         fields =['id','post','user']
-    
 
 
     def create(self, validated_data):
@@ -176,9 +175,6 @@ class JustLikeSerializer(ModelSerializer):
             # Connect_like.delete()
             # return Response(status=status.HTTP_204_NO_CONTENT)
 
-    
-    def validate(self, attrs):
-        return attrs
     # def update(self, instance, validated_data):
 
     #     print(validated_data)

@@ -14,6 +14,7 @@ from posts.api.serializers import (
                                     CreatePostSerializer,
                                     EditPostSerializer,
                                     JustLikeSerializer,
+                                    UserLikePost,
                                     )
 class PostApiViews(ListAPIView):
 
@@ -51,4 +52,14 @@ class PostEditApiView(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = EditPostSerializer
 
+
+class GetPostLike(ListAPIView):
+    serializer_class = UserLikePost
+
+    def get_queryset(self):
+        print(Like.objects.filter(user__user__id=1))
+        qs =Like.objects.filter(user__user__id=self.request.user.id)
+        return qs
+    
+    
 
