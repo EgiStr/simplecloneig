@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import axios from "axios";
 import Cookies from 'js-cookie'
+
+import {connect} from 'react-redux'
+import {loginUser} from '../action/auth'
+import { get_post_like } from '../action/auth'
+
+
+import axios from "axios";
 
 import '../login.css'
 class Login extends Component {
@@ -9,57 +15,36 @@ class Login extends Component {
     super(props);
     this.state = {
       title: "",
-      email: "",
       password: "",
-      password2: "",
       notValide: false,
       redirect: false,
     };
-
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleValidatePassword = this.handleValidatePassword.bind(this);
   }
 
-  componentDidMount() {
-
-    this.setState({ redirect: false });
-  }
-
-  handleSubmit(e) {
+  handleSubmit= (e) => {
     e.preventDefault();
-    axios
-      .post(`http://127.0.0.1:8000/auth/login/`, {
+    axios.post(`http://127.0.0.1:8000/auth/login/`, {
         username: this.state.title,
         password: this.state.password,
-        // password2:this.state.password2,
-        // email:'egicuco50@gmail.com',
       })
-
       .then((res) => {
+
         Cookies.set('access',res.data.access)
         Cookies.set('refresh',res.data.refresh)
+  
+        this.props.get_post_like()
+        this.props.loginUser(res.data.access)
         this.setState({ redirect: true });
       })
-      .catch((e) => console.log(e.request));
+      .catch((e) => this.setState({notValide:true}));
   }
 
-  handleTitleChange(event) {
-    let input = event.target.value;
-    this.setState({
-      title: input,
-    });
-  }
+  handleTitleChange = (event) => this.setState({title:event.target.value})
 
-  handlePasswordChange(event) {
-    this.setState({
-      password: event.target.value,
-    });
-  }
-  handleValidatePassword(event) {
+  handlePasswordChange = (event) => this.setState({password: event.target.value})
+  
+  handleValidatePassword =(event) => {
     let password2 = event.target.value;
-
     this.setState({
       password2: password2,
       notValide: password2 !== this.state.password,
@@ -68,15 +53,11 @@ class Login extends Component {
 
   render() {
 
-    if (this.state.redirect) {
-      return <Redirect to="/" />;
-    }
-    let content = ``;
-    if (this.state.notValide) {
-      content = `<div> password anda tidak macth</div>`;
-    }
+    if (this.state.redirect ) {
+        return <Redirect to="/" />;}
 
     return (
+
       <div className="container_login">
         <div className="box_login">
           <h5>Sign in</h5>
@@ -85,21 +66,17 @@ class Login extends Component {
             <input
               type="text"
               value={this.state.title}
-              onChange={(event) => {
-                this.handleTitleChange(event);
-              }}
+              onChange={this.handleTitleChange}
               placeholder="What password ? ...."
+              />
 
-            />
           </div>
           <div className="input-field">
             <i className="material-icons prefix">https</i>
             <input
               type="password"
               value={this.state.password}
-              onChange={(event) => {
-                this.handlePasswordChange(event);
-              }}
+              onChange={this.handlePasswordChange}
               placeholder="What password ? ...."
               id="icon_prefix"
             />
@@ -120,13 +97,18 @@ class Login extends Component {
             <div className="icon_field">
               <i className="material-icons">email</i>
             </div>
-          </div>
-        You dont have account? <a href="/register">sign up</a>
-          {content}
+          {this.state.notValide && 'password salaah'}
+          </div>You dont have account? <a href="/register">sign up</a>
         </div>
       </div>
     );
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    is_auth : state.auth.is_auth
+  }
+}
+
+export default connect(mapStateToProps,{loginUser,get_post_like})(Login);

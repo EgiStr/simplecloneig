@@ -17,6 +17,8 @@ import 'react-image-crop/dist/ReactCrop.css'
 import { Redirect } from 'react-router-dom'
 import { Avatar } from '@material-ui/core'
 
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
+
 // validate data yang diinginkan
 const imageSize = 2520000 /* 2,4 mb */
 

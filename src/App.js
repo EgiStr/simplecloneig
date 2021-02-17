@@ -8,6 +8,7 @@ import Home from "./components/home";
 import Register from "./components/Register";
 import CreatePost from './components/createpost'
 import Logout from './components/logout'
+import editProfile from './components/editProfile'
 import SearchUser from './components/searchUser'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import editProfile from "./components/editProfile";

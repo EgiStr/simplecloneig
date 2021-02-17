@@ -8,8 +8,8 @@ import { protectAuth } from "./auth";
 import Avatar from "@material-ui/core/Avatar";
 import "../AccountEdit.css";
 
-
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
+axios.defaults.headers.common["Authorization"] =
+  "Bearer " + Cookies.get("access");
 
 class AccountEdit extends Component {
   constructor(props) {
@@ -31,9 +31,10 @@ class AccountEdit extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state.access)
-    protectAuth(this.state.access,this.state.refresh).then(e => !e ? window.location.reload() : null )
-      
+    console.log(this.state.access);
+    protectAuth(this.state.access, this.state.refresh).then((e) =>
+      !e ? window.location.reload() : null
+    );
 
     const userId = parseJwt(this.state.access).user_id;
 
@@ -127,7 +128,7 @@ class AccountEdit extends Component {
                   style={{marginTop:"27px"}}
                 />
                 <div className="edit_right">
-                  <p>username</p>
+                  <p>{username}</p>
                   <div className="change_edit">
                     <label htmlFor="files">Change Profile Photo</label>
                     <input
@@ -212,6 +213,92 @@ class AccountEdit extends Component {
                   send
                   </button>
               </div>
+            </div>
+            <div className="input">
+              <label>Name</label>
+              <input
+                placeholder="Name"
+                type="text"
+                className="browser-default fr"
+              />
+            </div>
+            <div className="input">
+              <label>Username</label>
+              <input
+                type="text"
+                className="browser-default fr"
+                placeholder="Username"
+                id="username"
+                onChange={this.handleUsername}
+                value={username === null ? '' : username}
+              />
+            </div>
+            <div className="input">
+              <label>Bio</label>
+              <textarea
+                onChange={this.handleBio}
+                value={bio === null ? "" : bio}
+                placeholder="Bio"
+                type="textarea"
+                ref={(node) => (this.textareRef = node)}
+                className="browser-default fr"
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                color: "#bfbfbf",
+                width: "355px",
+                fontSize: "0.7rem",
+              }}
+            >
+              <b>Personal Information</b>
+              <p>
+                Provide your personal information, even if the account is used
+                for a business, a pet or something else. This won't be a part of
+                your public profile.
+              </p>
+            </div>
+            <div className="input">
+              <label>Email</label>
+              <input
+                placeholder="Email"
+                onChange={this.handleEmail}
+                value={email === null ? "" : email}
+                type="email"
+                className="browser-default fr"
+              />
+            </div>
+            <div className="input">
+              <label>Phone</label>
+              <input
+                placeholder="Phone Number"
+                onChange={this.handlePhone}
+                value={phone === null ? "" : phone}
+                type="tel"
+                className="browser-default fr"
+              />
+            </div>
+            <div className="input ">
+              <label>Gender</label>
+              <select
+                onChange={this.handleGender}
+                defaultValue={gender === "" ? "DEFAULT" : gender}
+                className="browser-default fr"
+              >
+                <option value="DEFAULT" disabled>
+                  Choose a Your Gender
+                </option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div className="input">
+              <button className="btn" onClick={this.handleSubmit}>
+                send
+              </button>
             </div>
           </div>
       </Fragment>

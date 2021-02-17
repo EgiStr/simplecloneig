@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
-import {parseJwt} from './Navbar'
+
 import Content from './content'
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import {protectAuth} from './auth'
+import {getFollower,is_follow} from '../action/follow'
+import {connect} from 'react-redux'
 import '../Profile.css'
 
 
@@ -18,47 +20,37 @@ class Profile extends Component{
         this.state = {
             access: Cookies.get('access'),
             refresh: Cookies.get('refresh'),
-            follower:[],
-            following:[],
             follow : 'follow',
-            handle : null, 
+            unfollow : 'unfollow',
             redirect : false,
             redirectUrl : '',
             data : [],
+            
         }
     }
 
     componentDidMount(){
-        
-        const id = this.props.match.params.id;
         protectAuth(this.state.access,this.state.refresh).then(e => !e ? window.location.reload(): this.setState({redirect:false}))
+
+        const id = this.props.match.params.id;
         
-        if(this.state.access !== undefined){
-            // axios.get(`http://127.0.0.1:8000/auth/follower/${id}/`,{headers:{
-            //     "Authorization": 'Bearer ' + this.state.access
-            // }})
-            // .then( res => this.setState({follower:res.data}))
-            // .catch(e => console.log(e.request))
-            
-            // axios.get(`http://127.0.0.1:8000/auth/following/${id}/`,{headers:{
-            //     "Authorization": 'Bearer ' + this.state.access
-            // }})
-            // .then( res => this.setState({following:res.data}))
-            // .catch(e => console.log(e.request))
+        this.props.getFollower(this.state.access)
+        axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
 
-            axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
-            .then( res => this.setState({data:res.data}))
-            .catch( e => console.log(e))
-        }
-       
+        .then( res => {
+            this.props.is_follow(res.data.follower.map(e => e.id))
+            this.setState({data:res.data})
+        })
+        .catch( e => console.log(e))
+        
     }
-
+    
     handleEditProfil = () => this.setState({redirect:true,redirectUrl:'/account/edit'})
-
+    
     handleFollow = () => {
         
         const diikuti = parseInt(this.props.match.params.id,10)
-        const pefollow = parseJwt(this.state.access).user_id
+        const pefollow = this.props.user.user_id
         
         let form = new FormData() ; 
         form.append('user', diikuti)
@@ -66,27 +58,25 @@ class Profile extends Component{
         
         axios.post('http://127.0.0.1:8000/auth/following/',
             form,{
-                headers:{
-                    "Authorization": 'Bearer ' + Cookies.get('access')
-                }
-            }
-        )
-        .then( res => res.data.id === undefined ? this.setState({follow : 'follow'}) : this.setState({follow : 'unfollow'}))
+            headers:{
+                "Authorization": 'Bearer ' + Cookies.get('access')
+            }})
+
+        .then( res => res.data.id === undefined ? this.setState({follow : 'follow',unfollow:'follow'}) : this.setState({follow : 'unfollow',unfollow:'unfollow'}))
         .catch( e => console.log(e) )
 
     }
-
+    
     render(){
-
-    
-    
         if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />  
         
-        const authUser = parseJwt(this.state.access).user_id
+        const authUser = this.props.user.user_id
         const idUser = parseInt(this.props.match.params.id,10)
+        
         const data = this.state.data
         
         const {follower,following,post_data} = data
+        
     
         return (
             <div className="container">
@@ -97,14 +87,18 @@ class Profile extends Component{
                             alt="foto"
                             src={data.profil}
                             style={{ width: "150px", height: "150px" }}
-                        />
+                            />
                     </div>
                     <div>
                         <div style={{ display: "flex" }}>
-                            
                             <h5 style={{ fontWeight: "350" }}>{data.nickname}</h5>
-                            <p onClick={authUser === idUser ? this.handleEditProfil : this.handleFollow} className="btn_edit">{authUser === idUser ? ('edit profile') : (this.state.follow)}</p> 
                             
+                            {this.props.follow_user ? (
+                                <p onClick={authUser === idUser ? this.handleEditProfil : this.handleFollow} className="btn_edit">{authUser === idUser ? ('edit profile') : this.state.unfollow}</p> 
+                                ) : (    
+                                <p onClick={authUser === idUser ? this.handleEditProfil : this.handleFollow} className="btn_edit">{authUser === idUser ? ('edit profile') : this.state.follow }</p> 
+                            )}
+
                         </div>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                             <h6 style={{ fontWeight: "300" }}>{data.post_count} Posts</h6>
@@ -117,18 +111,21 @@ class Profile extends Component{
                         </div>
                     </div>
                 </div>
+
                 <div className="divider"></div>
                 <div className="post_nav">
+
                     <div className="post__nav active"><i className="material-icons tiny" >grid_on</i>POSTS</div>
                     <div className="post__nav"><i className="material-icons tiny" >turned_in_not</i>SAVED</div>
                     <div className="post__nav"><i className="material-icons tiny" >person_pin</i>TAGGED</div>
                 </div>
                 <div className="posts">
                     <div className="posts_wrap">
+
                         {post_data ? (post_data.map( (item,index)=> {
                             return (
                             <Content 
-                                key={index * 1000 * Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
+                            key={index * 1000 * Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
                                 id ={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
                                 contentType = {item.content_type_id}
                                 postId   = {item.id}
@@ -139,20 +136,13 @@ class Profile extends Component{
                                 avatar   = {item.user.profil}
                                 like     = {item.likes}
                                 comment    = {item.comments}
-                                className="ci"
-                                
+                                className="ci"      
                             />
+
                             )
                         })) 
                         : (null)}   
-                        {/* {
-                            contents.map(content => (
-                                <Posts
-                                    imageUrl={content.imageUrl}
-                                    className="ci"
-                                />
-                            ))
-                        } */}
+                        
                     </div>
                 </div>
             </div>
@@ -171,4 +161,13 @@ class Profile extends Component{
     
 // }
 
-export default Profile
+const mapStateToProps = (state) => {
+    return {
+        user : state.auth.user,
+ 
+        follow_user : state.follow.is_following,
+    }
+}
+
+
+export default connect(mapStateToProps,{getFollower,is_follow})(Profile)

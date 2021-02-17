@@ -1,5 +1,13 @@
-2. system follow belum di validation jika sudah ada .
+
 {% comment %} issue {% endcomment %}
 3.mengeck apa kah post ini sudah di like user atau belum kalo sudah maka warna akan berubah
 4. login system dengan token yang benar -> sering logout sendiri
  
+5. membuat like dan unlike saat request dan memperbarui redux
+
+
+{% comment %} feature  {% endcomment %}
+
+1.membuat massage mengunakan websoket
+2 membuat comment with websoket
+3.membuat filter untuk foto post
