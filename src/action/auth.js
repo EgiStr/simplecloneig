@@ -19,7 +19,7 @@ export const loginUser = (access) => (dispatch,getstate) => {
 } 
 
 export const get_post_like = () => (dispatch,getstate) => {
-    console.log(Cookies.get('access'))
+    
     axios.get('http://127.0.0.1:8000/api/get/post/like/',{
         headers:
         {

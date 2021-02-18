@@ -11,7 +11,7 @@ class Register extends Component {
       email: '',
       validate: false,
       redirect: false,
-      error: 'ada yang salaah',
+      error:null,
     }
     this.handlePasswordValidate = this.handlePasswordValidate.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)

@@ -1,7 +1,7 @@
 import React from "react";
 // import Content from './components/content'
 import {Navbar} from "./components/navbar/Navbar";
-import Message from "./massage/Message";
+import Message from "./components/massage/Message";
 import Profile from "./components/profil/Profile";
 import Login from "./components/auth/login";
 import Home from "./components/home/home";

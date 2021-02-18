@@ -1,3 +1,5 @@
+from django.db.models import fields
+from rest_framework.fields import ReadOnlyField
 from usercostumer.models import UserProfil
 from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
 
@@ -12,14 +14,14 @@ class UserProfilPostserializer(ModelSerializer):
             'nickname',
             'profil',
         ]
+
 class UpdateOrDeleteCommentSerializer(ModelSerializer):
  
 
     class Meta:
         model = Comments 
         fields =[ 
-            'content',
-           
+            'content',   
         ]
 
    
@@ -27,16 +29,14 @@ class UpdateOrDeleteCommentSerializer(ModelSerializer):
 class CommentChildrenToSerializer(ModelSerializer):
     
     user = SerializerMethodField()
-    updateOrDelete = HyperlinkedIdentityField(
-        view_name='comment:edit',)
     
     class Meta:
         model = Comments
         fields= [
-            'updateOrDelete',
+            
             'id',
             'user',
-            'content_type',
+            
             'obj_id',
             'content',
             'timestamp',
@@ -55,21 +55,17 @@ class CommentChildrenToSerializer(ModelSerializer):
 class CommentChildrenSerializer(ModelSerializer):
     
     user = SerializerMethodField()
-    updateOrDelete = HyperlinkedIdentityField(
-        view_name='comment:edit',)
     replies = SerializerMethodField()
 
     class Meta:
         model = Comments
         fields= [
-            'updateOrDelete',
+        
             'id',
             'user',
-            'content_type',
             'obj_id',
             'content',
             'timestamp',
-            'parent',
             'replies',
             
         ]
@@ -80,7 +76,11 @@ class CommentChildrenSerializer(ModelSerializer):
     def get_replies(self,obj):
         return CommentChildrenToSerializer(obj.children(),many=True,context={'request':None}).data
 
+
 class CommentCreateSerializer(ModelSerializer):
+   
+    replies = SerializerMethodField()
+
     class Meta:
         model = Comments
         fields = [ 
@@ -89,8 +89,17 @@ class CommentCreateSerializer(ModelSerializer):
             'obj_id',
             'content',
             'parent',
+            'timestamp',
+            'replies',
         ]
+
+   
     
+    def get_replies(self,obj):
+        return CommentChildrenToSerializer(obj.children(),many=True,context={'request':None}).data
+
+
+
     def create(self, validated_data):
         
         user = validated_data['user']

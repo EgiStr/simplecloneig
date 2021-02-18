@@ -12,20 +12,24 @@ axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access
 
 
 export const home = () => {
-  
-  const [access] = useState(Cookies.get('access'))
-  const [refresh] = useState(Cookies.get('refresh'))
-  
-  const [redirect,setRedirect] = useState(false)
+  const [state,setState] = useState({
+                                      access:Cookies.get('access'),
+                                      refresh:Cookies.get('refresh'),
+                                      redirect:false,
+                                    })
   const [page,setPage] = useState(1)
 
   // fetch data dari api
-  const [data,hasMore,loading] = FecthData(page,access)
 
+  const [data,hasMore,loading] = FecthData(page,state.access)
   useEffect(() => {
-      // window.location.reload()
-      protectAuth(access,refresh).then(e => e ? '' : setRedirect(true))
-
+    
+    // window.location.reload()
+    protectAuth(state.access,state.refresh).then(e => e ? '' : setState(prev => {
+                                                                        return {...prev,redirect:true}
+                                                                      }))
+    
+    console.log('hitung2')
 
   },[])
   
@@ -42,7 +46,7 @@ export const home = () => {
     if (node) observer.current.observe(node)
   }, [loading,hasMore])
   
-  if(redirect) return <Redirect to='/login'/>
+  if(state.redirect) return <Redirect to='/login'/>
   
   return (
     <div className="container">
@@ -80,7 +84,7 @@ export const home = () => {
                                   key        = {i}
                                               // membuat uniq key untuk modal
                                   id         = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
-                                  token      = {access}
+                                
                                   contentType= {item.content_type_id}
                                   postId     = {item.id}
                                   userId     = {item.user.id}
