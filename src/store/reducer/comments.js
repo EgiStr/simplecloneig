@@ -13,7 +13,7 @@ const delete_comment = (prev,comment) => {
 const initialState = {
     comments : [],
     replies : [],
-    is_comments : false,
+    parent : null,
     
 }
 
@@ -42,6 +42,11 @@ const comment = (state =initialState, action) => {
             return {
                 ...state,
                 comments:delete_comment(state.comments,py)
+            }
+        case 'UPDATE_PARENT' :
+            return {
+                ...state,
+                parent:py,
             }
             
 

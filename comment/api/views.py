@@ -15,9 +15,12 @@ from .serializers import (UpdateOrDeleteCommentSerializer,
 
 class GetCommentByPostApiView(ListAPIView):
     serializer_class = CommentChildrenSerializer
+    permission_classes = [AllowAny]
     def get_queryset(self):
-        qs = Comments.objects.filter(obj_id=self.kwargs['post_id'])
+       
+        qs = Comments.objects.filter(obj_id=self.kwargs['post_id']).filter(parent__isnull=True)
         return qs
+
 class GetRepliesByPostApiView(ListAPIView):
     serializer_class = CommentChildrenSerializer
     permission_classes= [AllowAny]

@@ -63,6 +63,7 @@ class CommentChildrenSerializer(ModelSerializer):
         
             'id',
             'user',
+            'parent',
             'obj_id',
             'content',
             'timestamp',
