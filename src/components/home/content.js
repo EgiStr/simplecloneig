@@ -19,10 +19,10 @@ class Content extends Component {
     constructor(props){
         super(props)
         this.state = {
+            show : false,
             redirect:false,
             redirectUrl:'',
             likes : this.props.like,
-            comment :'',
             buttonLikeClass:'small material-icons icon red-text',
             buttonNotClass:'small material-icons icon',
      
@@ -106,20 +106,22 @@ class Content extends Component {
                 )}
             <div>
                 {/* comment  */}
-                <a className="modal-trigger" href={`#modal_id${this.props.id}`}><i className="small material-icons icon ">comment</i></a>
+                <a className="modal-trigger"  href={`#modal_id${this.props.id}`}><i className="small material-icons icon ">comment</i></a>
                     {/* lazy loading modal dengan react */}
+                            
                     <Suspense fallback={<div></div>}>
                         <Modal 
                             key ={this.props.id}
                             id = {this.props.id}
+                            postId= {this.props.postId}
                             username = {this.props.username}
                             profil = {urlProfil}
                             contentType={this.props.contentType}
                             obj_id = {this.props.postId}
-                            comments = {this.props.comment}
                         />
                     </Suspense>
-          </div>
+                
+            </div>
                         {/* feature */}
           <i className="small material-icons icon ">near_me</i>
         </div>

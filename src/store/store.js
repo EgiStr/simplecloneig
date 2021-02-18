@@ -1,11 +1,14 @@
 import {createStore,combineReducers,applyMiddleware,compose} from 'redux'
 import follow from './reducer/follow' ;
 import auth from './reducer/auth' ;
-import thunk from 'redux-thunk'
+import comment from './reducer/comments'
+import thunk from 'redux-thunk' ;
 
 const rootReducer = combineReducers({
     follow,
     auth,
+    comment,
+
 })
 const middlwares = applyMiddleware(thunk)
 
