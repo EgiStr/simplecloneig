@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from "react";
 import M from "materialize-css/dist/js/materialize.min.js";
 import axios from "axios";
-import { parseJwt } from "../navbar/Navbar";
+import { parseJwt } from "../../navbar/Navbar";
 import Cookies from "js-cookie";
 
-import { protectAuth } from "../auth/auth";
+import { protectAuth } from "../../auth/auth";
+
 import Avatar from "@material-ui/core/Avatar";
-import "../../AccountEdit.css";
+
+import "../../../AccountEdit.css";
 
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + Cookies.get("access");

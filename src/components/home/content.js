@@ -8,11 +8,12 @@ import { InView } from 'react-intersection-observer'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
+import {parseJwt} from '../navbar/Navbar'
 import {like_post_with,unlike_post_with} from '../../action/auth'
 
 import '../../content.css'
 
-const Modal = lazy(()=> import('./modal'))
+const Modal = lazy(()=> import('./comment/modal'))
 
 
 class Content extends Component {
@@ -25,12 +26,12 @@ class Content extends Component {
             likes : this.props.like,
             buttonLikeClass:'small material-icons icon red-text',
             buttonNotClass:'small material-icons icon',
-     
+            
         }
-        
+        this.user_id = parseJwt(Cookies.get('access')).user_id 
     }
     
-       
+    
     handleProfilRedirect = (Userid) => this.setState({redirect:true,redirectUrl:`/profile/${Userid}`})
     
     preloadingImg = (img) => {
@@ -46,7 +47,8 @@ class Content extends Component {
             data:
             {
                 post:postId,
-                user:this.props.user_id
+                user:this.user_id
+                
             },
             headers:
             {
@@ -56,11 +58,11 @@ class Content extends Component {
         .then(res => {
             // jiga ga ada id berarti menghapus
             const prev = localStorage.getItem('like').split(",").map(Number)
-    
+            
             res.data.id === undefined ? this.setState({ likes : this.state.likes - 1}) : this.setState({ likes : this.state.likes+1})            
             res.data.id === undefined ? this.props.unlike_post_with(prev,this.props.postId) : this.props.like_post_with(prev,this.props.postId)        
             res.data.id === undefined ? this.setState({buttonLikeClass :'small material-icons icon',buttonNotClass:'small material-icons icon'}) 
-                                      : this.setState({buttonLikeClass :'small material-icons icon red-text',buttonNotClass:'small material-icons icon red-text'})
+            : this.setState({buttonLikeClass :'small material-icons icon red-text',buttonNotClass:'small material-icons icon red-text'})
             
         })
         .catch(e => {console.log(e)})
@@ -72,7 +74,7 @@ class Content extends Component {
         const has_like = localStorage.getItem('like').split(",").map(Number).includes(this.props.postId)
         const urlProfil = `http://127.0.0.1:8000${this.props.avatar}`;
         
-
+        
         
         return (
         <div className="box">
@@ -92,7 +94,7 @@ class Content extends Component {
                 <div ref={ref}>
                     {inView ? (this.preloadingImg(entry.target.firstChild)) : (null)}
                                             {/* placeholder burik  */}
-                    <img loading="auto" src='data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAJAA4DASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAlEAABAgQEBwAAAAAAAAAAAAABAgMABAYRBRIhMRM0NXGBkbL/xAAVAQEBAAAAAAAAAAAAAAAAAAABA//EABoRAAICAwAAAAAAAAAAAAAAAAECABIDERP/2gAMAwEAAhEDEQA/AAaWpluWZM5OKYmV3HACX0hYJ1JIzaWNt/Rg+qMQcUzKsmWQXGhYvFGVat9DY7RHhvTF90fKoFq7nfAh57axkmKrjqBP/9k=' className="contentImage" data-src={this.props.imageUrl} alt="foto" />
+                    <img src='data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAJAA4DASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAlEAABAgQEBwAAAAAAAAAAAAABAgMABAYRBRIhMRM0NXGBkbL/xAAVAQEBAAAAAAAAAAAAAAAAAAABA//EABoRAAICAwAAAAAAAAAAAAAAAAECABIDERP/2gAMAwEAAhEDEQA/AAaWpluWZM5OKYmV3HACX0hYJ1JIzaWNt/Rg+qMQcUzKsmWQXGhYvFGVat9DY7RHhvTF90fKoFq7nfAh57axkmKrjqBP/9k=' className="contentImage" data-src={this.props.imageUrl} alt="foto" />
                 </div>
                 )}
             </InView>

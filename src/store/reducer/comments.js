@@ -8,12 +8,17 @@ const delete_comment = (prev,comment) => {
     return newcomment
 }
 
+const delete_comment_replies = (prev,comment) => {
+    const newcomment = prev.filter(pv => pv.id !== comment)
+    return newcomment
+}
+
 
 
 const initialState = {
     comments : [],
     replies : [],
-    is_comments : false,
+    parent : null,
     
 }
 
@@ -43,6 +48,20 @@ const comment = (state =initialState, action) => {
                 ...state,
                 comments:delete_comment(state.comments,py)
             }
+
+        case 'DELETE_COMMENTS_REPLIES':
+            return {
+                ...state,
+                replies:delete_comment_replies(state.replies,py)
+            }
+
+        case 'UPDATE_PARENT' :
+            return {
+                ...state,
+                parent:py,
+            }
+        
+
             
 
         default :

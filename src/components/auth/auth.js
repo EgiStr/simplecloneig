@@ -93,7 +93,10 @@ export const requestLogin = async (accessToken ,refreshToken) => {
         // mengunakan home page agar dapat mengetest token
         axios.get('http://127.0.0.1:8000/api/',{headers:{"Authorization": 'Bearer ' + token  }})
         // jika berhasil maka hasilnya true / dan user sudah auth
-        .then(e => resolve(true))
+        .then(e => {
+            resolve(true)
+            return false 
+        })
         .catch( e => {
             // jika unauthor
             if(e.request.status === 401){
