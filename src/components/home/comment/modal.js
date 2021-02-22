@@ -122,7 +122,6 @@ class Modal extends Component {
                             {parent ? (<p onClick={() => {this.handlecancle()}}>your replies click cancel </p>) : (null)}
                         
                             <input
-                                ref={node => {this.refComment = node}}
                                 value={this.state.comment}
                                 onChange={(event) => {this.handleCommentContent(event)}}
                                 placeholder={`Add a comment To post. ${this.props.username}` }

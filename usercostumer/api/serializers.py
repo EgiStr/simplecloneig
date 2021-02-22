@@ -51,25 +51,6 @@ class PostProfilSerializer(ModelSerializer):
 
 
 
-class FollowingSerializer(ModelSerializer):
-    user = SerializerMethodField()
-    class Meta:
-        model = UserFollowing
-        fields = ("id", "user", "created")
-    
-    def get_user(self,obj):
-        return obj.user.nickname
-
-class FollowersSerializer(ModelSerializer):
-    following_user = SerializerMethodField()
-    class Meta:
-        model = UserFollowing
-        fields = ("id", "following_user", "created")
-    
-    def get_following_user(self,obj):
-        return obj.following_user.nickname
-
-
 class UserEditProfil(ModelSerializer):
     class Meta:
         model = UserProfil
@@ -91,6 +72,27 @@ class UserProfilPostserializer(ModelSerializer):
             'nickname',
             'profil',
         ]
+
+
+class FollowingSerializer(ModelSerializer):
+    user = SerializerMethodField()
+    class Meta:
+        model = UserFollowing
+        fields = ("id", "user", "created")
+    
+    def get_user(self,obj):
+        
+        return UserProfilPostserializer(obj.following_user).data
+
+class FollowersSerializer(ModelSerializer):
+    following_user = SerializerMethodField()
+    class Meta:
+        model = UserFollowing
+        fields = ("id", "following_user", "created")
+    
+    def get_following_user(self,obj):
+        
+        return UserProfilPostserializer(obj.user).data
 class ChangePasswordSerializer(serializers.Serializer):
     model = User
 

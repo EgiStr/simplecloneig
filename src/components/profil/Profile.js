@@ -9,6 +9,7 @@ import Cookies from 'js-cookie'
 import {protectAuth} from '../auth/auth'
 import {getFollower,is_follow} from '../../action/follow'
 import {connect} from 'react-redux'
+import ModalFollow from './follow/modelFollow'
 import '../../Profile.css'
 
 
@@ -20,6 +21,7 @@ class Profile extends Component{
         this.state = {
             access: Cookies.get('access'),
             refresh: Cookies.get('refresh'),
+            type : null,
             follow : 'follow',
             unfollow : 'unfollow',
             redirect : false,
@@ -28,11 +30,12 @@ class Profile extends Component{
             
         }
     }
-
+    
     componentDidMount(){
+      
         protectAuth(this.state.access,this.state.refresh).then(e => !e ? window.location.reload(): this.setState({redirect:false}))
         this.props.getFollower(this.state.access)
-
+        
         const id = this.props.match.params.id;
         
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
@@ -101,8 +104,14 @@ class Profile extends Component{
                         </div>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                             <h6 style={{ fontWeight: "300" }}>{data.post_count} Posts</h6>
-                            <h6 style={{ fontWeight: "300", margin: "12px 25px", cursor: "pointer" }}>{follower ? follower.length : null} Followers</h6>
-                            <h6 style={{ fontWeight: "300", cursor: "pointer" }}>{following ? following.length : null} Followings</h6>
+                            <h6 style={{ fontWeight: "300", margin: "12px 25px", cursor: "pointer" }} onClick={() => this.setState({type:true})} className="modal-trigger" href={`#modal_id_follow`} >{follower ? follower.length : null} Followers</h6>
+                            <h6 style={{ fontWeight: "300", cursor: "pointer" }} onClick={() => this.setState({type:false})} className="modal-trigger" href={`#modal_id_follow`} >{following ? following.length : null} Followings</h6>
+                            
+                            <ModalFollow 
+                                type={this.state.type}
+                                id = {idUser}
+                                token = {this.state.access}
+                            />
                         </div>
                         <div>
                             <h6 style={{ fontWeight: "500", fontSize: "15px", marginBottom: "-10px" }}>{data.nickname} </h6>

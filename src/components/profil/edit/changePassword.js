@@ -38,6 +38,7 @@ function changePassword() {
 
     
     useEffect(()=> {
+        console.log('render')
       
         protectAuth(access,refresh).then(e => e ? '' : window.location.reload() )    
 

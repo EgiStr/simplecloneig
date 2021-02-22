@@ -34,7 +34,8 @@ class AccountEdit extends Component {
   }
 
   componentDidMount() {
-
+    console.log('render')
+      
     protectAuth(this.state.access, this.state.refresh).then((e) =>
       !e ? window.location.reload() : null
     );

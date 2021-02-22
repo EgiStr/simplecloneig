@@ -92,6 +92,22 @@ class DetailUserFollowerApiView(ListAPIView):
         qs = UserFollowing.objects.filter(following_user__user__id=self.request.user.id)
         return qs
 
+class DetailUserFollowerUserApiView(ListAPIView):
+    serializer_class = FollowersSerializer
+    
+    def get_queryset(self):
+        
+        qs = UserFollowing.objects.filter(following_user__user__id=self.kwargs['id'])
+        return qs
+
+class DetailUserFollowingUserApiView(ListAPIView):
+    serializer_class = FollowingSerializer
+    
+    def get_queryset(self):
+        
+        qs = UserFollowing.objects.filter(user__user__id=self.kwargs['id'])
+        return qs
+
 class DetailUserFollowingApiView(ListAPIView):
     serializer_class = FollowingSerializer
     permission_classes=[IsAuthenticated]
