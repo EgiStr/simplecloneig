@@ -52,6 +52,22 @@ export const delete_comment = (id,access) => (dispatch,getstate) => {
     .catch(e => console.log(e))
 }
 
+export const delete_comment_replies = (id,access) => (dispatch,getstate) => {
+    console.log(access)
+    axios.delete(`http://127.0.0.1:8000/comment/edit/${id}/`,
+    {headers : {
+        'Authorization' : 'Bearer ' + access
+    }})
+    .then(res => {
+       
+        dispatch({
+            type:'DELETE_COMMENTS_REPLIES',
+            payload:id,
+        })
+    })
+    .catch(e => console.log(e))
+}
+
 export const add_parent = (parent) => (dispatch) => {
     dispatch({
         type:'UPDATE_PARENT',

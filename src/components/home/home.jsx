@@ -1,11 +1,14 @@
 import React , {useState,useEffect,useRef,useCallback} from 'react'
+
 import {Redirect} from 'react-router-dom'
+
 import axios from 'axios'
 
 import Content from './content'
 import Cookies from 'js-cookie'
 
 import FecthData from './fetchData'
+
 import {protectAuth} from '../auth/auth'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')

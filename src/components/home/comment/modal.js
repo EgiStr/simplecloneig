@@ -8,15 +8,15 @@ import Cookies from 'js-cookie'
 import { connect } from 'react-redux'
 
 import { get_comment,
-        add_comment,
+         add_comment,
          add_parent
-                        } from '../../action/comment'
+                        } from '../../../action/comment'
 
 import CommentUser  from './comment'
 
 
-import { protectAuth } from '../auth/auth'
-import { parseJwt } from '../navbar/Navbar'
+import { protectAuth } from '../../auth/auth'
+import { parseJwt } from '../../navbar/Navbar'
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 const user_id = parseJwt(Cookies.get('access')).user_id
@@ -29,7 +29,6 @@ class Modal extends Component {
 
     componentDidMount(){
         protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : window.location.reload())
-    
         const options = {
             onOpenStart: () => {
                 this.props.get_comment(this.props.postId)
@@ -57,17 +56,18 @@ class Modal extends Component {
             axios({
                 method:'POST',
                 url:'http://127.0.0.1:8000/comment/create/',
-                headers:{
-                    "Authorization": 'Bearer ' + Cookies.get('access')
-                        },
                 data:{
+                    
                     user: user_id,
                     content_type:contentType,
                     obj_id:obj_id,
                     content:content,
                     parent : parent,
-                }
-    
+                },
+                headers: {
+                    "Authorization": 'Bearer ' + Cookies.get('access')
+                        },
+                
             })
             .then(res => {
              
@@ -89,7 +89,7 @@ class Modal extends Component {
         // console.log(this.props.comments.user);
         const comments = this.props.comments
         const parent = this.props.parent
-        console.log(parent)
+      
         return (
             <div ref={ Modal => { this.Modal = Modal;}} id={`modal_id${this.props.id}`} className="modal bottom-sheet modal-fixed-footer">
                 <div className="modal-content " ref={node => this.modalRef = node}>
@@ -103,7 +103,7 @@ class Modal extends Component {
                                             user = {user_id === item.user.id}
                                             id = {item.id}
                                             profil = {item.user.profil}
-                                            username = {item.user.nickname}
+                                            nickname = {item.user.nickname}
                                             content = {item.content}
                                             replies = {item.replies}
                                         />

@@ -1,25 +1,22 @@
-import React, {useEffect,useState} from 'react'
+import React, { useEffect } from 'react'
 
-import { protectAuth } from '../auth/auth'
+import { protectAuth } from '../../auth/auth'
 
 import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
-import { 
-    delete_comment,
-
-                   } from '../../action/comment'
+import { delete_comment_replies } from '../../../action/comment'
 
 
 
-const Childcomment = ({user,nickname,profil,content,id,delete_comment}) => {
-    
+const Childcomment = ({user,nickname,profil,content,id,delete_comment_replies}) => {
+  
     useEffect( () => {
      protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : window.location.reload())   
     },[])
 
-    const handleRemove = id =>  delete_comment(id,Cookies.get('access'))
-    
+    const handleRemove = id =>  delete_comment_replies(id,Cookies.get('access'))
+  
     
     if(user){
         return (
@@ -53,4 +50,4 @@ const mapStateToProps = state => {
         replies_comment : state.comment.replies,
     }
 }
-export default connect(mapStateToProps,{delete_comment})(Childcomment)
+export default connect(mapStateToProps,{delete_comment_replies})(Childcomment)

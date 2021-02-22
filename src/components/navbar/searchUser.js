@@ -35,7 +35,7 @@ export const SearchUser = () => {
             <input onChange={(event)=>{setSearch(event.target.value)}}></input>        
 
              <ul className="collection">
-            {console.log(data)}
+    
             {data.length > 0 ? data.map((item) => {
                 return (<li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} onClick={() => {redirect(item.id)}} className="collection-item avatar">                                       
                 <img loading='lazy' src={item.profil} className="circle" alt="...."/>
