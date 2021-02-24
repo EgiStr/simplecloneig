@@ -45,15 +45,15 @@ class Content extends Component {
             method:'post',
             url: 'http://127.0.0.1:8000/api/like/',
             data:
-            {
-                post:postId,
-                user:this.user_id
-                
-            },
+                {
+                    post:postId,
+                    user:this.user_id
+                    
+                },
             headers:
-            {
-                "Authorization": 'Bearer ' + Cookies.get('access')
-            }
+                    {
+                        "Authorization": 'Bearer ' + Cookies.get('access')
+                    }
         })
         .then(res => {
             // jiga ga ada id berarti menghapus
@@ -142,8 +142,8 @@ class Content extends Component {
 // }
 const mapStateToProps = state => {
    return { 
-    
-       user_id :state.auth.user.user_id,
+    state   
+    //    user_id :state.auth.user.user_id,
 }}
 
 export default connect(mapStateToProps,{like_post_with,unlike_post_with})(Content);

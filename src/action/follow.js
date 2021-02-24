@@ -56,7 +56,6 @@ export const getFollowingUser = (access,id) => (dispatch,getstate) => {
 
 export const is_follow = (array) => (dispatch,getstate) => {
     const me = getstate().follow.followings
-   
     const target = array
     let trueorfalse = false
     for(let i =0 ; i < me.length ; i++){

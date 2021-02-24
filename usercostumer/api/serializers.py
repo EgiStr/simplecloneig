@@ -1,8 +1,7 @@
 
-from django.db.models.base import Model
 from django.db.models.deletion import SET_NULL
 
-from rest_framework.serializers import ModelSerializer,SerializerMethodField,HyperlinkedIdentityField
+from rest_framework.serializers import ModelSerializer,SerializerMethodField
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
@@ -95,13 +94,12 @@ class FollowersSerializer(ModelSerializer):
         return UserProfilPostserializer(obj.user).data
 class ChangePasswordSerializer(serializers.Serializer):
     model = User
-
     """
     Serializer for password change endpoint.
     """
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True, validators=[validate_password])
-    new_password2 = serializers.CharField(write_only=True,required=True)
+    new_password2 = serializers.CharField(required=True)
     
 
 class UserProfilSerialzer(ModelSerializer):

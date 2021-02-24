@@ -53,6 +53,7 @@ class ModalFollow extends Component {
                         return <Follower 
                                 key={i}
                                 user = {e.user}
+                                id_follower = {e.id}
                                 />
                     })
                     ) : (
@@ -60,6 +61,7 @@ class ModalFollow extends Component {
                         return <Following 
                                 key = {i}
                                 user ={e.following_user}
+                                id_following = {e.id}
                         />
                       
                     })

@@ -54,6 +54,18 @@ class Post(models.Model):
     def __str__(self):
         return 'post of {}. caption:{}'.format(self.user,self.caption)
      
+class SavePostUser(models.Model):
+    user = models.ForeignKey(UserProfil, related_name="username", on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name="posting", on_delete=models.CASCADE)
+    create_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+    class Meta:
+        ordering =['-create_at']
+
+    def __str__(self):
+        return f'{self.user.nickname} mensave post {self.post.user.nickname}'
+
+
 class Like(models.Model):
     post = models.ForeignKey(Post, related_name='liked_post',on_delete=models.CASCADE)
     user = models.ForeignKey(UserProfil, related_name='liker',on_delete=models.CASCADE)

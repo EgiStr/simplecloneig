@@ -1,11 +1,10 @@
-# from posts.models import Post
 from django.db import models
 from django.conf import settings
-from django.db.models.fields import CharField 
+
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from PIL import Image
-# from posts.models import Post
+
 
 
 # Create your models here.
@@ -15,8 +14,8 @@ class UserProfil(models.Model):
         ('female','Female')
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    nickname = CharField(max_length=30)
-    profil = models.ImageField(upload_to='media/image/profil',default='media/image/profil/default.jpg')
+    nickname = models.CharField(max_length=30)
+    profil = models.ImageField(upload_to='media/image/profil',default='media/image/profil/default.png')
     bio = models.TextField(blank=True, null=True)
     email  = models.EmailField(max_length=254,blank=True, null=True)
     nomorHp= models.PositiveIntegerField(blank=True, null=True)
@@ -28,10 +27,8 @@ class UserProfil(models.Model):
 
         # compress image with PIllow before upload to database
         img = Image.open(self.profil.path)
-        
         myHeight , myWidht = img.size
         img = img.resize((myHeight,myWidht),Image.ANTIALIAS)
-        
         img.save(self.profil.path)
 
     @property
