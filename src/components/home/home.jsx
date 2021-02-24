@@ -1,51 +1,49 @@
-import React , {useState,useEffect,useRef,useCallback} from 'react'
-
-import {Redirect} from 'react-router-dom'
-
-import axios from 'axios'
+import React , { useState,useEffect,useRef,useCallback } from 'react'
 
 import Content from './content'
-import Cookies from 'js-cookie'
+
 
 import FecthData from './fetchData'
+import { protectAuth } from '../auth/auth'
 
-import {protectAuth} from '../auth/auth'
+import { Redirect } from 'react-router-dom'
+import Cookies from 'js-cookie'
+import axios from 'axios'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 
 export const home = () => {
-  const [state,setState] = useState({
-                                      access:Cookies.get('access'),
-                                      refresh:Cookies.get('refresh'),
-                                      redirect:false,
-                                    })
+  const [state,setState] = useState({redirect:false,})
   const [page,setPage] = useState(1)
 
   // fetch data dari api
 
-  const [data,hasMore,loading] = FecthData(page,state.access)
+  const [data,hasMore,loading] = FecthData(page,Cookies.get('access'))
+
   useEffect(() => {
-    
     // window.location.reload()
-    protectAuth(state.access,state.refresh).then(e => e ? '' : setState(prev => {
-                                                                        return {...prev,redirect:true}
-                                                                      }))
-    
-    console.log('hitung2')
+    protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : setState({redirect:true}))
 
   },[])
   
   
   // infinite scroll
+  // ref element terakhir
   const observer = useRef(null)
   const lastBookElementRef = useCallback ( node => {   
+    // loading tidak di exe
     if (loading) return
+    // kalau udh pernah ada yang terakhir disconnect 
     if (observer.current) observer.current.disconnect()
+    // bikin baru observer baru
     observer.current = new IntersectionObserver(entries => {
+      // kalau ada observer terlihat maka fecth baru 
       if (entries[0].isIntersecting && !hasMore) {
         setPage(prevPageNumber => prevPageNumber + 1)}
       })
+      // kalo ada node inisialisasi dengan observer
+
     if (node) observer.current.observe(node)
   }, [loading,hasMore])
   
@@ -67,7 +65,6 @@ export const home = () => {
                                   id          = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
                                   contentType = {item.content_type_id}
                                   postId      = {item.id}
-                               
                                   userId      = {item.user.id}
                                   username    = {item.user.nickname}
                                   captions    = {item.caption}
@@ -82,12 +79,12 @@ export const home = () => {
                           )
 
                         }else{
+
                           return ( 
                           <Content 
                                   key        = {i}
                                               // membuat uniq key untuk modal
                                   id         = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
-                                
                                   contentType= {item.content_type_id}
                                   postId     = {item.id}
                                   userId     = {item.user.id}
@@ -100,19 +97,22 @@ export const home = () => {
                                   />)
                         }
                     }) : null}
-                   
-                    {loading ?  <div>
-                                    <div className="spinner-layer spinner-red">
-                                      <div className="circle-clipper left">
-                                        <div className="circle"></div>
-                                      </div><div className="gap-patch">
-                                        <div className="circle"></div>
-                                      </div><div className="circle-clipper right">
-                                        <div className="circle"></div>
-                                      </div>
-                                      <p>realod if take to long</p>
-                                    </div>
-                                </div> : null }
+             
+                    {loading ? (
+                      <div class="preloader-wrapper active">
+                        <div class="spinner-layer spinner-red">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div><div class="gap-patch">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (null) }
+                    {loading && <p>relog if take to long</p>}
                 </div>
             </div>
         </div>

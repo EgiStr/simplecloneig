@@ -114,7 +114,7 @@ class Profile extends Component{
                             />
                         </div>
                         <div>
-                            <h6 style={{ fontWeight: "500", fontSize: "15px", marginBottom: "-10px" }}>{data.nickname} </h6>
+                            <h6 style={{ fontWeight: "500", fontSize: "15px", marginBottom: "-10px" }}>{data.name} </h6>
                             <p>{data.bio}</p>
                         </div>
                     </div>

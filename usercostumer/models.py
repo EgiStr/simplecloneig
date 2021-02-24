@@ -15,6 +15,7 @@ class UserProfil(models.Model):
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
     profil = models.ImageField(upload_to='media/image/profil',default='media/image/profil/default.png')
     bio = models.TextField(blank=True, null=True)
     email  = models.EmailField(max_length=254,blank=True, null=True)
@@ -63,6 +64,7 @@ def post_save_user(instance,created,*args, **kwargs):
             user=instance,
             nickname=str("@"+instance.username),
             email=instance.email,
+            name = str(instance.username)
     
         )
     

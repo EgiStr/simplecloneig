@@ -1,15 +1,15 @@
-import React ,{Component,lazy,Suspense}from "react";
+import React ,{ Component,lazy,Suspense }from "react";
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
 
 
 import { InView } from 'react-intersection-observer'
-
-import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+ 
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import Cookies from 'js-cookie'
-import {parseJwt} from '../navbar/Navbar'
-import {like_post_with,unlike_post_with} from '../../action/auth'
+import { parseJwt } from '../navbar/Navbar'
+
 
 import '../../content.css'
 
@@ -57,10 +57,10 @@ class Content extends Component {
         })
         .then(res => {
             // jiga ga ada id berarti menghapus
-            const prev = localStorage.getItem('like').split(",").map(Number)
+          
             
             res.data.id === undefined ? this.setState({ likes : this.state.likes - 1}) : this.setState({ likes : this.state.likes+1})            
-            res.data.id === undefined ? this.props.unlike_post_with(prev,this.props.postId) : this.props.like_post_with(prev,this.props.postId)        
+            
             res.data.id === undefined ? this.setState({buttonLikeClass :'small material-icons icon',buttonNotClass:'small material-icons icon'}) 
             : this.setState({buttonLikeClass :'small material-icons icon red-text',buttonNotClass:'small material-icons icon red-text'})
             
@@ -71,6 +71,7 @@ class Content extends Component {
     render(){
         
         if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />
+       
         const has_like = localStorage.getItem('like').split(",").map(Number).includes(this.props.postId)
         const urlProfil = `http://127.0.0.1:8000${this.props.avatar}`;
         
@@ -146,4 +147,4 @@ const mapStateToProps = state => {
     //    user_id :state.auth.user.user_id,
 }}
 
-export default connect(mapStateToProps,{like_post_with,unlike_post_with})(Content);
+export default connect(mapStateToProps)(Content);

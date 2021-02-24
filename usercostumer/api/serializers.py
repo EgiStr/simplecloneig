@@ -56,6 +56,7 @@ class UserEditProfil(ModelSerializer):
         fields =[
             'bio',
             'gender',
+            'name',
             'profil',
             'nomorHp',
             'email',
@@ -113,6 +114,7 @@ class UserProfilSerialzer(ModelSerializer):
         fields = [
             'user',
             'id',
+            'name',
             'follower',
             'following',
             'nickname',

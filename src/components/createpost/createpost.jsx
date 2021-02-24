@@ -1,21 +1,25 @@
 import React, { Component } from 'react'
 
 import Dropzone from 'react-dropzone'
+
+import M from "materialize-css";
+
 import ReactCrop from 'react-image-crop'
 
 import { image64toCanvasRef, extractImageFileExtensionFromBase64, base64StringtoFile } from '../method/base64'
+
 import { formatBytes } from '../method/convert'
 import { parseJwt } from '../navbar/Navbar'
 import Cookies from 'js-cookie'
 import { protectAuth } from '../auth/auth'
-import '../../cp.css'
+import { Redirect } from 'react-router-dom'
+import { Avatar } from '@material-ui/core'
 
 
 import axios from 'axios'
 
+import '../../cp.css'
 import 'react-image-crop/dist/ReactCrop.css'
-import { Redirect } from 'react-router-dom'
-import { Avatar } from '@material-ui/core'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
@@ -50,6 +54,18 @@ class CreatePost extends Component {
         if (!protectAuth()) {
             this.setState({ redirect: true, redirectUrl: '/login' })
         }
+        const options = {
+            onOpenStart: () => {              
+            },
+            
+            inDuration: 250,
+            outDuration: 250,
+            opacity: 0.5,
+            dismissible: false,
+            startingTop: "4%",
+            endingTop: "10%"
+          };
+          M.Modal.init(this.Modal, options);
     }
 
     // method validate foto
@@ -134,6 +150,7 @@ class CreatePost extends Component {
 
 
     handleSubmit = () => {
+        protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : window.location.reload())
 
         const { urlJadi, caption } = this.state
         const user = parseJwt(Cookies.get('access')).user_id
@@ -166,11 +183,7 @@ class CreatePost extends Component {
     // }
 
     render() {
-        document.addEventListener('DOMContentLoaded', function () {
-            const M = window.M;
-            var elems = document.querySelectorAll('.modal');
-            M.Modal.init(elems, {});
-        });
+
         if (this.state.redirect) return <Redirect to={this.state.redirectUrl} />
         return (
             <div className="container" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
@@ -187,8 +200,8 @@ class CreatePost extends Component {
                         </a>
                     </div>
                 </div>
-                <div id="modal1" class="modal">
-                    <div class="modal-content">
+                <div ref={modal => this.Modal = modal} id="modal1" className="modal">
+                    <div className="modal-content">
                         <h4>Modal Header</h4>
                         <Dropzone onDrop={this.handleOnDrop} accept={'image/*'} multiple={false}>
                             {({ getRootProps, getInputProps }) => (
@@ -236,8 +249,8 @@ class CreatePost extends Component {
                         {/* <input type="file" name="name" id="1" onChange={this.handleUploadImage} /> */}
                         <button className="btn" onClick={this.handleSubmit}>send</button>
                     </div>
-                    <div class="modal-footer">
-                        <a href="#!" class="modal-close">Agree</a>
+                    <div className="modal-footer">
+                        <a href="#!" className="modal-close">Agree</a>
                     </div>
                 </div>
 

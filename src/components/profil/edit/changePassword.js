@@ -5,7 +5,7 @@ import Avatar from '@material-ui/core/Avatar'
 import { Container } from '@material-ui/core'
 
 import axios from 'axios' ;
-import Cookies, { set } from 'js-cookie'
+import Cookies from 'js-cookie'
 
 import { protectAuth } from '../../auth/auth'
 

@@ -1,7 +1,7 @@
 import React ,{ useState , useEffect} from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { is_follow } from '../../../action/follow'
+
 import { connect } from 'react-redux'
 
 const Follower = ({user_id,user,following_user,id_follower}) => {
@@ -29,7 +29,7 @@ const Follower = ({user_id,user,following_user,id_follower}) => {
     }
     
     const handleFollow = () => {
-        let formData = new FormData ;
+        let formData = new FormData() ;
         formData.append('user', user.id)
         formData.append('following_user',user_id)
         axios.post('http://127.0.0.1:8000/auth/following/',
@@ -40,7 +40,7 @@ const Follower = ({user_id,user,following_user,id_follower}) => {
             .then(res => {
                 res.data.id === undefined ? setState({follow:'follow',unfollow:'follow'}) : setState({follow:'Following',unfollow:'Following'})
             })
-            .catch(e => console.log(e))
+            .catch(e => console.log(e.request))
         
     }
 
@@ -49,8 +49,9 @@ const Follower = ({user_id,user,following_user,id_follower}) => {
             <li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} className="collection-item avatar">                                       
                 <img loading='lazy' src={`http://127.0.0.1:8000${user.profil}`} className="circle" alt="...."/>
                 <span className="title">{user.nickname}</span>
-                <a className="secondary-content btn" onClick={() => handleFollow()} >{state.is_follow ? state.unfollow : state.follow}</a>
-            </li>
+                {user.id === user_id ? '' 
+                : <a className="secondary-content btn" onClick={() => handleFollow()} >{state.is_follow ? state.unfollow : state.follow}</a>}
+               </li>
         </ul>
     )
 }

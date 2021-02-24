@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 
 import M from "materialize-css";
 
-import Avatar from "@material-ui/core/Avatar";
+
 import { connect } from 'react-redux'
 
 import {getFollowerUser , getFollowingUser} from '../../../action/follow'

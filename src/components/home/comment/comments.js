@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import { protectAuth } from '../../auth/auth'
 
@@ -10,12 +10,11 @@ import { delete_comment_replies } from '../../../action/comment'
 
 
 const Childcomment = ({user,nickname,profil,content,id,delete_comment_replies}) => {
-  
-    useEffect( () => {
-     protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : window.location.reload())   
-    },[])
-
-    const handleRemove = id =>  delete_comment_replies(id,Cookies.get('access'))
+    
+    const handleRemove = id => {
+        protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
+        delete_comment_replies(id,Cookies.get('access'))
+    }
   
     
     if(user){

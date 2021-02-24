@@ -1,10 +1,12 @@
-import React, {Component} from 'react'
-import M from "materialize-css";
+import React, { Component } from 'react'
 
+import M from "materialize-css";
 import Avatar from "@material-ui/core/Avatar";
+
 import axios from 'axios'
 
 import Cookies from 'js-cookie'
+
 import { connect } from 'react-redux'
 
 import { get_comment,
@@ -14,9 +16,9 @@ import { get_comment,
 
 import CommentUser  from './comment'
 
-
 import { protectAuth } from '../../auth/auth'
 import { parseJwt } from '../../navbar/Navbar'
+
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 const user_id = parseJwt(Cookies.get('access')).user_id
@@ -28,10 +30,11 @@ class Modal extends Component {
     }
 
     componentDidMount(){
-        protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : window.location.reload())
         const options = {
             onOpenStart: () => {
                 this.props.get_comment(this.props.postId)
+                protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
+      
             },
             
             inDuration: 250,
@@ -48,8 +51,9 @@ class Modal extends Component {
     handlecancle = () =>  this.props.add_parent(null)
     
     handleComment = (parent = this.props.parent) => {
-
-        let {contentType,obj_id} = this.props
+      
+        let { contentType,obj_id } = this.props
+      
         let content = this.state.comment
 
         if(content !== ''){
@@ -96,6 +100,7 @@ class Modal extends Component {
                     <h4>Comment</h4>
 
                     <div className="row post-row">
+                        
                         {comments ? (
                                 comments.map((item,i) => {
                                        return <CommentUser 
@@ -108,9 +113,7 @@ class Modal extends Component {
                                             replies = {item.replies}
                                         />
                                 })
-                            ) : (null)}
-                           
-                        
+                            ) : (null)}       
                     </div>
                     {/* style={{position:'fixed',bottom:0,left:0,}} need fix position */}
                 </div>
@@ -120,12 +123,12 @@ class Modal extends Component {
                         </div>
                         <div className="col s6 l5 post-btn-container" >
                             {parent ? (<p onClick={() => {this.handlecancle()}}>your replies click cancel </p>) : (null)}
-                        
                             <input
                                 value={this.state.comment}
                                 onChange={(event) => {this.handleCommentContent(event)}}
                                 placeholder={`Add a comment To post. ${this.props.username}` }
                             />        
+
                         </div>
                     <a className="modal-close waves-effect waves-green btn-flat" onClick={() => {this.handleComment(this.state.parentid)}}>
                     Send 

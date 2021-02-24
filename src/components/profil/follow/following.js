@@ -2,21 +2,36 @@ import React ,{ useState , useEffect} from 'react'
 
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { is_follow } from '../../../action/follow'
+
 import { connect } from 'react-redux'
 
 
-const Following = ({user_id,user,is_follow,is_user_follow,id_following}) => {
+const Following = ({user_id,user,id_following,following_user}) => {
     const [state,setState] = useState({
                                     follow : 'follow',
-                                    unfollow: 'unfollow'
-                                    })
+                                    unfollow: 'unfollow',
+                                    is_follow : false,
+                                })
+
     useEffect(() => {
-        is_follow([id_following])
-    },[user])
-    
+        const is_follow_user = check_is_follow(id_following)
+        if(is_follow_user){
+            setState({...state,is_follow : true })
+        }
+
+    },[])
+
+    const check_is_follow = (id) => {
+        const target = following_user
+        let trueorfalse = false
+        if(target.includes(id)){
+            trueorfalse = true
+        }
+        return trueorfalse 
+    }
+
     const handleFollow = () => {
-        let formData = new FormData ;
+        let formData = new FormData() ;
         formData.append('user', user.id)
         formData.append('following_user',user_id)
         axios.post('http://127.0.0.1:8000/auth/following/',
@@ -36,7 +51,8 @@ const Following = ({user_id,user,is_follow,is_user_follow,id_following}) => {
             <li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} className="collection-item avatar">                                       
                 <img loading='lazy' src={`http://127.0.0.1:8000${user.profil}`} className="circle" alt="...."/>
                 <span className="title">{user.nickname}</span>
-                <a className="secondary-content btn" onClick={() => {handleFollow()}} >{is_user_follow ? state.unfollow : state.follow}</a>
+                {user.id === user_id ? '' 
+                : <a className="secondary-content btn" onClick={() => handleFollow()} >{state.is_follow ? state.unfollow : state.follow}</a>}
             </li>
         </ul>
     )
@@ -44,9 +60,9 @@ const Following = ({user_id,user,is_follow,is_user_follow,id_following}) => {
 
 const mapStateToProps = state => {
     return {
-      is_user_follow:state.follow.is_following,
       user_id : state.auth.user.user_id,
+      following_user : state.follow.followings
     }
 }
 
-export default connect(mapStateToProps,{is_follow})(Following) ;
+export default connect(mapStateToProps)(Following) ;
