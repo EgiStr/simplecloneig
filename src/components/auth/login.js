@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import Cookies from 'js-cookie'
 
-import {connect} from 'react-redux'
-import {loginUser} from '../../action/auth'
+import { connect } from 'react-redux'
+import { loginUser } from '../../action/auth'
 import { get_post_like } from '../../action/auth'
 
 

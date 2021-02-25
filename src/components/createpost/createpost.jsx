@@ -9,7 +9,7 @@ import ReactCrop from 'react-image-crop'
 import { image64toCanvasRef, extractImageFileExtensionFromBase64, base64StringtoFile } from '../method/base64'
 
 import { formatBytes } from '../method/convert'
-import { parseJwt } from '../navbar/Navbar'
+import { parseJwt } from '../method/parseJwt'
 import Cookies from 'js-cookie'
 import { protectAuth } from '../auth/auth'
 import { Redirect } from 'react-router-dom'

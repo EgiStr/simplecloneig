@@ -14,16 +14,15 @@ class ModalFollow extends Component {
         super(props)
         this.state = {
             follow : true,
-            type : this.props.type,
         }
     }
 
     componentDidMount(){
         const options = {
             onOpenStart: () => {
-                if(this.props.type === false){
+                
+                if(this.props.type === null){
                     this.props.getFollowingUser(this.props.token,this.props.id)
-                 }else{
                     this.props.getFollowerUser(this.props.token,this.props.id)
                 }
               

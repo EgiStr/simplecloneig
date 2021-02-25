@@ -1,4 +1,4 @@
-import {parseJwt} from '../components/navbar/Navbar'
+import { parseJwt } from '../components/method/parseJwt'
 
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -11,12 +11,18 @@ export const loginUser = (access) => (dispatch) => {
     
     return dispatch({
         type:'LOGIN_SUCCESS',
-        payload :{
-            username :user.username,
-            user_id:user.user_id
-        }
+        payload : user
+        
     })
 } 
+
+
+export const LogoutAuth = () => dispatch => {
+    return dispatch({
+        type:'LOGOUT_SUCCESS',
+    })
+}
+
 
 export const get_post_like = () => (dispatch) => {
     

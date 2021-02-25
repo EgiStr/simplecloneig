@@ -13,8 +13,6 @@ import ModalFollow from './follow/modelFollow'
 import '../../Profile.css'
 
 
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
-
 class Profile extends Component{
     constructor(props){
         super(props)
@@ -43,7 +41,7 @@ class Profile extends Component{
             this.props.is_follow(res.data.follower.map(e => e.id))
             this.setState({data:res.data})
         })
-        .catch( e => console.log(e))
+        .catch( e => console.log(e.request))
         
     }
     
@@ -51,7 +49,7 @@ class Profile extends Component{
     
     handleFollow = () => {
         
-        const diikuti = parseInt(this.props.match.params.id,10)
+        const diikuti = this.state.data.id
         const pefollow = this.props.user.user_id
         
         let form = new FormData() ; 
@@ -72,12 +70,12 @@ class Profile extends Component{
     render(){
         if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />  
         
-        const authUser = this.props.user.user_id
-        const idUser = parseInt(this.props.match.params.id,10)
+        const authUser = this.props.user === null ? null : this.props.user.username
+        const idUser = this.props.match.params.id
+      
+        const data = this.state.data    
         
-        const data = this.state.data
-        
-        const {follower,following,post_data} = data
+        const {follower,following,post_data,id} = data
         
     
         return (
@@ -109,7 +107,7 @@ class Profile extends Component{
                             
                             <ModalFollow 
                                 type={this.state.type}
-                                id = {idUser}
+                                id = {id}
                                 token = {this.state.access}
                             />
                         </div>
@@ -131,10 +129,11 @@ class Profile extends Component{
                     <div className="posts_wrap">
 
                         {post_data ? (post_data.map( (item,index)=> {
+                            
                             return (
                             <Content 
-                            key={index * 1000 * Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
-                                id ={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
+                                key={index}
+                                id ={index}
                                 contentType = {item.content_type_id}
                                 postId   = {item.id}
                                 userId   = {item.user.id}
@@ -143,8 +142,6 @@ class Profile extends Component{
                                 imageUrl = {`http://127.0.0.1:8000${item.post}`}
                                 avatar   = {item.user.profil}
                                 like     = {item.likes}
-                                comment    = {item.comments}
-                                className="ci"      
                             />
 
                             )

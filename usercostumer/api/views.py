@@ -34,9 +34,15 @@ class RegisterUserApi(CreateAPIView):
     permission_classes = [AllowAny,]
 
 class UserProfilApiView(RetrieveAPIView):
-    queryset = UserProfil.objects.all()
     serializer_class = UserProfilSerialzer
-    permission_classes = [IsAuthenticatedOrReadOnly] 
+    permission_classes = [AllowAny] 
+    lookup_field = 'nickname'
+
+    def get_queryset(self):
+       
+        qs = UserProfil.objects.filter(nickname=self.kwargs['nickname'])
+
+        return qs
 
 
 class UserSearchApiView(ListAPIView):
@@ -44,7 +50,7 @@ class UserSearchApiView(ListAPIView):
     permission_classes =[IsAuthenticatedOrReadOnly]
     pagination_class = LimitPaginationSearch
     filter_backends = [SearchFilter,OrderingFilter]
-    search_fields = ['nickname']
+    search_fields = ['nickname','name']
 
     def get_queryset(self):
         qs = UserProfil.objects.all()

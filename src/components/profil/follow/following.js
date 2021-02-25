@@ -1,5 +1,6 @@
 import React ,{ useState , useEffect} from 'react'
 
+
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
@@ -7,10 +8,12 @@ import { connect } from 'react-redux'
 
 
 const Following = ({user_id,user,id_following,following_user}) => {
+    
     const [state,setState] = useState({
                                     follow : 'follow',
                                     unfollow: 'unfollow',
                                     is_follow : false,
+                               
                                 })
 
     useEffect(() => {
@@ -22,14 +25,13 @@ const Following = ({user_id,user,id_following,following_user}) => {
     },[])
 
     const check_is_follow = (id) => {
-        const target = following_user
-        let trueorfalse = false
-        if(target.includes(id)){
-            trueorfalse = true
+        
+        if(following_user.includes(id)){
+            return true
         }
-        return trueorfalse 
+        return false 
     }
-
+    
     const handleFollow = () => {
         let formData = new FormData() ;
         formData.append('user', user.id)
@@ -48,7 +50,7 @@ const Following = ({user_id,user,id_following,following_user}) => {
 
     return (
         <ul className="collection">
-            <li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} className="collection-item avatar">                                       
+            <li  key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} className="collection-item avatar">                                       
                 <img loading='lazy' src={`http://127.0.0.1:8000${user.profil}`} className="circle" alt="...."/>
                 <span className="title">{user.nickname}</span>
                 {user.id === user_id ? '' 

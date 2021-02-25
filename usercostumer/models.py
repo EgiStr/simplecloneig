@@ -62,7 +62,7 @@ def post_save_user(instance,created,*args, **kwargs):
     if created:
         UserProfil.objects.create(
             user=instance,
-            nickname=str("@"+instance.username),
+            nickname=str(instance.username),
             email=instance.email,
             name = str(instance.username)
     

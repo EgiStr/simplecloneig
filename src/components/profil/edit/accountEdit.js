@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import M from "materialize-css/dist/js/materialize.min.js";
 import axios from "axios";
-import { parseJwt } from "../../navbar/Navbar";
+import { parseJwt } from "../../method/parseJwt";
 import Cookies from "js-cookie";
 
 import { protectAuth } from "../../auth/auth";
@@ -25,7 +25,7 @@ class AccountEdit extends Component {
       name:'',
       username: "",
       email: "",
-      phone: null,
+      phone: 0,
       gender: "",
       profil: null,
       respone : null,
@@ -48,16 +48,17 @@ class AccountEdit extends Component {
         },
       })
       .then((res) => {
-       
-         this.setState({
+        const nomor = res.data.nomorHp ? res.data.nomorHp : 62
+        const bio  = res.data.bio ? res.data.bio : ''
+        this.setState({
           username: res.data.nickname,
           email: res.data.email,
           name:res.data.name,
-          phone: res.data.nomorHp,
+          phone: nomor,
           gender: res.data.gender,
           profil: res.data.profil,
           profilpriview: res.data.profil,
-          bio: res.data.bio,
+          bio: bio,
         });
       })
       .catch((e) => console.log(e));
@@ -66,7 +67,7 @@ class AccountEdit extends Component {
   }
 
   handleGender = (event) => this.setState({ gender: event.target.value });
-  handleUsername = (event) => this.setState({ username: event.target.value });
+  // handleUsername = (event) => this.setState({ username: event.target.value });
   handleName = (event) => this.setState({ name: event.target.value });
   handlePhone = (event) => this.setState({ phone: event.target.value });
   handleEmail = (event) => this.setState({ email: event.target.value });
@@ -117,7 +118,7 @@ class AccountEdit extends Component {
         },
       })
       .then((res) => this.setState({respone:res.statusText}))
-      .catch((e) => this.setState({respone:e.request.statusText}));
+      .catch((e) => console.log(e.request));
   };
 
   render() {
@@ -157,7 +158,7 @@ class AccountEdit extends Component {
                   onChange={this.handleName}
                   className="browser-default fr" />
               </div>
-              <div className="input">
+              {/* <div className="input">
                 <label>Username</label>
                 <input
                   type="text"
@@ -167,7 +168,7 @@ class AccountEdit extends Component {
                   onChange={this.handleUsername}
                   value={username === null ? "" : username}
                 />
-              </div>
+              </div> */}
               <div className="input">
                 <label>Bio</label>
                 <textarea

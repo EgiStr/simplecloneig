@@ -1,4 +1,4 @@
-import {parseJwt} from '../../components/navbar/Navbar'
+import { parseJwt } from '../../components/method/parseJwt'
 import Cookies from 'js-cookie'
 
 const like_Post = (prev,post) => {
@@ -44,9 +44,12 @@ const auth = (state = initialState,action) => {
            
             return {
                 ...state,
-                is_auth:true,
-                user_id : py.user_id,
-                username : py.username,
+                user:py
+            }
+        case 'LOGOUT_SUCCESS':
+            return {
+                ...state,
+                user:null,
             }
             
 
