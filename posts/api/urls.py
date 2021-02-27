@@ -4,8 +4,10 @@ from .views import (PostApiViews,
                     PostDetailApiView,
                     CreatePostAPiView,
                     PostEditApiView,
-                    LikePost,DeleteLike,
-                    GetPostLike)
+                    LikePost,
+                    DeleteLike,
+                    GetPostLike,
+                    GetPostSaveApiView,)
 
 
 urlpatterns = [
@@ -16,5 +18,6 @@ urlpatterns = [
     path("like/<int:pk>/", DeleteLike.as_view(), name="like-delete"),
     path("create/", CreatePostAPiView.as_view(), name="create"),
     path("get/post/like/", GetPostLike.as_view(), name="getPost"),
+    path("get/post/save/", GetPostSaveApiView.as_view(), name="savePost"),
 
 ]

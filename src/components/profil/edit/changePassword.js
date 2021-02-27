@@ -31,14 +31,14 @@ function changePassword() {
         }))
     }
     const {oldpassword,newPassword,newPassword2} = state
-    const [error,setError] = useState(false)
+ 
     const [respone,setRespone] = useState('')
 
 
 
     
     useEffect(()=> {
-      
+
         protectAuth(access,refresh).then(e => e ? '' : window.location.reload() )    
 
     },[])
@@ -52,11 +52,18 @@ function changePassword() {
         axios.put('http://127.0.0.1:8000/auth/password/change/',formData,
         {headers: {'Authorization' : 'Bearer ' + access}})
         .then( res => {
-            setError(false)
-            setRespone('success')})
+ 
+            setState({
+                oldpassword:'',
+                newPassword:'',
+                newPassword2:'',
+            })
+          
+            setRespone(res.data.message)})
         .catch(e => {
+ 
             setRespone(e.request.response)
-            setError(true)})
+            })
     }
         
    
@@ -108,7 +115,7 @@ function changePassword() {
                     <button onClick={()=> handleSubmit()} className="btn btn-primary">change Password</button>
                 </div>
                 {respone !== '' ? respone : ''}
-                {error && 'password anda tidak sama'}
+              
             </Container>
         </div>
     )

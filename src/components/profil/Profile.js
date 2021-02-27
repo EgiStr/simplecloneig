@@ -9,10 +9,9 @@ import Cookies from 'js-cookie'
 import {protectAuth} from '../auth/auth'
 import {getFollower,is_follow} from '../../action/follow'
 import {connect} from 'react-redux'
+import ModalFollow from './follow/modelFollow'
 import '../../Profile.css'
 
-
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 class Profile extends Component{
     constructor(props){
@@ -20,6 +19,7 @@ class Profile extends Component{
         this.state = {
             access: Cookies.get('access'),
             refresh: Cookies.get('refresh'),
+            type : null,
             follow : 'follow',
             unfollow : 'unfollow',
             redirect : false,
@@ -28,11 +28,12 @@ class Profile extends Component{
             
         }
     }
-
+    
     componentDidMount(){
+      
         protectAuth(this.state.access,this.state.refresh).then(e => !e ? window.location.reload(): this.setState({redirect:false}))
         this.props.getFollower(this.state.access)
-
+        
         const id = this.props.match.params.id;
         
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
@@ -40,7 +41,7 @@ class Profile extends Component{
             this.props.is_follow(res.data.follower.map(e => e.id))
             this.setState({data:res.data})
         })
-        .catch( e => console.log(e))
+        .catch( e => console.log(e.request))
         
     }
     
@@ -48,7 +49,7 @@ class Profile extends Component{
     
     handleFollow = () => {
         
-        const diikuti = parseInt(this.props.match.params.id,10)
+        const diikuti = this.state.data.id
         const pefollow = this.props.user.user_id
         
         let form = new FormData() ; 
@@ -69,12 +70,12 @@ class Profile extends Component{
     render(){
         if(this.state.redirect) return <Redirect to={this.state.redirectUrl} />  
         
-        const authUser = this.props.user.user_id
-        const idUser = parseInt(this.props.match.params.id,10)
+        const authUser = this.props.user === null ? null : this.props.user.username
+        const idUser = this.props.match.params.id
+      
+        const data = this.state.data    
         
-        const data = this.state.data
-        
-        const {follower,following,post_data} = data
+        const {follower,following,post_data,id} = data
         
     
         return (
@@ -101,11 +102,17 @@ class Profile extends Component{
                         </div>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                             <h6 style={{ fontWeight: "300" }}>{data.post_count} Posts</h6>
-                            <h6 style={{ fontWeight: "300", margin: "12px 25px", cursor: "pointer" }}>{follower ? follower.length : null} Followers</h6>
-                            <h6 style={{ fontWeight: "300", cursor: "pointer" }}>{following ? following.length : null} Followings</h6>
+                            <h6 style={{ fontWeight: "300", margin: "12px 25px", cursor: "pointer" }} onClick={() => this.setState({type:true})} className="modal-trigger" href={`#modal_id_follow`} >{follower ? follower.length : null} Followers</h6>
+                            <h6 style={{ fontWeight: "300", cursor: "pointer" }} onClick={() => this.setState({type:false})} className="modal-trigger" href={`#modal_id_follow`} >{following ? following.length : null} Followings</h6>
+                            
+                            <ModalFollow 
+                                type={this.state.type}
+                                id = {id}
+                                token = {this.state.access}
+                            />
                         </div>
                         <div>
-                            <h6 style={{ fontWeight: "500", fontSize: "15px", marginBottom: "-10px" }}>{data.nickname} </h6>
+                            <h6 style={{ fontWeight: "500", fontSize: "15px", marginBottom: "-10px" }}>{data.name} </h6>
                             <p>{data.bio}</p>
                         </div>
                     </div>
@@ -122,10 +129,11 @@ class Profile extends Component{
                     <div className="posts_wrap">
 
                         {post_data ? (post_data.map( (item,index)=> {
+                            
                             return (
                             <Content 
-                            key={index * 1000 * Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
-                                id ={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
+                                key={index}
+                                id ={index}
                                 contentType = {item.content_type_id}
                                 postId   = {item.id}
                                 userId   = {item.user.id}
@@ -134,8 +142,6 @@ class Profile extends Component{
                                 imageUrl = {`http://127.0.0.1:8000${item.post}`}
                                 avatar   = {item.user.profil}
                                 like     = {item.likes}
-                                comment    = {item.comments}
-                                className="ci"      
                             />
 
                             )

@@ -28,24 +28,26 @@ export const SearchUser = () => {
 
     
     
-    const redirect = (id) => history.push(`/profile/${id}`)
+    const redirect = (Userid) => history.push(`/profile/${Userid}`)
     return (
-        <div>  
+       
+       <div>  
 
             <input onChange={(event)=>{setSearch(event.target.value)}}></input>        
 
-             <ul className="collection">
-    
-            {data.length > 0 ? data.map((item) => {
-                return (<li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} onClick={() => {redirect(item.id)}} className="collection-item avatar">                                       
-                <img loading='lazy' src={item.profil} className="circle" alt="...."/>
-                <span className="title">{item.nickname}</span>
-                <p>{item.id}</p>
-               
-            </li>
-                )
-            }) : null}
-            </ul>
+                <ul className="collection">
+            
+                    {data.length > 0 ? data.map((item) => {
+                        return (<li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} onClick={() => {redirect(item.nickname)}} className="collection-item avatar">                                       
+                                    <img loading='lazy' src={item.profil} className="circle" alt="...."/>
+                                    <span className="title">{item.nickname}</span>
+                                    <p>{item.id}</p>
+                                
+                                </li>
+                        )
+                    }) : null}
+
+                </ul>
         
         </div>
     )

@@ -34,9 +34,15 @@ class RegisterUserApi(CreateAPIView):
     permission_classes = [AllowAny,]
 
 class UserProfilApiView(RetrieveAPIView):
-    queryset = UserProfil.objects.all()
     serializer_class = UserProfilSerialzer
-    permission_classes = [IsAuthenticatedOrReadOnly] 
+    permission_classes = [AllowAny] 
+    lookup_field = 'nickname'
+
+    def get_queryset(self):
+       
+        qs = UserProfil.objects.filter(nickname=self.kwargs['nickname'])
+
+        return qs
 
 
 class UserSearchApiView(ListAPIView):
@@ -44,7 +50,7 @@ class UserSearchApiView(ListAPIView):
     permission_classes =[IsAuthenticatedOrReadOnly]
     pagination_class = LimitPaginationSearch
     filter_backends = [SearchFilter,OrderingFilter]
-    search_fields = ['nickname']
+    search_fields = ['nickname','name']
 
     def get_queryset(self):
         qs = UserProfil.objects.all()
@@ -68,6 +74,9 @@ class ChangePasswordApiView(UpdateAPIView):
 
             if not self.object.check_password(serializer.data.get("old_password")):
                 return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+            if serializer.data.get('new_password') != serializer.data.get('new_password2'):
+                return Response({"new_password": ["didnt macth"]}, status=status.HTTP_400_BAD_REQUEST)
+            
             # set_password also hashes the password that the user will get
             self.object.set_password(serializer.data.get("new_password"))
             self.object.save()
@@ -90,6 +99,22 @@ class DetailUserFollowerApiView(ListAPIView):
     def get_queryset(self):
         
         qs = UserFollowing.objects.filter(following_user__user__id=self.request.user.id)
+        return qs
+
+class DetailUserFollowerUserApiView(ListAPIView):
+    serializer_class = FollowersSerializer
+    
+    def get_queryset(self):
+        
+        qs = UserFollowing.objects.filter(following_user__user__id=self.kwargs['id'])
+        return qs
+
+class DetailUserFollowingUserApiView(ListAPIView):
+    serializer_class = FollowingSerializer
+    
+    def get_queryset(self):
+        
+        qs = UserFollowing.objects.filter(user__user__id=self.kwargs['id'])
         return qs
 
 class DetailUserFollowingApiView(ListAPIView):

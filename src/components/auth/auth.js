@@ -18,6 +18,7 @@ export const LoginAuth = async (AccessToken , RefresToken) => {
     return {access:AccessToken,refresh:RefresToken}
 }
 
+
 export const protectAuth = async (access,refresh) => {
     // memanggil cookies
     
@@ -44,7 +45,7 @@ export const protectAuth = async (access,refresh) => {
 
 export const resfeshLogin = async resfreshToken => {
     
-    console.log(resfreshToken)
+   
     if(!resfreshToken){
         return false
     }
@@ -91,6 +92,7 @@ export const requestLogin = async (accessToken ,refreshToken) => {
     // membuat promise agar bisa mengunakan resolve // seperti return ajax
     const promise = new Promise((resolve,reject) => {
         // mengunakan home page agar dapat mengetest token
+        console.log('gagara')
         axios.get('http://127.0.0.1:8000/api/',{headers:{"Authorization": 'Bearer ' + token  }})
         // jika berhasil maka hasilnya true / dan user sudah auth
         .then(e => {

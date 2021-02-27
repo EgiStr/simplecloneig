@@ -1,6 +1,6 @@
 
 from rest_framework.serializers import ModelSerializer,SerializerMethodField
-from rest_framework import fields, serializers
+from rest_framework import serializers
 from posts.models import Post,Like
 
 from usercostumer.api.serializers import UserProfilPostserializer

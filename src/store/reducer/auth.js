@@ -1,4 +1,4 @@
-import {parseJwt} from '../../components/navbar/Navbar'
+import { parseJwt } from '../../components/method/parseJwt'
 import Cookies from 'js-cookie'
 
 const like_Post = (prev,post) => {
@@ -21,8 +21,7 @@ const unLike_Post = (prev,post) => {
  const access = Cookies.get('access') === undefined ? null : parseJwt(Cookies.get('access'))
  
  const initialState ={
-     is_auth :false,
-     has_like:false,
+
      like_post : [],
      user : access,
      
@@ -33,6 +32,7 @@ const auth = (state = initialState,action) => {
     let py = action.payload
     
     switch (action.type) {
+
         case 'GET_LIKE_POST':
             localStorage.setItem('like',py)
             return { ...state, 
@@ -44,26 +44,18 @@ const auth = (state = initialState,action) => {
            
             return {
                 ...state,
-                is_auth:true,
-                user_id : py.user_id,
-                username : py.username,
+                user:py
+            }
+        case 'LOGOUT_SUCCESS':
+            return {
+                ...state,
+                user:null,
             }
             
 
         case 'LOGIN_FAIL' :
             return {...state,user_id:null,username:null,is_auth:false}
-                
-           
-        case 'IS_HAS_LIKE':
-            return {
-                ...state,
-                has_like:true,
-            }
-        case 'NOT_HAS_LIKE':
-            return {
-                ...state,
-                has_like:false
-            }
+        
            
         case 'LIKE_POST':
         

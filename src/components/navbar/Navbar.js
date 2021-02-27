@@ -1,27 +1,11 @@
-import React ,{useState,useEffect} from 'react'
-import {Redirect} from 'react-router-dom'
-import Cookies from 'js-cookie'
+import React  from 'react'
+import { Redirect } from 'react-router-dom'
 
-function parseJwt(token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+import {connect} from 'react-redux'
 
-    return JSON.parse(jsonPayload);
-};
-
-function Navbar() {
-    const [token,setToken] = useState(Cookies.get('access'))
+function Navbar({user}) {
+    if(user === null) return <Redirect to={'/login'} />  
     
-    useEffect( () => {
-        setToken(Cookies.get('access'))
-    },[])
-    
-    if(token === undefined) return <Redirect to='/login'/>
-    const jwt = parseJwt(token)
-
     document.addEventListener('DOMContentLoaded', function () {
         const M = window.M;
         var elems = document.querySelectorAll('.dropdown-trigger');
@@ -40,7 +24,7 @@ function Navbar() {
                             <li><a className='dropdown-trigger' data-target='dropdown1'><i className="material-icons">people</i></a></li>
                         </ul>
                         <ul id='dropdown1' className='dropdown-content'>
-                            <li><a href={`/profile/${jwt.user_id}`}>Profile</a></li>
+                            <li><a href={`/profile/${user.username}`}>Profile</a></li>
                             <li className="divider" tabIndex="-1"></li>
                             <li><a href='/logout'>Logout</a></li>
                         </ul>
@@ -51,4 +35,9 @@ function Navbar() {
     )
 }
 
-export { Navbar, parseJwt }
+const mapStateToProps = state => {
+    return {
+        user : state.auth.user
+    }
+}
+export default connect(mapStateToProps)(Navbar) ;

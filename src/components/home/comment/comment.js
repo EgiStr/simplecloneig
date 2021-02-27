@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react'
+import React, {useState} from 'react'
 
 import { protectAuth } from '../../auth/auth'
 
@@ -21,14 +21,14 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
     const [limit,setLimit] = useState(2)
     // const [hide,setHide] = useState(false)
 
-    useEffect( () => {
-        protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : window.location.reload())   
-    },[])
 
-    const handleRemove = (id) => {
+    const handleRemove = id => {
+        protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
         delete_comment(id,Cookies.get('access'))
     }
+
     const handleReplies = (parent_id) => add_parent(parent_id)
+    
     const handleHide = () => setLimit(0)
     
     let child = replies_comment ? replies_comment[0] : null
@@ -70,12 +70,13 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
                     <p>{content}</p>
                     <a className="btn" onClick={()=>{handleRemove(id)}}><i className="material-icons">send</i></a>
                     <a className="secondary-content btn" onClick={()=>{handleReplies(id)}}><i className="material-icons">send</i></a>
+                    {/* agar membuat hanya di itu sendiri replies dimuat  */}
                     {child2 === id ? (
                         renderReplies()
-                        
+        
                         ) : ('')}      
+                    {/* membuat beberapa kemungkinan diReplies */}
                     {
-                        
                             (function(){
                                 if(replies.length > 0){
                                     if(child5 > 0 && child2 === id){
@@ -89,6 +90,7 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
                                 }
                             })()
                     }
+
                 </li>
             </ul>
         )     
@@ -100,6 +102,7 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
                     <span className="title">{nickname}</span>
                     <p>{content}</p>
                     <a className="secondary-content btn" onClick={()=>{handleReplies(id)}}><i className="material-icons">send</i></a>
+                    {/* sama kayak diatas */}
                     {child2 === id ? (
                         renderReplies()
                         

@@ -1,14 +1,20 @@
 import React from 'react'
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import { connect } from 'react-redux'
+import { LogoutAuth } from '../../action/auth'
 
-class Logout extends React.Component {
-    render(){
-        Cookies.remove('access');
-        Cookies.remove('refresh');
-        return <Redirect to='/login' />
-        
+const Logout = ({LogoutAuth}) => {
+    Cookies.remove('access');
+    Cookies.remove('refresh');
+    LogoutAuth()
+    return <Redirect to='/login' />
+}
+
+const mapStateToProps = state => {
+    return {
+        state
     }
 }
 
-export default Logout ; 
+export default connect(mapStateToProps,{LogoutAuth})(Logout) ; 

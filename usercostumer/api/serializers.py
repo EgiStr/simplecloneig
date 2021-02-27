@@ -1,8 +1,7 @@
 
-from django.db.models.base import Model
 from django.db.models.deletion import SET_NULL
 
-from rest_framework.serializers import ModelSerializer,SerializerMethodField,HyperlinkedIdentityField
+from rest_framework.serializers import ModelSerializer,SerializerMethodField
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
@@ -10,16 +9,14 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 
-from comment.api.serializers import CommentChildrenSerializer
 from usercostumer.models import UserProfil,UserFollowing
-from comment.models import Comments
 from posts.models import Post
 
 class PostProfilSerializer(ModelSerializer):
     content_type_id = SerializerMethodField()
     user = SerializerMethodField()
     likes = SerializerMethodField()
-    comments =SerializerMethodField()
+  
     class Meta:
         model = Post
         fields = [
@@ -30,7 +27,7 @@ class PostProfilSerializer(ModelSerializer):
             'post',
             'likes',
             'create_at',
-            'comments',
+          
         ]
         
     def get_user(self,obj):
@@ -44,30 +41,8 @@ class PostProfilSerializer(ModelSerializer):
         """ for make replies comment """
         return content_type.id
 
-    def get_comments(self,obj):
-        comments_qs = Comments.objects.fillter_by_instance(obj)
-        return CommentChildrenSerializer(comments_qs,many=True,context ={'request':None}).data
-
-
-
-
-class FollowingSerializer(ModelSerializer):
-    user = SerializerMethodField()
-    class Meta:
-        model = UserFollowing
-        fields = ("id", "user", "created")
     
-    def get_user(self,obj):
-        return obj.user.nickname
 
-class FollowersSerializer(ModelSerializer):
-    following_user = SerializerMethodField()
-    class Meta:
-        model = UserFollowing
-        fields = ("id", "following_user", "created")
-    
-    def get_following_user(self,obj):
-        return obj.following_user.nickname
 
 
 class UserEditProfil(ModelSerializer):
@@ -76,6 +51,7 @@ class UserEditProfil(ModelSerializer):
         fields =[
             'bio',
             'gender',
+            'name',
             'profil',
             'nomorHp',
             'email',
@@ -91,15 +67,35 @@ class UserProfilPostserializer(ModelSerializer):
             'nickname',
             'profil',
         ]
+
+
+class FollowingSerializer(ModelSerializer):
+    user = SerializerMethodField()
+    class Meta:
+        model = UserFollowing
+        fields = ("id", "user", "created")
+    
+    def get_user(self,obj):
+        
+        return UserProfilPostserializer(obj.following_user).data
+
+class FollowersSerializer(ModelSerializer):
+    following_user = SerializerMethodField()
+    class Meta:
+        model = UserFollowing
+        fields = ("id", "following_user", "created")
+    
+    def get_following_user(self,obj):
+        
+        return UserProfilPostserializer(obj.user).data
 class ChangePasswordSerializer(serializers.Serializer):
     model = User
-
     """
     Serializer for password change endpoint.
     """
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True, validators=[validate_password])
-    new_password2 = serializers.CharField(write_only=True,required=True)
+    new_password2 = serializers.CharField(required=True)
     
 
 class UserProfilSerialzer(ModelSerializer):
@@ -113,6 +109,7 @@ class UserProfilSerialzer(ModelSerializer):
         fields = [
             'user',
             'id',
+            'name',
             'follower',
             'following',
             'nickname',

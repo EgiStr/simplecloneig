@@ -1,4 +1,3 @@
-from django.db import connections
 from rest_framework.generics import (RetrieveUpdateDestroyAPIView,
                                         CreateAPIView,
                                         ListAPIView

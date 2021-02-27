@@ -23,6 +23,7 @@ const initialState = {
     is_following : false,
     followers : [],
     followings : [],
+    followingUser : [],
 
 }
 
@@ -35,10 +36,13 @@ const follow = (state = initialState,action) => {
            
         case 'GET_FOLLOWER':
             return {...state,followers:py}
-           
+            
+        case 'GET_FOLLOWING_USER':
+            return {...state,followingUser:py}
+            
         case 'GET_FOLLOWING':
             return {...state,followings:py}
-           
+                
         case 'FOLLOWING':
             return {...state,followings:following(state.followings,py)}
            

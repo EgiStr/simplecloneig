@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import M from "materialize-css/dist/js/materialize.min.js";
 import axios from "axios";
-import { parseJwt } from "../../navbar/Navbar";
+import { parseJwt } from "../../method/parseJwt";
 import Cookies from "js-cookie";
 
 import { protectAuth } from "../../auth/auth";
@@ -22,9 +22,10 @@ class AccountEdit extends Component {
       redirectUrl: "",
       redirect: false,
       bio: "",
+      name:'',
       username: "",
       email: "",
-      phone: null,
+      phone: 0,
       gender: "",
       profil: null,
       respone : null,
@@ -34,7 +35,7 @@ class AccountEdit extends Component {
   }
 
   componentDidMount() {
-
+   
     protectAuth(this.state.access, this.state.refresh).then((e) =>
       !e ? window.location.reload() : null
     );
@@ -47,15 +48,17 @@ class AccountEdit extends Component {
         },
       })
       .then((res) => {
-        
+        const nomor = res.data.nomorHp ? res.data.nomorHp : 62
+        const bio  = res.data.bio ? res.data.bio : ''
         this.setState({
           username: res.data.nickname,
           email: res.data.email,
-          phone: res.data.nomorHp,
+          name:res.data.name,
+          phone: nomor,
           gender: res.data.gender,
           profil: res.data.profil,
           profilpriview: res.data.profil,
-          bio: res.data.bio,
+          bio: bio,
         });
       })
       .catch((e) => console.log(e));
@@ -64,7 +67,8 @@ class AccountEdit extends Component {
   }
 
   handleGender = (event) => this.setState({ gender: event.target.value });
-  handleUsername = (event) => this.setState({ username: event.target.value });
+  // handleUsername = (event) => this.setState({ username: event.target.value });
+  handleName = (event) => this.setState({ name: event.target.value });
   handlePhone = (event) => this.setState({ phone: event.target.value });
   handleEmail = (event) => this.setState({ email: event.target.value });
   handleBio = (event) => this.setState({ bio: event.target.value });
@@ -94,13 +98,14 @@ class AccountEdit extends Component {
   handleSubmit = () => {
 
     const userId = parseJwt(this.state.access).user_id;
-    const { email, phone, bio, username, gender, profil } = this.state;
+    const { email, phone, bio, username, gender, profil,name } = this.state;
     let formdata = new FormData();
     formdata.append("bio", bio);
     formdata.append("gender", gender);
     formdata.append("nickname", username);
     formdata.append("nomorHp", phone);
     formdata.append("email", email);
+    formdata.append("name", name);
     if (profil.size === undefined) {
     } else {
       formdata.append("profil", profil);
@@ -113,11 +118,11 @@ class AccountEdit extends Component {
         },
       })
       .then((res) => this.setState({respone:res.statusText}))
-      .catch((e) => this.setState({respone:e.request.statusText}));
+      .catch((e) => console.log(e.request));
   };
 
   render() {
-    const { username, email, phone, gender, bio } = this.state;
+    const { username, email, phone, gender, bio,name } = this.state;
     return (
       <Fragment>
           <div className="col s9">
@@ -149,9 +154,11 @@ class AccountEdit extends Component {
                 <input
                   placeholder="Name"
                   type="text"
+                  value={name === null ? '' : name}
+                  onChange={this.handleName}
                   className="browser-default fr" />
               </div>
-              <div className="input">
+              {/* <div className="input">
                 <label>Username</label>
                 <input
                   type="text"
@@ -161,7 +168,7 @@ class AccountEdit extends Component {
                   onChange={this.handleUsername}
                   value={username === null ? "" : username}
                 />
-              </div>
+              </div> */}
               <div className="input">
                 <label>Bio</label>
                 <textarea
