@@ -1,7 +1,5 @@
-from django.db.models import fields
-from rest_framework.fields import ReadOnlyField
 from usercostumer.models import UserProfil
-from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,SerializerMethodField
+from rest_framework.serializers import ModelSerializer,SerializerMethodField
 
 from comment.models import Comments
 
