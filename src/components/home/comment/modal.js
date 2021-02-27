@@ -50,6 +50,7 @@ class Modal extends Component {
         handlecancle = () =>  this.props.add_parent(null)
         
         handleComment = (parent = this.props.parent) => {
+            
         protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
             
         let { contentType,obj_id } = this.props
