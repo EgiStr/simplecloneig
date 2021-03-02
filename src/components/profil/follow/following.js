@@ -25,8 +25,8 @@ const Following = ({user_id,user,id_following,following_user}) => {
     },[])
 
     const check_is_follow = (id) => {
-        
-        if(following_user.includes(id)){
+        const target = following_user.map(e=> e.id)
+        if(target.includes(id)){
             return true
         }
         return false 

@@ -12,12 +12,9 @@ export const getFollower = (access) => (dispatch,getstate) => {
         "Authorization": 'Bearer ' + access
     }})
     .then(res => {
-        console.log(res)
-        const following = res.data.map(e => e.id)
-    
         dispatch({
             type:'GET_FOLLOWING',
-            payload : following,
+            payload : res.data,
         })
     })
     .catch(e => console.log(e.request))
@@ -57,7 +54,7 @@ export const getFollowingUser = (access,id) => (dispatch,getstate) => {
 }
 
 export const is_follow = (array) => (dispatch,getstate) => {
-    const me = getstate().follow.followings
+    const me = getstate().follow.followings.map(e => e.id)
     const target = array
     let trueorfalse = false
     for(let i =0 ; i < me.length ; i++){
