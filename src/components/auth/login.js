@@ -28,10 +28,8 @@ class Login extends Component {
         password: this.state.password,
       })
       .then((res) => {
-
         Cookies.set('access',res.data.access)
         Cookies.set('refresh',res.data.refresh)
-  
         this.props.get_post_like()
         this.props.get_notif_user(res.data.access)
         this.props.loginUser(res.data.access)
@@ -41,16 +39,9 @@ class Login extends Component {
   }
 
   handleTitleChange = (event) => this.setState({title:event.target.value})
-
   handlePasswordChange = (event) => this.setState({password: event.target.value})
+  handleValidatePassword = event => this.setState({password2: event.target.value,notValide: event.target.value !== this.state.password});
   
-  handleValidatePassword =(event) => {
-    let password2 = event.target.value;
-    this.setState({
-      password2: password2,
-      notValide: password2 !== this.state.password,
-    });
-  }
 
   render() {
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import { protectAuth } from '../../auth/auth'
 
@@ -16,11 +16,10 @@ import { connect } from 'react-redux'
 
 
 
-const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_comment,get_replies,replies_comment}) => {
+const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent,delete_comment,get_replies,replies_comment}) => {
  
     const [limit,setLimit] = useState(2)
     // const [hide,setHide] = useState(false)
-
 
     const handleRemove = id => {
         protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
@@ -28,8 +27,7 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
     }
 
     const handleReplies = (parent_id) => add_parent(parent_id)
-    
-    const handleHide = () => setLimit(0)
+
     
     let child = replies_comment ? replies_comment[0] : null
     let child4 = replies_comment ? replies_comment : null
@@ -39,8 +37,8 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
     
     
     const hadleGetreplies = (id) => {
-        get_replies(id)
         if(replies_comment.length === 0){
+            get_replies(id)
             setLimit(prev => prev)
         }
         setLimit(prev => prev + 2)
@@ -49,14 +47,14 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
     const renderReplies = () => {
         
         return child3.slice(0,limit).map((e,i)=>{
-            
+
             return  <Childcomment
                     key={i}
                     nickname = {e.user.nickname}
                     profil = {e.user.profil}
                     content = {e.content}
                     id    = {e.id}
-                    user = {user}                                     
+                    user = {user_id === e.user.id}                                     
                     /> 
         })}
 
@@ -79,10 +77,10 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
                             (function(){
                                 if(replies.length > 0){
                                     if(child5 > 0 && child2 === id){
-                                       return <p onClick={() => hadleGetreplies(id)}>view replies {child5 } </p>
+                                       return <p onClick={() => hadleGetreplies(id)}>view replies {child5} </p>
                                         
                                     }else if(child5 === 0 || child5 < 0){
-                                        return <p onClick={()=> handleHide()}>Hide replies</p>
+                                        return <p onClick={()=> setLimit(0) }>Hide replies</p>
                                     }else{                            
                                         return <p onClick={() => hadleGetreplies(id)}>view replies {replies.length} </p>
                                     }
@@ -114,7 +112,7 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
                                        return <p onClick={() => hadleGetreplies(id)}>view replies {child5 } </p>
                                         
                                     }else if(child5 === 0 || child5 < 0){
-                                        return <p onClick={()=> handleHide()}>Hide replies</p>
+                                        return <p onClick={()=> setLimit(0)}>Hide replies</p>
                                     }else{                            
                                         return <p onClick={() => hadleGetreplies(id)}>view replies {replies.length} </p>
                                     }
@@ -131,6 +129,7 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
 const mapStateToProps = state => {
     return {
         replies_comment : state.comment.replies,
+        user_id : state.auth.user.user_id,
     }
 }
 export default connect(mapStateToProps,{add_parent,delete_comment,get_replies})(CommentUser)

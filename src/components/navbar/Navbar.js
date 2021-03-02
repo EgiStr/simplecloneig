@@ -1,16 +1,15 @@
-import React  from 'react'
+import React ,{ useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import {connect} from 'react-redux'
 
 function Navbar({user}) {
     if(user === null) return <Redirect to={'/login'} />  
-    
-    document.addEventListener('DOMContentLoaded', function () {
+    useEffect(() => {
         const M = window.M;
         var elems = document.querySelectorAll('.dropdown-trigger');
         M.Dropdown.init(elems, {});
-    });
+    })
 
     return (
         <div className="navbar-fixed">

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { LogoutAuth } from '../../action/auth'
 

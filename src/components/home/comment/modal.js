@@ -11,7 +11,8 @@ import { connect } from 'react-redux'
 
 import { get_comment,
          add_comment,
-         add_parent
+         add_parent,
+         reset_replies
                         } from '../../../action/comment'
 
 import CommentUser  from './comment'
@@ -33,6 +34,7 @@ class Modal extends Component {
         const options = {
             onOpenStart: () => {
                 this.props.get_comment(this.props.postId)
+                this.props.reset_replies()
                 
             },
             
@@ -104,6 +106,7 @@ class Modal extends Component {
                         
                         {comments ? (
                                 comments.map((item,i) => {
+                                    
                                        return <CommentUser 
                                             key ={i}
                                             user = {user_id === item.user.id}
@@ -153,4 +156,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps,{get_comment,add_parent,add_comment})(Modal) ;
+export default connect(mapStateToProps,{get_comment,add_parent,add_comment,reset_replies})(Modal) ;

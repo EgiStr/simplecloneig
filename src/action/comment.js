@@ -38,39 +38,50 @@ export const add_comment = (payload,parent) => (dispatch,getstate) => {
 }
 
 export const delete_comment = (id,access) => (dispatch,getstate) => {
-    axios.delete(`http://127.0.0.1:8000/comment/${id}/edit/`,
-    {headers : {
-        'Authorization' : 'Bearer ' + access
-    }})
-    .then(res => {
-        console.log(res)
-        dispatch({
-            type:'DELETE_COMMENTS',
-            payload:id,
+    const confirm = window.confirm('are you sure about that ? ')
+    if(confirm){
+
+        axios.delete(`http://127.0.0.1:8000/comment/${id}/edit/`,
+        {headers : {
+            'Authorization' : 'Bearer ' + access
+        }})
+        .then(res => {
+            console.log(res)
+            dispatch({
+                type:'DELETE_COMMENTS',
+                payload:id,
+            })
         })
-    })
-    .catch(e => console.log(e))
+        .catch(e => console.log(e))
+    }
 }
 
 export const delete_comment_replies = (id,access) => (dispatch,getstate) => {
-   
-    axios.delete(`http://127.0.0.1:8000/comment/${id}/edit/`,
-    {headers : {
-        'Authorization' : 'Bearer ' + access
-    }})
-    .then(res => {
-       
-        dispatch({
-            type:'DELETE_COMMENTS_REPLIES',
-            payload:id,
+    const confirm = window.confirm('are you sure about that ? ')
+    if(confirm){
+        axios.delete(`http://127.0.0.1:8000/comment/${id}/edit/`,
+        {headers : {
+            'Authorization' : 'Bearer ' + access
+        }})
+        .then(res => {
+           
+            dispatch({
+                type:'DELETE_COMMENTS_REPLIES',
+                payload:id,
+            })
         })
-    })
-    .catch(e => console.log(e))
+        .catch(e => console.log(e))
+    }
 }
 
 export const add_parent = (parent) => (dispatch) => {
     dispatch({
         type:'UPDATE_PARENT',
         payload : parent,
+    })
+}
+export const reset_replies = () => (dispatch) => {
+    dispatch({
+        type:'RESET_REPLIES'
     })
 }
