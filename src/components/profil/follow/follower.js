@@ -22,9 +22,9 @@ const Follower = ({user_id,user,following_user,id_follower}) => {
 
     
     const check_is_follow = (id) => {
-        console.log(following_user)
-        console.log(id)
-        if(following_user.includes(id)){
+        const target = following_user.map(e => e.following_user.id)
+        
+        if(target.includes(id.user.id)){
             return true
         }
         return false 
@@ -64,7 +64,8 @@ const mapStateToProps = state => {
     return {
         
       user_id : state.auth.user.user_id,
-      following_user : state.follow.followings
+      following_user : state.follow.followings,
+      
     }
 }
 
