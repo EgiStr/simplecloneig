@@ -54,6 +54,11 @@ const comment = (state =initialState, action) => {
                 ...state,
                 replies:delete_comment_replies(state.replies,py)
             }
+        case 'RESET_REPLIES':
+            return {
+                ...state,
+                replies:[],
+            }
 
         case 'UPDATE_PARENT' :
             return {

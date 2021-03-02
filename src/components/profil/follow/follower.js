@@ -15,13 +15,15 @@ const Follower = ({user_id,user,following_user,id_follower}) => {
     
     useEffect(() => {
         const is_follow_user = check_is_follow(id_follower)
+        
         if(is_follow_user) setState({...state,is_follow : true })
-
+        
     },[])
 
-
+    
     const check_is_follow = (id) => {
-       
+        console.log(following_user)
+        console.log(id)
         if(following_user.includes(id)){
             return true
         }

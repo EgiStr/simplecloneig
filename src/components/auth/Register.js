@@ -13,26 +13,15 @@ class Register extends Component {
       redirect: false,
       error:null,
     }
-    this.handlePasswordValidate = this.handlePasswordValidate.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleUsername(event) {
-    this.setState({ username: event.target.value })
-  }
+  handleUsername = event => this.setState({ username: event.target.value })
+  handleEmail = event => this.setState({ email: event.target.value })
+  handlePassword = event => this.setState({ password: event.target.value })
+  handlePasswordValidate = event => this.setState({ password2: event.target.value, validate: this.state.password === event.target.value })
+  
 
-  handleEmail(event) {
-    this.setState({ email: event.target.value })
-  }
-
-  handlePassword(event) {
-    this.setState({ password: event.target.value })
-  }
-  handlePasswordValidate(event) {
-    this.setState({ password2: event.target.value, validate: this.state.password === event.target.value })
-  }
-
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     axios({
       method: 'post',
@@ -45,22 +34,17 @@ class Register extends Component {
       }
     })
       .then((res) => {
-        console.log(res)
         this.setState({ redirect: true });
       })
       .catch(e => {
         if (e.request.status === 400) { console.clear(); }
-        this.setState({ username: '', password: '', password2: '1', email: '', validate: true, redirect: false, error: e.request.response })
+        this.setState({ username: '', password: '', password2: '', email: '', validate: true, redirect: false, error: e.request.response })
       })
   }
   render() {
-    if (this.state.redirect) {
-      return <Redirect to="/login" />
-    }
-    // console.log(this.state.username);
-    // console.log(this.state.email);
-    // console.log(this.state.password);
-    // console.log(this.state.password2);
+    if (this.state.redirect) return <Redirect to="/login" />
+    
+  
     return (
       <div className="container_login">
         <div className="box_login">

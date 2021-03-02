@@ -1,8 +1,9 @@
 import React  from 'react'
 
-import Cookies from 'js-cookie'
-import {Redirect} from 'react-router-dom'
 import axios from 'axios'
+import Cookies from 'js-cookie'
+
+import { Redirect } from 'react-router-dom'
 
 
 export const LoginAuth = async (AccessToken , RefresToken) => {
@@ -61,7 +62,6 @@ export const resfeshLogin = async resfreshToken => {
                 Cookies.set('access',access)
                 Cookies.set('refresh',refresh)
                 window.location.reload()
-                window.location.reload()
                 // mengirim access dan refresh
                 resolve(res.data)
             }else{
@@ -92,7 +92,6 @@ export const requestLogin = async (accessToken ,refreshToken) => {
     // membuat promise agar bisa mengunakan resolve // seperti return ajax
     const promise = new Promise((resolve,reject) => {
         // mengunakan home page agar dapat mengetest token
-        console.log('gagara')
         axios.get('http://127.0.0.1:8000/api/',{headers:{"Authorization": 'Bearer ' + token  }})
         // jika berhasil maka hasilnya true / dan user sudah auth
         .then(e => {
@@ -111,7 +110,6 @@ export const requestLogin = async (accessToken ,refreshToken) => {
                             if(!e){
                                 resolve(false)
                             }else{
-                                console.log(e.access,e.refresh)
                                 return requestLogin(e.access,e.refresh) 
                             }
                         })

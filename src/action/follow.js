@@ -12,6 +12,7 @@ export const getFollower = (access) => (dispatch,getstate) => {
         "Authorization": 'Bearer ' + access
     }})
     .then(res => {
+        console.log(res)
         const following = res.data.map(e => e.id)
     
         dispatch({
@@ -45,6 +46,7 @@ export const getFollowingUser = (access,id) => (dispatch,getstate) => {
         "Authorization": 'Bearer ' + access
     }})
     .then(res => {
+        
        
         dispatch({
             type:'GET_FOLLOWING_USER',

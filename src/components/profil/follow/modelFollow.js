@@ -49,14 +49,16 @@ class ModalFollow extends Component {
                     {this.props.type === true ? (<h4>follower</h4>) : (<h4>following</h4>)}
                     {this.props.type === true ? (
                     follower.map((e,i) => {
+                        
                         return <Follower 
                                 key={i}
                                 user = {e.user}
-                                id_follower = {e.id}
+                                id_follower = {e.user.id}
                                 />
                     })
                     ) : (
                     following.map((e,i) => {
+                        console.log(e)
                         return <Following 
                                 key = {i}
                                 user ={e.following_user}
