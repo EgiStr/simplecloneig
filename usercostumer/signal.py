@@ -9,12 +9,13 @@ from .models import UserFollowing
 def follow_notif_create(instance,created,*args, **kwargs):
     
     if created:
-        Notifikasi.objects.create(
-            sender=instance.following_user,
-            receiver=instance.user,
-            type_notif=2,
-            more_text=f'{instance.following_user} has follow your ..'
-        )
+        if instance.user != instance.following_user:
+            Notifikasi.objects.create(
+                sender=instance.following_user,
+                receiver=instance.user,
+                type_notif=2,
+                more_text=f'{instance.following_user} has follow your ..'
+            )
 
 # menghapus jiga batal
 @receiver(post_delete,sender=UserFollowing)

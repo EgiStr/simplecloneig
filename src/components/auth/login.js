@@ -3,8 +3,8 @@ import { Redirect } from "react-router-dom";
 import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
-import { loginUser } from '../../action/auth'
-import { get_post_like } from '../../action/auth'
+import { loginUser,get_notif_user,get_post_like } from '../../action/auth'
+
 
 
 import axios from "axios";
@@ -33,6 +33,7 @@ class Login extends Component {
         Cookies.set('refresh',res.data.refresh)
   
         this.props.get_post_like()
+        this.props.get_notif_user(res.data.access)
         this.props.loginUser(res.data.access)
         this.setState({ redirect: true });
       })
@@ -111,4 +112,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps,{loginUser,get_post_like})(Login);
+export default connect(mapStateToProps,{loginUser,get_post_like,get_notif_user})(Login);

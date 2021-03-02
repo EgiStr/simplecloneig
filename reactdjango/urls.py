@@ -26,6 +26,7 @@ urlpatterns =[
   path("api/", include(('posts.api.urls','posts.api'),namespace='api-post')),
   path("auth/", include(('usercostumer.api.urls','usercostumer.api'),namespace='auth')),
   path("comment/", include(('comment.api.urls', 'comment.api'),namespace='comment')),
+  path("notif/", include(('notif.api.urls', 'notif.api'),namespace='notif')),
 
 ]
 

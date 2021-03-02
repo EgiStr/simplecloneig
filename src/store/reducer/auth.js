@@ -23,6 +23,7 @@ const unLike_Post = (prev,post) => {
  const initialState ={
 
      like_post : [],
+     notif :[],
      user : access,
      
     }
@@ -32,6 +33,11 @@ const auth = (state = initialState,action) => {
     let py = action.payload
     
     switch (action.type) {
+        case 'GET_NOTIF':
+            return {
+                ...state,
+                notif:py,
+            }
 
         case 'GET_LIKE_POST':
             localStorage.setItem('like',py)

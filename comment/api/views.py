@@ -34,7 +34,7 @@ class CommentApiView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly,]
     def get_queryset(self):
         queryset = Comments.objects.filter(pk=self.kwargs['pk'])
-        print(queryset)
+       
         return queryset
 
 class CreateCommentApiView(CreateAPIView):
