@@ -1,4 +1,3 @@
-
 from rest_framework.serializers import ModelSerializer,SerializerMethodField
 from rest_framework import serializers
 from posts.models import Post,Like
@@ -8,6 +7,16 @@ from usercostumer.api.serializers import UserProfilPostserializer
 
 from comment.api.serializers import CommentChildrenSerializer
 from comment.models import Comments
+
+
+class PostNotifSerializer(ModelSerializer):
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'caption',
+            'post',
+        ]
 
 class PostSerializer(ModelSerializer):
     

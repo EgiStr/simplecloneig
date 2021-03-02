@@ -11,13 +11,15 @@ def comment_notif_create(instance,created,*args, **kwargs):
     post = list(Post.objects.filter(id=instance.obj_id))[0]
     user = post.user
     if created:
-        Notifikasi.objects.create(
+        if instance.user != user:
+            Notifikasi.objects.create(
             post = post,
             sender=instance.user,
             receiver=user,
             type_notif=3,
             more_text=f'{instance.user} was comment {instance.content} in your post'
         )
+        
 
 # menghapus jiga batal
 @receiver(post_delete,sender=Comments)

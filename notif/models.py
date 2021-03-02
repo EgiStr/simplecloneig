@@ -1,6 +1,7 @@
 from posts.models import Post
 from django.db import models
 from usercostumer.models import UserProfil
+from django.contrib.humanize.templatetags import humanize
 
 # Create your models here.
 
@@ -29,3 +30,7 @@ class Notifikasi(models.Model):
        return f'notif {self.sender.nickname} for  {self.receiver} notif {self.type_notif}'
 
     # TODO: Define custom methods here
+
+    @property
+    def get_create_time(self):
+        return humanize.naturalday(self.create_at)

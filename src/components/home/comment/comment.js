@@ -70,11 +70,10 @@ const CommentUser = ({user,profil,nickname,content,id,replies,add_parent,delete_
                     <p>{content}</p>
                     <a className="btn" onClick={()=>{handleRemove(id)}}><i className="material-icons">send</i></a>
                     <a className="secondary-content btn" onClick={()=>{handleReplies(id)}}><i className="material-icons">send</i></a>
+                   
                     {/* agar membuat hanya di itu sendiri replies dimuat  */}
-                    {child2 === id ? (
-                        renderReplies()
-        
-                        ) : ('')}      
+                    {child2 === id ? renderReplies(): ('')}      
+                   
                     {/* membuat beberapa kemungkinan diReplies */}
                     {
                             (function(){

@@ -38,7 +38,7 @@ export const add_comment = (payload,parent) => (dispatch,getstate) => {
 }
 
 export const delete_comment = (id,access) => (dispatch,getstate) => {
-    axios.delete(`http://127.0.0.1:8000/comment/edit/${id}/`,
+    axios.delete(`http://127.0.0.1:8000/comment/${id}/edit/`,
     {headers : {
         'Authorization' : 'Bearer ' + access
     }})
@@ -53,8 +53,8 @@ export const delete_comment = (id,access) => (dispatch,getstate) => {
 }
 
 export const delete_comment_replies = (id,access) => (dispatch,getstate) => {
-    console.log(access)
-    axios.delete(`http://127.0.0.1:8000/comment/edit/${id}/`,
+   
+    axios.delete(`http://127.0.0.1:8000/comment/${id}/edit/`,
     {headers : {
         'Authorization' : 'Bearer ' + access
     }})
