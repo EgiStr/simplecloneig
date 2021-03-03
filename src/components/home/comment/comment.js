@@ -8,7 +8,7 @@ import Childcomment from './comments'
 
 import { 
     delete_comment,
-    get_replies,
+    
     add_parent
 } from '../../../action/comment'
 
@@ -16,11 +16,11 @@ import { connect } from 'react-redux'
 
 
 
-const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent,delete_comment,get_replies,replies_comment}) => {
+const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent,delete_comment,replies_comment}) => {
  
-    const [limit,setLimit] = useState(2)
+    const [limit,setLimit] = useState(0)
     // const [hide,setHide] = useState(false)
-
+ 
     const handleRemove = id => {
         protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
         delete_comment(id,Cookies.get('access'))
@@ -29,34 +29,33 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
     const handleReplies = (parent_id) => add_parent(parent_id)
 
     
-    let child = replies_comment ? replies_comment[0] : null
-    let child4 = replies_comment ? replies_comment : null
-    let child2 = child ? child.parent : null 
-    let child3 = child ? child4 : null 
-    let child5 = child ? (child4.length - limit)  : null 
+    // let child = replies_comment ? replies_comment[0] : null
+    // let child4 = replies_comment ? replies_comment : null
+    
+
+    // let child2 = child ? child.parent : null 
+    // let child3 = child ? child4 : null 
+    let child = replies.length !== 0 ? (replies.length - limit)  : null 
     
     
-    const hadleGetreplies = (id) => {
-        if(replies_comment.length === 0){
-            get_replies(id)
-            setLimit(prev => prev)
-        }
+    const hadleGetreplies = () => {
         setLimit(prev => prev + 2)
     }
-
+    
     const renderReplies = () => {
-        
-        return child3.slice(0,limit).map((e,i)=>{
-
-            return  <Childcomment
-                    key={i}
-                    nickname = {e.user.nickname}
-                    profil = {e.user.profil}
-                    content = {e.content}
-                    id    = {e.id}
-                    user = {user_id === e.user.id}                                     
-                    /> 
-        })}
+            return replies.slice(0,limit).map((e,i)=>{
+    
+                return  <Childcomment   
+                        key={i}
+                        nickname = {e.user.nickname}
+                        profil = {e.user.profil}
+                        content = {e.content}
+                        id    = {e.id}
+                        user = {user_id === e.user.id}                                     
+                        /> 
+            })
+    
+    }
 
 // mengekstrak replies
     if(user){
@@ -68,21 +67,21 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
                     <p>{content}</p>
                     <a className="btn" onClick={()=>{handleRemove(id)}}><i className="material-icons">send</i></a>
                     <a className="secondary-content btn" onClick={()=>{handleReplies(id)}}><i className="material-icons">send</i></a>
-                   
                     {/* agar membuat hanya di itu sendiri replies dimuat  */}
-                    {child2 === id ? renderReplies(): ('')}      
+                    {renderReplies()}      
                    
                     {/* membuat beberapa kemungkinan diReplies */}
                     {
                             (function(){
                                 if(replies.length > 0){
-                                    if(child5 > 0 && child2 === id){
-                                       return <p onClick={() => hadleGetreplies(id)}>view replies {child5} </p>
-                                        
-                                    }else if(child5 === 0 || child5 < 0){
-                                        return <p onClick={()=> setLimit(0) }>Hide replies</p>
-                                    }else{                            
-                                        return <p onClick={() => hadleGetreplies(id)}>view replies {replies.length} </p>
+                                    if(limit <= 0) {
+                                        return <p onClick={() => hadleGetreplies()}>view replies {replies.length} </p>
+                                    }else{
+                                        if(child > 0){
+                                            return <p onClick={() => hadleGetreplies()}>view replies {child} </p>
+                                        }else if(child === 0 || child < 0){
+                                            return <p onClick={()=> setLimit(0)}>Hide replies</p>
+                                        }
                                     }
                                 }
                             })()
@@ -100,24 +99,22 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
                     <p>{content}</p>
                     <a className="secondary-content btn" onClick={()=>{handleReplies(id)}}><i className="material-icons">send</i></a>
                     {/* sama kayak diatas */}
-                    {child2 === id ? (
-                        renderReplies()
-                        
-                        ) : ('')}      
+                    {renderReplies()}      
                     {
                         
-                            (function(){
-                                if(replies.length > 0){
-                                    if(child5 > 0 && child2 === id){
-                                       return <p onClick={() => hadleGetreplies(id)}>view replies {child5 } </p>
-                                        
-                                    }else if(child5 === 0 || child5 < 0){
+                        (function(){
+                            if(replies.length > 0){
+                                if(limit <= 0) {
+                                    return <p onClick={() => hadleGetreplies()}>view replies {replies.length} </p>
+                                }else{
+                                    if(child > 0){
+                                        return <p onClick={() => hadleGetreplies()}>view replies {child} </p>
+                                    }else if(child === 0 || child < 0){
                                         return <p onClick={()=> setLimit(0)}>Hide replies</p>
-                                    }else{                            
-                                        return <p onClick={() => hadleGetreplies(id)}>view replies {replies.length} </p>
                                     }
                                 }
-                            })()
+                            }
+                        })()
                     }      
                 </li>    
             </ul>
@@ -128,8 +125,7 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
 
 const mapStateToProps = state => {
     return {
-        replies_comment : state.comment.replies,
         user_id : state.auth.user.user_id,
     }
 }
-export default connect(mapStateToProps,{add_parent,delete_comment,get_replies})(CommentUser)
+export default connect(mapStateToProps,{add_parent,delete_comment,})(CommentUser)

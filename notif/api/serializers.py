@@ -31,4 +31,8 @@ class NotifSerializer(ModelSerializer):
         return UserProfilPostserializer(obj.receiver).data
     
     def get_post(self,obj):
+        try:
+            obj.post
+        except:
+            return None
         return PostNotifSerializer(obj.post).data

@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from usercostumer.models import UserProfil,UserFollowing
 from PIL import Image
 
+from django.contrib.humanize.templatetags import humanize
 
 class PostManage(models.Manager):
     def get_post_homepage(self,nickname):
@@ -50,6 +51,10 @@ class Post(models.Model):
         instance = self
         content_type = ContentType.objects.get_for_model(instance.__class__)
         return content_type
+  
+    @property
+    def get_time(self):
+        return humanize.naturalday(self.create_at)
 
     def __str__(self):
         return 'post of {}. caption:{}'.format(self.user,self.caption)
@@ -65,11 +70,18 @@ class SavePostUser(models.Model):
     def __str__(self):
         return f'{self.user.nickname} mensave post {self.post.user.nickname}'
 
+    @property
+    def get_time(self):
+        return humanize.naturalday(self.create_at)
 
 class Like(models.Model):
     post = models.ForeignKey(Post, related_name='liked_post',on_delete=models.CASCADE)
     user = models.ForeignKey(UserProfil, related_name='liker',on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
+   
+    @property
+    def get_time(self):
+        return humanize.naturalday(self.date_created)
 
     class Meta:
         ordering = ['-date_created']
