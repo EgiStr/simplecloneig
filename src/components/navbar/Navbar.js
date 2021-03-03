@@ -19,6 +19,7 @@ function Navbar({user}) {
                         <a href="/" className="brand-logo ">Logo</a>
                         <ul className="right hide-on-med-and-down">
                             <li><a href="/"><i className="material-icons">home</i></a></li>
+                            <li><a style={{display:"flex", flexDirection:"row"}}><i className="material-icons">notifications</i><span class="badge">1</span></a></li>
                             <li><a href="/create"><i className="material-icons">control_point</i></a></li>
                             <li><a className='dropdown-trigger' data-target='dropdown1'><i className="material-icons">people</i></a></li>
                         </ul>

@@ -1,3 +1,4 @@
+from django.contrib.humanize.templatetags import humanize
 from django.db import models
 from django.conf import settings
 
@@ -53,6 +54,11 @@ class UserFollowing(models.Model):
 
         ordering =['-created']
     
+
+    @property
+    def get_time(self):
+        return humanize.naturalday(self.created)
+
     def __str__(self):
         return f'follower {self.user.nickname} and following of {self.following_user.nickname}'
 
