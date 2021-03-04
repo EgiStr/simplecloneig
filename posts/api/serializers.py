@@ -25,6 +25,7 @@ class PostSerializer(ModelSerializer):
     
     comments = SerializerMethodField()
     content_type_id = SerializerMethodField()
+    create_at = SerializerMethodField()
     class Meta:
         model = Post
         fields = [
@@ -38,7 +39,10 @@ class PostSerializer(ModelSerializer):
             'content_type_id',      
             'comments',
         ]
-        
+
+    def get_create_at(self,obj):
+        return obj.get_time
+    
     def get_user(self,obj):
         user = obj.user
         return UserProfilPostserializer(user,context={'request':None}).data
@@ -58,10 +62,14 @@ class PostSerializer(ModelSerializer):
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
     likes_count = SerializerMethodField()
+    create_at = SerializerMethodField()
     class Meta:
         model = Post
         fields = '__all__'
-
+    
+    def get_create_at(self,obj):
+        return obj.get_time
+    
     def get_user(self,obj):
         return UserProfilPostserializer(obj.user,context={'request':None}).data
     

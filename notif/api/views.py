@@ -10,8 +10,6 @@ class UserNotifikasiApiView(ListAPIView):
     serializer_class = NotifSerializer
     permission_classes= [IsAuthenticated]
     
-    def get_queryset(self):
-        print(self.request.user.id)
-        print(Notifikasi.objects.filter(receiver__user__id = self.request.user.id))
+    def get_queryset(self): 
         qs = Notifikasi.objects.filter(receiver__user__id = self.request.user.id)[:20]
         return qs

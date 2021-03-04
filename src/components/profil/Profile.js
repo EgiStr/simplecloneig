@@ -2,14 +2,17 @@ import React, { Component } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
-
-import Content from '../home/content'
-import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
-import {protectAuth} from '../auth/auth'
-import {getFollower,is_follow} from '../../action/follow'
-import {connect} from 'react-redux'
+
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+
+import { protectAuth } from '../auth/auth'
+import { getFollower,is_follow } from '../../action/follow'
+
 import ModalFollow from './follow/modelFollow'
+import Content from '../home/content'
+
 import '../../Profile.css'
 
 
@@ -22,9 +25,9 @@ class Profile extends Component{
             type : null,
             follow : 'follow',
             unfollow : 'unfollow',
+            data : [],
             redirect : false,
             redirectUrl : '',
-            data : [],
             
         }
     }

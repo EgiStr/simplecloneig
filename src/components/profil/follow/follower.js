@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 const Follower = ({user_id,user,following_user,id_follower}) => {
     
     const [state,setState] = useState({
-                                    follow : 'follow',
+                                    follow : 'follow back',
                                     unfollow: 'Following',
                                     is_follow : false,
                                     })
@@ -42,7 +42,7 @@ const Follower = ({user_id,user,following_user,id_follower}) => {
                 "Authorization": 'Bearer ' + Cookies.get('access')
             }})
             .then(res => {
-                res.data.id === undefined ? setState({follow:'follow',unfollow:'follow'}) : setState({follow:'Following',unfollow:'Following'})
+                res.data.id === undefined ? setState({follow:'follow back',unfollow:'follow back'}) : setState({follow:'Following',unfollow:'Following'})
             })
             .catch(e => console.log(e.request))
         
