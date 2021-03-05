@@ -14,7 +14,7 @@ def follow_notif_create(instance,created,*args, **kwargs):
                 sender=instance.following_user,
                 receiver=instance.user,
                 type_notif=2,
-                more_text=f'{instance.following_user} has follow your ..'
+                more_text=f'{instance.following_user} started following  you ..'
             )
 
 # menghapus jiga batal

@@ -6,7 +6,6 @@ from notif.models import Notifikasi
 class NotifSerializer(ModelSerializer):
     post = SerializerMethodField()
     sender = SerializerMethodField()
-    receiver = SerializerMethodField()
     create_at = SerializerMethodField()
     
     class Meta:
@@ -14,7 +13,6 @@ class NotifSerializer(ModelSerializer):
         fields = [
             'post',
             'sender',
-            'receiver',
             'create_at',
             'type_notif',
             'more_text',
@@ -26,10 +24,7 @@ class NotifSerializer(ModelSerializer):
     
     def get_sender(self,obj):
         return UserProfilPostserializer(obj.sender).data
-    
-    def get_receiver(self,obj):
-        return UserProfilPostserializer(obj.receiver).data
-    
+
     def get_post(self,obj):
         try:
             obj.post

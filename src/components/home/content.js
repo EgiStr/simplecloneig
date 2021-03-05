@@ -14,10 +14,10 @@ import '../../content.css'
 const Modal = lazy(()=> import('./comment/modal'))
 
 
+// menganti react-intersection-observer dengan observer API non npm
 
 const Content = memo((props) => {
     const user_id = parseJwt(Cookies.get('access')).user_id
-
     const history = useHistory()
     const [state,setState] = useState({
                                         redirect:false,
@@ -29,6 +29,7 @@ const Content = memo((props) => {
 
 
     const handleProfilRedirect = Userid => history.push(`/profile/${Userid}`)
+    
     useEffect(() => console.log('re-render'),[])
     // lazy loading
     const preloadingImg = img => {

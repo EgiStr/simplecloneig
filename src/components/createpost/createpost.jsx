@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-import Dropzone from 'react-dropzone'
-
 import M from "materialize-css";
 
 import ReactCrop from 'react-image-crop'
@@ -88,16 +86,13 @@ class CreatePost extends Component {
         }
     }
 
-    handleOnDrop = (files, rejectedFiles) => {
+    handleOnDrop = (event) => {
 
-        if (rejectedFiles && rejectedFiles.length > 0) {
-            this.verifyFile(rejectedFiles)
-        }
         // validasi file
-        if (files && files.length > 0) {
-            if (this.verifyFile(files)) {
+        if (event.target.files && event.target.files.length > 0) {
+            if (this.verifyFile(event.target.files)) {
 
-                const currentFile = files[0]
+                const currentFile = event.target.files[0]
                 // membuat fileReader untuk membuat base64
                 const reader = new FileReader()
 
@@ -219,9 +214,7 @@ class CreatePost extends Component {
                         />
                         {this.state.imageUrl !== null ? (
                             <div>
-                                {/* <p>priview image</p>
-                    <img src={this.state.imageUrl} alt="foto" /> */}
-                                {/* handle crop file */}
+                             
                                 <ReactCrop
                                     src={this.state.urlMentah}
                                     crop={this.state.crop}
@@ -239,24 +232,34 @@ class CreatePost extends Component {
                             <p></p>
                         )}
                     </div>
-                    <div className="insert">
-                        <p>Add to Your Post</p>
-                        <div style={{display:"flex"}}>
-                            <Dropzone onDrop={this.handleOnDrop} accept={'image/*'} multiple={false}>
+                    <label className="insert" htmlFor="files"  >
+                        
+                       
+                        <label>Add to Your Post</label>
+                        <input
+                        onChange={this.handleOnDrop}
+                        type="file"
+                        style={{ visibility: "hidden" }}
+                        accept={"image/*"}
+                        multiple={false}
+                        id="files"
+                        />
+                            {/* <input type="file" onChange={this.handleOnDrop} accept={'image/*'} multiple={false} /> */}
+                            {/* <Dropzone onDrop={} accept={} multiple={false}>
                                 {({ getRootProps, getInputProps }) => (
                                     <section>
-                                        {/* method drop zone untuk mendapatkan input */}
+                                       
                                         <label htmlFor="input-image-post"><i className="material-icons small">add_a_photo</i></label>
                                         <div {...getRootProps()}>
                                             <input id="input-image-post" {...getInputProps()} />
                                         </div>
                                     </section>
                                 )}
-                            </Dropzone>
-                            <i className="material-icons small">add_location</i>
-                            <i className="material-icons small">person_pin</i>
-                        </div>
-                    </div>
+                            </Dropzone> */}
+                            {/* <i className="material-icons small">add_location</i>
+                            <i className="material-icons small">person_pin</i> */}
+                     
+                    </label>
 
                     {/* <input type="file" name="name" id="1" onChange={this.handleUploadImage} /> */}
                     <a className="btn-send" onClick={this.handleSubmit}>Send</a>

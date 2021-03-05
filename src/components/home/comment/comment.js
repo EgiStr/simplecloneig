@@ -16,31 +16,20 @@ import { connect } from 'react-redux'
 
 
 
-const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent,delete_comment,replies_comment}) => {
+const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent,delete_comment}) => {
  
     const [limit,setLimit] = useState(0)
+    
+    let child = replies.length !== 0 ? (replies.length - limit)  : null 
     // const [hide,setHide] = useState(false)
  
     const handleRemove = id => {
         protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
         delete_comment(id,Cookies.get('access'))
     }
-
     const handleReplies = (parent_id) => add_parent(parent_id)
 
     
-    // let child = replies_comment ? replies_comment[0] : null
-    // let child4 = replies_comment ? replies_comment : null
-    
-
-    // let child2 = child ? child.parent : null 
-    // let child3 = child ? child4 : null 
-    let child = replies.length !== 0 ? (replies.length - limit)  : null 
-    
-    
-    const hadleGetreplies = () => {
-        setLimit(prev => prev + 2)
-    }
     
     const renderReplies = () => {
             return replies.slice(0,limit).map((e,i)=>{
@@ -75,10 +64,10 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
                             (function(){
                                 if(replies.length > 0){
                                     if(limit <= 0) {
-                                        return <p onClick={() => hadleGetreplies()}>view replies {replies.length} </p>
+                                        return <p onClick={() => setLimit(prev => prev + 2)}>view replies {replies.length} </p>
                                     }else{
                                         if(child > 0){
-                                            return <p onClick={() => hadleGetreplies()}>view replies {child} </p>
+                                            return <p onClick={() => setLimit(prev => prev + 2)}>view replies {child} </p>
                                         }else if(child === 0 || child < 0){
                                             return <p onClick={()=> setLimit(0)}>Hide replies</p>
                                         }
@@ -105,10 +94,10 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
                         (function(){
                             if(replies.length > 0){
                                 if(limit <= 0) {
-                                    return <p onClick={() => hadleGetreplies()}>view replies {replies.length} </p>
+                                    return <p onClick={() => setLimit(prev => prev + 2)}>view replies {replies.length} </p>
                                 }else{
                                     if(child > 0){
-                                        return <p onClick={() => hadleGetreplies()}>view replies {child} </p>
+                                        return <p onClick={() => setLimit(prev => prev + 2)}>view replies {child} </p>
                                     }else if(child === 0 || child < 0){
                                         return <p onClick={()=> setLimit(0)}>Hide replies</p>
                                     }

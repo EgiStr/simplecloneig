@@ -19,11 +19,11 @@ export const get_notif_user = access => dispatch => {
     axios.get(`http://127.0.0.1:8000/notif/user/`,{
         headers: 
                 {
-                    'Authorization' : 'Bearer ' + access
+                    'Authorization' : 'Bearer ' + Cookies.get('access')
                 }
     })
     .then(res => {
-        console.log(res.data)
+       
         dispatch({
             type:'GET_NOTIF',
             payload:res.data

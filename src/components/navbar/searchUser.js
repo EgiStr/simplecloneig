@@ -31,7 +31,7 @@ export const SearchUser = () => {
     const redirect = (Userid) => history.push(`/profile/${Userid}`)
     return (
        
-       <div>  
+       <div className='box-notif-search'>  
 
             <input onChange={(event)=>{setSearch(event.target.value)}}></input>        
 
