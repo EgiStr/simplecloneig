@@ -31,7 +31,7 @@ class Login extends Component {
         Cookies.set('access', res.data.access)
         Cookies.set('refresh', res.data.refresh)
         this.props.get_post_like()
-        this.props.get_notif_user(res.data.access)
+        this.props.get_notif_user()
         this.props.loginUser(res.data.access)
         this.setState({ redirect: true });
       })

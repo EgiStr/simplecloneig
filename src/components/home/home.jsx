@@ -54,7 +54,7 @@ export const home = () => {
     <div className="container">
             <div className="row">
                 <div className="col s8">
-                  <CreatePost/>
+                  <CreatePost />
                     {data.length > 0 ? data.map( (item ,i) => {
                         if(data.length === i + 1){
                           return ( 

@@ -7,17 +7,17 @@ import ReactCrop from 'react-image-crop'
 import { image64toCanvasRef, extractImageFileExtensionFromBase64, base64StringtoFile } from '../method/base64'
 
 import { formatBytes } from '../method/convert'
-import { parseJwt } from '../method/parseJwt'
+
 import Cookies from 'js-cookie'
 import { protectAuth } from '../auth/auth'
 import { Redirect } from 'react-router-dom'
 import { Avatar } from '@material-ui/core'
-
+import { connect } from 'react-redux'
 
 import axios from 'axios'
 
 import '../../cp.css'
-import 'react-image-crop/dist/ReactCrop.css'
+import 'react-image-crop/dist/ReactCrop.css';
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
@@ -38,24 +38,20 @@ class CreatePost extends Component {
             user: '',
             caption: '',
             crop: {
-                aspect: 1 / 1,
-                // x:20,
-                // y:10,
-                // width:300,
-                // height:300,
-            }
+                unit: '%',
+                width: 50,
+                height: 50,
+                x: 25,
+                y: 25
+              }
         }
         this.canvasRef = React.createRef()
     }
 
     componentDidMount() {
-        if (!protectAuth()) {
-            this.setState({ redirect: true, redirectUrl: '/login' })
-        }
-        const options = {
-            onOpenStart: () => {
-            },
 
+
+        const options = {
             inDuration: 250,
             outDuration: 250,
             opacity: 0.5,
@@ -99,13 +95,17 @@ class CreatePost extends Component {
                 // menyimpan data ke url agar bisa di load di preview                
                 reader.addEventListener('load', () => {
                     this.setState({ urlMentah: reader.result })
-                }, false)
-
+                }, false)    
+                
                 // membuat base64
                 reader.readAsDataURL(currentFile)
-            }
-        }
-    }
+            }    
+        }    
+    }    
+    
+    Confirmfoto = () => this.setState({ urlMentah: null }) // membuat gambar crop jadi kosong 
+
+    handleCaption = event => this.setState({ caption: event.target.value })
 
     handleOnChange = (crop) => this.setState({ crop: crop })
 
@@ -134,21 +134,17 @@ class CreatePost extends Component {
             // mengubah base64 mejadi file dan menyimpan ke state
             const file = base64StringtoFile(dataBaru, filename)
             this.setState({ urlJadi: file })
-        }
+        }    
 
-    }
+    }    
 
-    Confirmfoto = () => this.setState({ urlMentah: null }) // membuat gambar crop jadi kosong 
-
-
-    handleCaption = event => this.setState({ caption: event.target.value })
 
 
     handleSubmit = () => {
         protectAuth(Cookies.get('access'), Cookies.get('refresh')).then(e => e ? '' : window.location.reload())
 
         const { urlJadi, caption } = this.state
-        const user = parseJwt(Cookies.get('access')).user_id
+        const user = this.props.user_id.user_id
         let formData = new FormData()
 
         formData.append('post', urlJadi)
@@ -167,8 +163,9 @@ class CreatePost extends Component {
             .then((res) => {
                 // jika succes redirect ke profil
                 this.setState({ redirect: true, urlJadi: null, caption: '', })
+                window.location.reload()
             })
-            .catch(e => { console.log(e.request.responseText) })
+            .catch(e =>  console.log(e.request.responseText) )
     }
 
     /* testing input file local */
@@ -176,15 +173,17 @@ class CreatePost extends Component {
     //     this.setState({urlMentah:event.target.files[0]})
     //     console.log(event.target.files[0])
     // }
-
+    
     render() {
-
         if (this.state.redirect) return <Redirect to={this.state.redirectUrl} />
+
         return (
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <div style={{ border: "1px solid gray", borderRadius: "10px", padding: "20px" }}>
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <Avatar />
+                        <Avatar 
+                            src={`http://127.0.0.1:8000${this.props.user_id.profil}`}
+                        />
                         <a className="caption modal-trigger" href="#modal1" style={{ flex: "1", borderRadius: "50px", padding: "10px", marginLeft: "5px" }}>What Do You mind?</a>
                     </div>
                     <div className="divider" style={{ margin: "10px 0" }}></div>
@@ -195,13 +194,16 @@ class CreatePost extends Component {
                         </a>
                     </div>
                 </div>
+
                 <div ref={modal => this.Modal = modal} id="modal1" className="modal">
                     <h5 align="center">Create Post</h5>
-                    <a href="#!" className="modal-close"><i className="material-icons">close</i></a>
+                    <a className="modal-close"><i className="material-icons">close</i></a>
                     <div className="divider" />
                     <div className="profile-modal">
-                        <Avatar />
-                        <p>username</p>
+                        <Avatar 
+                            src={`http://127.0.0.1:8000${this.props.user_id.profil}`}
+                        />
+                        <p>{this.props.user_id.username}</p>
                     </div>
                     <div className="insert-post">
                         <textarea
@@ -214,7 +216,6 @@ class CreatePost extends Component {
                         />
                         {this.state.imageUrl !== null ? (
                             <div>
-                             
                                 <ReactCrop
                                     src={this.state.urlMentah}
                                     crop={this.state.crop}
@@ -244,24 +245,11 @@ class CreatePost extends Component {
                         multiple={false}
                         id="files"
                         />
-                            {/* <input type="file" onChange={this.handleOnDrop} accept={'image/*'} multiple={false} /> */}
-                            {/* <Dropzone onDrop={} accept={} multiple={false}>
-                                {({ getRootProps, getInputProps }) => (
-                                    <section>
-                                       
-                                        <label htmlFor="input-image-post"><i className="material-icons small">add_a_photo</i></label>
-                                        <div {...getRootProps()}>
-                                            <input id="input-image-post" {...getInputProps()} />
-                                        </div>
-                                    </section>
-                                )}
-                            </Dropzone> */}
                             {/* <i className="material-icons small">add_location</i>
                             <i className="material-icons small">person_pin</i> */}
                      
                     </label>
 
-                    {/* <input type="file" name="name" id="1" onChange={this.handleUploadImage} /> */}
                     <a className="btn-send" onClick={this.handleSubmit}>Send</a>
                 </div>
 
@@ -277,5 +265,10 @@ class CreatePost extends Component {
 
 }
 
+const mapStateToProps = state => {
+    return {
+        user_id : state.auth.user,
+    }
+}
 
-export default CreatePost;
+export default connect(mapStateToProps)(CreatePost);

@@ -15,7 +15,7 @@ export const loginUser = (access) => (dispatch) => {
     })
 } 
 
-export const get_notif_user = access => dispatch => {
+export const get_notif_user = () => dispatch => {
     axios.get(`http://127.0.0.1:8000/notif/user/`,{
         headers: 
                 {
@@ -63,6 +63,16 @@ export const like_post_with = (prev,post_id) => (dispatch) => {
 
    dispatch({
        type:'LIKE_POST',
+       payload:{
+           post_id : post_id,
+           prev:prev
+       }
+   })
+}
+export const unlike_post_with = (prev,post_id) => (dispatch) => {
+
+   dispatch({
+       type:'UNLIKE_POST',
        payload:{
            post_id : post_id,
            prev:prev
