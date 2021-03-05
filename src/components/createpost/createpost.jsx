@@ -55,17 +55,17 @@ class CreatePost extends Component {
             this.setState({ redirect: true, redirectUrl: '/login' })
         }
         const options = {
-            onOpenStart: () => {              
+            onOpenStart: () => {
             },
-            
+
             inDuration: 250,
             outDuration: 250,
             opacity: 0.5,
             dismissible: false,
             startingTop: "4%",
             endingTop: "10%"
-          };
-          M.Modal.init(this.Modal, options);
+        };
+        M.Modal.init(this.Modal, options);
     }
 
     // method validate foto
@@ -150,7 +150,7 @@ class CreatePost extends Component {
 
 
     handleSubmit = () => {
-        protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : window.location.reload())
+        protectAuth(Cookies.get('access'), Cookies.get('refresh')).then(e => e ? '' : window.location.reload())
 
         const { urlJadi, caption } = this.state
         const user = parseJwt(Cookies.get('access')).user_id
@@ -186,7 +186,7 @@ class CreatePost extends Component {
 
         if (this.state.redirect) return <Redirect to={this.state.redirectUrl} />
         return (
-            <div className="container" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <div style={{ border: "1px solid gray", borderRadius: "10px", padding: "20px" }}>
                     <div style={{ display: "flex", alignItems: "center" }}>
                         <Avatar />
@@ -195,28 +195,28 @@ class CreatePost extends Component {
                     <div className="divider" style={{ margin: "10px 0" }}></div>
                     <div >
                         <a className="imageVid modal-trigger" href="#modal1" style={{ display: "flex", justifyContent: "center" }}>
-                            <i className="material-icons" style={{color:"#ee6e73"}}>image</i>
+                            <i className="material-icons" style={{ color: "#ee6e73" }}>image</i>
                             Foto/Video
                         </a>
                     </div>
                 </div>
                 <div ref={modal => this.Modal = modal} id="modal1" className="modal">
-                    <div className="modal-content">
-                        <h4>Modal Header</h4>
-                        <Dropzone onDrop={this.handleOnDrop} accept={'image/*'} multiple={false}>
-                            {({ getRootProps, getInputProps }) => (
-                                <section>
-                                    {/* method drop zone untuk mendapatkan input */}
-                                    <div {...getRootProps()}>
-                                        <input {...getInputProps()} />
-                                        <p>Drag 'n' drop some files here, or click to select files</p>
-                                    </div>
-                                </section>
-                            )}
-                        </Dropzone>
-
-                        <br />
-
+                    <h5 align="center">Create Post</h5>
+                    <a href="#!" className="modal-close"><i className="material-icons">close</i></a>
+                    <div className="divider" />
+                    <div className="profile-modal">
+                        <Avatar />
+                        <p>username</p>
+                    </div>
+                    <div className="insert-post">
+                        <textarea
+                            type="textarea"
+                            onChange={this.handleCaption}
+                            value={this.state.caption}
+                            placeholder="caption mu apa"
+                            className="caption-post"
+                            autoFocus
+                        />
                         {this.state.imageUrl !== null ? (
                             <div>
                                 {/* <p>priview image</p>
@@ -231,27 +231,35 @@ class CreatePost extends Component {
                                 />
                                 <button className="btn" onClick={this.Confirmfoto}>Confirm</button>
                                 <br />
-                                <h5>priview</h5>
                                 <canvas ref={this.canvasRef} >
 
                                 </canvas>
                             </div>
                         ) : (
-                                <p></p>
-                            )}
-
-                        <input
-                            type="text"
-                            onChange={this.handleCaption}
-                            value={this.state.caption}
-                            placeholder="caption mu apa" />
-
-                        {/* <input type="file" name="name" id="1" onChange={this.handleUploadImage} /> */}
-                        <button className="btn" onClick={this.handleSubmit}>send</button>
+                            <p></p>
+                        )}
                     </div>
-                    <div className="modal-footer">
-                        <a href="#!" className="modal-close">Agree</a>
+                    <div className="insert">
+                        <p>Add to Your Post</p>
+                        <div style={{display:"flex"}}>
+                            <Dropzone onDrop={this.handleOnDrop} accept={'image/*'} multiple={false}>
+                                {({ getRootProps, getInputProps }) => (
+                                    <section>
+                                        {/* method drop zone untuk mendapatkan input */}
+                                        <label htmlFor="input-image-post"><i className="material-icons small">add_a_photo</i></label>
+                                        <div {...getRootProps()}>
+                                            <input id="input-image-post" {...getInputProps()} />
+                                        </div>
+                                    </section>
+                                )}
+                            </Dropzone>
+                            <i className="material-icons small">add_location</i>
+                            <i className="material-icons small">person_pin</i>
+                        </div>
                     </div>
+
+                    {/* <input type="file" name="name" id="1" onChange={this.handleUploadImage} /> */}
+                    <a className="btn-send" onClick={this.handleSubmit}>Send</a>
                 </div>
 
 

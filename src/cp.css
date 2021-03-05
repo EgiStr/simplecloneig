@@ -12,3 +12,77 @@
     padding:8px;
     border-radius:50px;
 }
+.modal{
+    width:485px !important;
+    height:500px !important;
+    padding: 0 20px !important;
+    overflow: hidden !important;
+    border-radius: 10px !important;
+}
+.modal-close{
+    position: absolute;
+    background-color: #e4e6eb !important;
+    color: gray;
+    right:15px;
+    line-height: 0.8;
+    border-radius: 50%;
+    padding: 5px;
+    top:12px;
+}
+.profile-modal{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 15px 0;
+}
+.caption-post{
+    border: none !important;
+    overflow: auto !important;
+    outline: none !important;
+    resize: none !important;
+    height: 110px;
+} 
+.caption-post::-webkit-scrollbar {
+    display: none;
+} 
+.insert-post{
+    height: 150px !important;
+    overflow-y: scroll;
+    overflow-x: hidden !important;
+}
+.insert-post::-webkit-scrollbar {
+    width: 7px;
+}
+.insert-post::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 50px;
+}
+.insert-post::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+.btn-send{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    background-color: #ef6e73;
+    color: white;
+    border-radius: 10px;
+    padding :5px;
+    cursor: pointer;
+}
+.insert{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border:1px solid gray;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 15px 0;
+    padding: 15px;
+}
+.small{
+    margin-left: 20px;
+}

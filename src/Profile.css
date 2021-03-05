@@ -6,13 +6,17 @@
 }
 
 .btn_edit {
+    display: flex;
+    align-items: center;
     border: 1px solid lightgray;
     margin-left: 15px;
     padding: 5px;
+    margin-top: 14px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     border-radius: 5px;
+    height: 35px;
 }
 
 .post_nav {
