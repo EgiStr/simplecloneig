@@ -1,0 +1,33 @@
+*{
+    margin: 0 ;
+    padding: 0;
+}
+.notif{
+    display: flex;
+    flex-direction: row;
+    align-items: center;   
+    justify-content: space-between;
+    margin-top: 15px;     
+}
+.notif-profile{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    line-height: normal;
+    letter-spacing: 2px;
+}
+button.follow{
+    background:#ee6e73;
+    color:aliceblue;
+    border:none;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+}   
+.notif-txt{
+    margin-left: 10px;
+    font-size: 13px;
+}
+.notif-txt span{
+    color: #bfbfbf;
+}

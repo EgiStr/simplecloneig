@@ -9,6 +9,7 @@ import { protectAuth } from '../auth/auth'
 import { Redirect } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import axios from 'axios'
+import CreatePost from '../createpost/createpost'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
@@ -53,7 +54,7 @@ export const home = () => {
     <div className="container">
             <div className="row">
                 <div className="col s8">
-                  
+                  <CreatePost/>
                     {data.length > 0 ? data.map( (item ,i) => {
                         if(data.length === i + 1){
                           return ( 

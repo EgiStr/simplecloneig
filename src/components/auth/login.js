@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
-import { loginUser,get_notif_user,get_post_like } from '../../action/auth'
+import { loginUser, get_notif_user, get_post_like } from '../../action/auth'
 
 
 
@@ -21,38 +21,40 @@ class Login extends Component {
     };
   }
 
-  handleSubmit= (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
     axios.post(`http://127.0.0.1:8000/auth/login/`, {
-        username: this.state.title,
-        password: this.state.password,
-      })
+      username: this.state.title,
+      password: this.state.password,
+    })
       .then((res) => {
-        Cookies.set('access',res.data.access)
-        Cookies.set('refresh',res.data.refresh)
+        Cookies.set('access', res.data.access)
+        Cookies.set('refresh', res.data.refresh)
         this.props.get_post_like()
         this.props.get_notif_user(res.data.access)
         this.props.loginUser(res.data.access)
         this.setState({ redirect: true });
       })
-      .catch((e) => this.setState({notValide:true}));
+      .catch((e) => this.setState({ notValide: true }));
   }
 
-  handleTitleChange = (event) => this.setState({title:event.target.value})
-  handlePasswordChange = (event) => this.setState({password: event.target.value})
-  handleValidatePassword = event => this.setState({password2: event.target.value,notValide: event.target.value !== this.state.password});
-  
+  handleTitleChange = (event) => this.setState({ title: event.target.value })
+  handlePasswordChange = (event) => this.setState({ password: event.target.value })
+  handleValidatePassword = event => this.setState({ password2: event.target.value, notValide: event.target.value !== this.state.password });
+
 
   render() {
 
-    if (this.state.redirect ) {
-        return <Redirect to="/" />;}
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
 
     return (
 
       <div className="container_login">
         <div className="box_login">
           <h5>Sign in</h5>
+          {this.state.notValide && <p className="message-login">Password or Username Not Valid</p>}
           <div className="input-field">
             <i className="material-icons prefix">person</i>
             <input
@@ -60,7 +62,7 @@ class Login extends Component {
               value={this.state.title}
               onChange={this.handleTitleChange}
               placeholder="What password ? ...."
-              />
+            />
 
           </div>
           <div className="input-field">
@@ -89,7 +91,6 @@ class Login extends Component {
             <div className="icon_field">
               <i className="material-icons">email</i>
             </div>
-          {this.state.notValide && 'password salaah'}
           </div>You dont have account? <a href="/register">sign up</a>
         </div>
       </div>
@@ -99,8 +100,8 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    is_auth : state.auth.is_auth
+    is_auth: state.auth.is_auth
   }
 }
 
-export default connect(mapStateToProps,{loginUser,get_post_like,get_notif_user})(Login);
+export default connect(mapStateToProps, { loginUser, get_post_like, get_notif_user })(Login);
