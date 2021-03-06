@@ -5,6 +5,7 @@ import Content from './content'
 
 import FecthData from './fetchData'
 import { protectAuth } from '../auth/auth'
+import { connect } from 'react-redux'
 
 import { Redirect } from 'react-router-dom'
 import Cookies from 'js-cookie'
@@ -14,14 +15,14 @@ import CreatePost from '../createpost/createpost'
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 
-export const home = () => {
+export const home = ({ user }) => {
   const [state,setState] = useState({redirect:false,})
   const [page,setPage] = useState(1)
-
+  
   // fetch data dari api
-
+  
   const [data,hasMore,loading] = FecthData(page,Cookies.get('access'))
-
+  
   useEffect(() => {
     // window.location.reload()
     protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : setState({redirect:true}))
@@ -44,12 +45,12 @@ export const home = () => {
         setPage(prevPageNumber => prevPageNumber + 1)}
       })
       // kalo ada node inisialisasi dengan observer
-
+      
     if (node) observer.current.observe(node)
   }, [loading,hasMore])
   
-  if(state.redirect) return <Redirect to='/login'/>
   
+  if(state.redirect || user === null) return <Redirect to='/login'/>
   return (
     <div className="container">
             <div className="row">
@@ -190,5 +191,9 @@ export const home = () => {
 //     )
 //   }
 // }; 
-
-export default home ;
+const mapStateToProps = state => {
+  return {
+    user : state.auth.user,
+  }
+}
+export default connect(mapStateToProps)(home) ;

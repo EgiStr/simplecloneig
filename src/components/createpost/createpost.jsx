@@ -175,8 +175,8 @@ class CreatePost extends Component {
     // }
     
     render() {
-        if (this.state.redirect) return <Redirect to={this.state.redirectUrl} />
-
+        if (this.state.redirect || this.props.user_id === null) return <Redirect to={this.state.redirectUrl} />
+        
         return (
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <div style={{ border: "1px solid gray", borderRadius: "10px", padding: "20px" }}>

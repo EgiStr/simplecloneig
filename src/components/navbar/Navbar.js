@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { connect } from 'react-redux'
-import {get_notif_user} from '../../action/auth'
+import { get_notif_user,clear_notif_user } from '../../action/notifikasi'
 import { NotifDropdown } from './notifDropdown'
 import $ from 'jquery'
 
 
-function Navbar({ user,notif,get_notif_user }) {
+function Navbar({ user,notif,get_notif_user,clear_notif_user }) {
     if (user === null) return <Redirect to={'/login'} />
 
     useEffect(() => {
@@ -20,6 +20,7 @@ function Navbar({ user,notif,get_notif_user }) {
     const notifTrigger = () => {
         $(".box-notif").fadeToggle()
         get_notif_user()
+        clear_notif_user()
     }
   
     return (
@@ -40,7 +41,7 @@ function Navbar({ user,notif,get_notif_user }) {
                                 className="new badge"
                                 style={{ position: "absolute", marginTop: "10px", marginLeft: "10px" }}
                                 >
-                                {notif.length}
+                                {localStorage.getItem('notif')}
                                 </span></a></li>
                             <li><a className='dropdown-trigger' data-target='dropdown1'><i className="material-icons">people</i></a></li>
                             <NotifDropdown 
@@ -62,7 +63,7 @@ function Navbar({ user,notif,get_notif_user }) {
 const mapStateToProps = state => {
     return {
         user: state.auth.user,
-        notif:state.auth.notif,
+        notif:state.notifikasi.notifications,
     }
 }
-export default connect(mapStateToProps,{get_notif_user})(Navbar);
+export default connect(mapStateToProps,{get_notif_user,clear_notif_user})(Navbar);

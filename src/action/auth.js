@@ -15,23 +15,6 @@ export const loginUser = (access) => (dispatch) => {
     })
 } 
 
-export const get_notif_user = () => dispatch => {
-    axios.get(`http://127.0.0.1:8000/notif/user/`,{
-        headers: 
-                {
-                    'Authorization' : 'Bearer ' + Cookies.get('access')
-                }
-    })
-    .then(res => {
-       
-        dispatch({
-            type:'GET_NOTIF',
-            payload:res.data
-        })
-    })
-    .catch(e => console.log(e.request))
-}
-
 export const LogoutAuth = () => dispatch => {
     return dispatch({
         type:'LOGOUT_SUCCESS',

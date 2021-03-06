@@ -12,6 +12,8 @@ export const getFollower = (access) => (dispatch,getstate) => {
         "Authorization": 'Bearer ' + access
     }})
     .then(res => {
+        
+        localStorage.setItem('follow' , res.data.map(e => e.following_user.id))
         dispatch({
             type:'GET_FOLLOWING',
             payload : res.data,
@@ -27,7 +29,7 @@ export const getFollowerUser = (access,id) => (dispatch,getstate) => {
         "Authorization": 'Bearer ' + access
     }})
     .then(res => {
-
+        
         dispatch({
             type:'GET_FOLLOWER',
             payload : res.data,

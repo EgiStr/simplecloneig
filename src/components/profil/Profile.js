@@ -72,9 +72,9 @@ class Profile extends Component {
     }
 
     render() {
-        if (this.state.redirect) return <Redirect to={this.state.redirectUrl} />
+        if (this.state.redirect || this.props.user === null) return <Redirect to={this.state.redirectUrl} />
 
-        const authUser = this.props.user === null ? null : this.props.user.username
+        const authUser = this.props.user.username
         const idUser = this.props.match.params.id
 
         const data = this.state.data

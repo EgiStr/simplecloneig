@@ -16,6 +16,7 @@ const Modal = lazy(()=> import('./comment/modal'))
 
 const Content = memo((props) => {
     const history = useHistory()
+    if(props.user === null) history.push('/login')
     const [state,setState] = useState({
                                         likes : props.like,
                                         buttonLikeClass:'small material-icons icon red-text',
