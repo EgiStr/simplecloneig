@@ -18,7 +18,7 @@ import { get_comment,
 import CommentUser  from './comment'
 
 import { protectAuth } from '../../auth/auth'
-import { parseJwt } from '../../method/parseJwt'
+
 import './mentionStyle.css'
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
@@ -29,7 +29,7 @@ class Modal extends Component {
         super(props)
         this.state = {
             comment:'',
-            content:'',
+
             getusername:'',
             
         }
@@ -70,7 +70,6 @@ class Modal extends Component {
             console.log(newValue)
             this.setState({
                 comment:newValue,
-                content:event.target.value
             })
         }
 
@@ -182,7 +181,7 @@ class Modal extends Component {
                         <div className="col s6 l5 post-btn-container" >
                             {parent ? (<p onClick={() => {this.handlecancle()}}>your replies click cancel </p>) : (null)}
                             <MentionsInput
-                            value={this.state.content}
+                            value={this.state.comment}
 
                             onChange={this.handleChange}
                             placeholder="Type anything, use the @ symbol to tag other users."
