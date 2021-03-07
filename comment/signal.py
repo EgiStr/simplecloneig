@@ -12,9 +12,14 @@ def comment_notif_create(instance,created,*args, **kwargs):
     if created:
         post = list(Post.objects.filter(id=instance.obj_id))[0]
         user = post.user
-
         filters = instance.content.split(" ")    
-        mentionUser = [t for t in filters if t[0] == '@']
+       
+        mentionUser = []
+        for i in filters:
+            if len(i) != 0:
+                if i[0] == '@':
+                    mentionUser.append(i)
+                    
         
         # mengcheck jika ada user mention di comment agar mengirim notifikasi
         if len(mentionUser) != 0 :

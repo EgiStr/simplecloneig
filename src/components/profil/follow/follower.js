@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 const Follower = ({user_id,user,following_user,id_follower}) => {
     
     const [state,setState] = useState({
-                                    follow : 'follow back',
+                                    follow : 'follow',
                                     unfollow: 'Following',
                                     is_follow : false,
                                     })
