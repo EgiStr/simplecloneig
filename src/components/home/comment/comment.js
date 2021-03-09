@@ -8,7 +8,7 @@ import Childcomment from './comments'
 
 import { 
     delete_comment,
-    
+    add_username,
     add_parent
 } from '../../../action/comment'
 
@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
 
 
 
-const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent,delete_comment}) => {
+const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent,delete_comment,add_username}) => {
  
     const [limit,setLimit] = useState(0)
     
@@ -27,7 +27,10 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
         protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
         delete_comment(id,Cookies.get('access'))
     }
-    const handleReplies = (parent_id) => add_parent(parent_id)
+    const handleReplies = (parent_id,user_username) => {
+        add_parent(parent_id)
+        add_username(user_username)
+    }
 
     
     
@@ -55,7 +58,7 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
                     <span className="title">{nickname}</span>
                     <p>{content}</p>
                     <a className="btn" onClick={()=>{handleRemove(id)}}><i className="material-icons">send</i></a>
-                    <a className="secondary-content btn" onClick={()=>{handleReplies(id)}}><i className="material-icons">send</i></a>
+                    <a className="secondary-content btn" onClick={()=>{handleReplies(id,nickname)}}><i className="material-icons">send</i></a>
                     {/* agar membuat hanya di itu sendiri replies dimuat  */}
                     {renderReplies()}      
                    
@@ -117,4 +120,4 @@ const mapStateToProps = state => {
         user_id : state.auth.user.user_id,
     }
 }
-export default connect(mapStateToProps,{add_parent,delete_comment,})(CommentUser)
+export default connect(mapStateToProps,{add_parent,delete_comment,add_username})(CommentUser)

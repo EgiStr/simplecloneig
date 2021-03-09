@@ -25,6 +25,6 @@ def Like_notif_delete(instance,*args, **kwargs):
             sender=instance.user,
             receiver=instance.post.user,
             type_notif=1,
-            more_text=f'{instance.user.nickname} has liked your post {instance.post.caption}'
+            more_text=f' has liked your post {instance.post.caption}'
         )
     notif.delete()

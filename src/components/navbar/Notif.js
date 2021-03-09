@@ -66,8 +66,8 @@ const Notif = ({user_id,post,sender,text,type}) => {
             </div>
             {type === 2 ? (
                 <button className="follow" onClick={() => handleFollow() } >{state.is_follow ? state.unfollow : state.follow}</button>
-                ) : (
-                <img
+                        ) : (
+                        <img
                             className="follow"
                             alt="foto"
                             src={'http://127.0.0.1:8000'+post.post}

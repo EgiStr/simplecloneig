@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer,SerializerMethodField
-from rest_framework import serializers
-from posts.models import Post,Like
+from rest_framework import fields, serializers
+from posts.models import Post,Like, SavePostUser
 
 from usercostumer.api.serializers import UserProfilPostserializer
 
@@ -77,6 +77,17 @@ class PostDetailSerialzer(ModelSerializer):
         return obj.likes.count()
 
 class UserLikePost(ModelSerializer):
+    post = SerializerMethodField()
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'post'
+        ]
+    def get_post(self,obj):
+        return obj.post.id
+
+class UserSavePost(ModelSerializer):
     post = SerializerMethodField()
     class Meta:
         model = Like
@@ -166,6 +177,23 @@ class EditPostSerializer(ModelSerializer):
             'private'
         ]
 
+class SavePostSerializer(ModelSerializer):
+    class Meta:
+        model = SavePostUser
+        fields = [ 'id' , 'post' , 'user']
+    
+    def create(self, validated_data):
+        conennet_save,created = SavePostUser.objects.get_or_create(
+            user = validated_data['user'],
+            post = validated_data['post']
+        )
+       
+        if created :
+         
+            return conennet_save
+        conennet_save.delete()
+            
+        return validated_data
 class JustLikeSerializer(ModelSerializer):
     class Meta:
         model = Like
@@ -184,18 +212,5 @@ class JustLikeSerializer(ModelSerializer):
         Connect_like.delete()
 
         return validated_data
-       
-            # Connect_like = Like.objects.filter(
-            #     user=validated_data['user'],
-            #     post = validated_data['post'],
-            # )
-            # Connect_like.delete()
-            # return Response(status=status.HTTP_204_NO_CONTENT)
-
-    # def update(self, instance, validated_data):
-
-    #     print(validated_data)
-
-    #     return instance
 
 

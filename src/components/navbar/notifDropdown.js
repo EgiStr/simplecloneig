@@ -7,7 +7,6 @@ export const NotifDropdown = ({notif}) => {
         <div>
         <li className="box-notif" style={{ position: "absolute", background: "white", display: "none", marginTop: "65px", boxShadow: " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", width: "35vw", height: "50vh", right: "15px", color: "black", borderRadius: "5px", overflow: "auto", padding: "15px" }}>
             {notif.map((item,index) => {
-            
   
                 return (
                     <div key={index}>

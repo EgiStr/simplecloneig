@@ -114,6 +114,7 @@ export const home = ({ user }) => {
                         </div>
                       </div>
                     ) : (null) }
+                  
                     {loading && <p>relog if take to long</p>}
                 </div>
             </div>

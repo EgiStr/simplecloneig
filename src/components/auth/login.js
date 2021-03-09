@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
-import { loginUser, get_post_like } from '../../action/auth'
+import { loginUser, get_post_like,get_post_save } from '../../action/auth'
 import { getFollower } from '../../action/follow'
 import { get_notif_login, } from '../../action/notifikasi'
 
@@ -32,10 +32,10 @@ class Login extends Component {
         Cookies.set('access', res.data.access)
         Cookies.set('refresh', res.data.refresh)
         this.props.get_post_like()
+        this.props.get_post_save()
         this.props.get_notif_login()
         this.props.loginUser(res.data.access)
         this.props.getFollower(res.data.access)
-
         this.setState({ redirect: true });
       })
       .catch((e) => this.setState({ notValide: true }));
@@ -107,4 +107,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { loginUser, get_post_like, get_notif_login,getFollower  })(Login);
+export default connect(mapStateToProps, { loginUser, get_post_like, get_notif_login,getFollower,get_post_save  })(Login);

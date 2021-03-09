@@ -19,6 +19,7 @@ const initialState = {
     comments : [],
     replies : [],
     parent : null,
+    username : null,
     
 }
 
@@ -64,6 +65,11 @@ const comment = (state =initialState, action) => {
             return {
                 ...state,
                 parent:py,
+            }
+        case 'UPDATE_USERNAME' :
+            return {
+                ...state,
+                username:py,
             }
         
 

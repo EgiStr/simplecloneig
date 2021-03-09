@@ -17,6 +17,8 @@ from posts.api.serializers import (
                                     EditPostSerializer,
                                     JustLikeSerializer,
                                     UserLikePost,
+                                    SavePostSerializer,
+                                    UserSavePost,
                                     )
 class PostApiViews(ListAPIView):
 
@@ -38,6 +40,10 @@ class PostDetailApiView(RetrieveAPIView):
 class LikePost(CreateAPIView,DestroyModelMixin):
     queryset = Like.objects.all()
     serializer_class = JustLikeSerializer
+ 
+class SavePost(CreateAPIView,DestroyModelMixin):
+    queryset = SavePostUser.objects.all()
+    serializer_class = SavePostSerializer
  
 class DeleteLike(DestroyAPIView):
     queryset = Like.objects.all()
@@ -64,7 +70,7 @@ class GetPostLike(ListAPIView):
         return qs
     
 class GetPostSaveApiView(ListAPIView):
-    serializer_class= PostSerializer
+    serializer_class= UserSavePost
     permission_classes = [IsOwnerOrReadOnly]
 
     def get_queryset(self):

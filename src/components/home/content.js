@@ -1,7 +1,7 @@
 import React ,{ useState,useEffect,lazy,Suspense,memo,useCallback,useRef } from "react";
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { like_post_with,unlike_post_with } from '../../action/auth'
+import { like_post_with,unlike_post_with,post_save,post_unsave } from '../../action/auth'
 
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios'
@@ -21,6 +21,8 @@ const Content = memo((props) => {
                                         likes : props.like,
                                         buttonLikeClass:'small material-icons icon red-text',
                                         buttonNotClass:'small material-icons icon',
+                                        saveButton:'bookmark',
+                                        unsaveButton:'bookmark_border',
                                         })
 
 
@@ -67,30 +69,62 @@ const Content = memo((props) => {
             })
             .catch(e => {console.log(e.request)})
     }
+    const handleSaveButton = (postId) => {
+        const data = {
+            post:postId,
+            user:props.user.user_id
+        }
+
+        axios.post('http://127.0.0.1:8000/api/save/',
+        data,
+        {headers : {
+                    "Authorization": 'Bearer ' + Cookies.get('access')
+                    }
+        })
+        
+            .then(res => {
+                const prev = localStorage.getItem('save').split(",").map(Number)
+        
+                // jiga ga ada id berarti menghapus
+                res.data.id === undefined ? setState(prev => {
+                                            return {...prev , 
+                                                saveButton:'bookmark_border',
+                                                unsaveButton:'bookmark_border',
+                                            }})
+                                            : setState(prev => {
+                                                return {...prev , 
+                                                    saveButton:'bookmark',
+                                                    unsaveButton:'bookmark',
+                                                     
+                                                }})  
+                res.data.id === undefined ? props.post_unsave(prev,props.postId) : props.post_save(prev,props.postId)
+                
+            })
+            .catch(e => {console.log(e)})
+    }
     const observer = useRef(null)
     const post = useCallback ( node => {   
-    // loading tidak di exe
-   
-    // kalau udh pernah ada yang terakhir disconnect 
-    if (observer.current) observer.current.disconnect()
-    // bikin baru observer baru
-        observer.current = new IntersectionObserver(entries => {
-      // kalau ada observer terlihat maka fecth baru 
-      if (entries[0].isIntersecting ) {
-          preloadingImg(entries[0].target.firstChild)
-      }})
-      // kalo ada node inisialisasi dengan observer
+        // kalau udh pernah ada yang terakhir disconnect 
+        if (observer.current) observer.current.disconnect()
+        // bikin baru observer baru
+            observer.current = new IntersectionObserver(entries => {
+        // kalau ada observer terlihat maka fecth baru 
+        if (entries[0].isIntersecting ) {
+            preloadingImg(entries[0].target.firstChild)
+        }})
+        // kalo ada node inisialisasi dengan observer
 
-    if (node) observer.current.observe(node)
+        if (node) observer.current.observe(node)
   },[])
 
     const has_like = localStorage.getItem('like').split(",").map(Number).includes(props.postId)
+    const has_save = localStorage.getItem('save').split(",").map(Number).includes(props.postId)
     const urlProfil = `http://127.0.0.1:8000${props.avatar}`;
-
+    
     return (
-
         <div className="box">
             <div className="head">             
+           
                 <Avatar 
                         className="avatar" 
                         alt="foto" 
@@ -124,9 +158,9 @@ const Content = memo((props) => {
                         />
                     </Suspense>
                 
+                <a onClick={()=> handleSaveButton(props.postId)}><i className="small material-icons icon " >{has_save ? state.saveButton : state.unsaveButton}</i></a>
             </div>
                     {/* feature */}
-                <i className="small material-icons icon ">near_me</i>
             </div>
                 <h6 className="caption">
                  <b>{props.username}</b> {props.captions}
@@ -145,6 +179,8 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps,
     {
         like_post_with,
-        unlike_post_with
+        unlike_post_with,
+        post_unsave,
+        post_save,
     }
     )(Content);

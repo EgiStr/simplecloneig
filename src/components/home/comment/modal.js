@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 import { get_comment,
          add_comment,
          add_parent,
+         add_username,
          
                         } from '../../../action/comment'
 
@@ -29,19 +30,29 @@ class Modal extends Component {
         super(props)
         this.state = {
             comment:'',
-
-            getusername:'',
             
         }
         this.user_id = this.props.user.user_id
 
     }
+    componentDidUpdate(prevProps){
+        if(prevProps.parent !== this.props.parent){       
+            this.setState(prevState => ({
+                comment:`@${this.props.username} ` + prevState.comment
+            }))
+            if(this.props.parent === null){
+                this.setState({comment:''})
+            }
+        }
+        // console.log(this.state.comment === '')
+    }
     
     componentDidMount(){
+        
+
         const options = {
             onOpenStart: () => {
-                this.props.get_comment(this.props.postId)
-                
+                this.props.get_comment(this.props.postId)        
             },
             
             inDuration: 250,
@@ -53,21 +64,10 @@ class Modal extends Component {
         };
           M.Modal.init(this.Modal, options);
         }
-        handleSearch = query => {
-            var cancel;
-            
-            axios.get(`http://127.0.0.1:8000/auth/search/?search=${query}`,
-            {
-                cancelToken :  new axios.CancelToken(c => cancel = c)
-            })
-            .then(res => {
-                
-            })
-            .catch(e => axios.isCancel(e) ? console.log('im cancel') : console.log(e.request))
-            return () => cancel()
-        }
+
+       
         handleChange = (event, newValue, newPlainTextValue, mentions) => {
-            console.log(newValue)
+            
             this.setState({
                 comment:newValue,
             })
@@ -75,23 +75,13 @@ class Modal extends Component {
 
         handleSearchMention = (query, callback) => {
             if(query === '') return 
-            // const fetchs = fetch(`http://127.0.0.1:8000/auth/search/?search=${query}`, { json: true })
-            // .then(res => res.json())
-        
-            // // Transform the users to what react-mentions expects
-            // .then(res =>
-            //     res.results.map(user => ({display : user.nickname , id: user.id})) 
-            //     // res.results.map(user => ({display: user.nickname},id:user.id))
-            //     //   res.items.map(user => ({ display: user.login, id: user.login }))
-            //     )
-            
-            //     console.log(fetchs)
-                // console.log(callback)
+                //  cancal untuk membuat cancel token 
                 var cancel;
                 axios.get(`http://127.0.0.1:8000/auth/search/?search=${query}`,
                     {
                         cancelToken :  new axios.CancelToken(c => cancel = c)
                     })
+                    // membuat membuat promoise unutk memasukan kecallback
                     .then(res => {
                         return new Promise((resolve,reject) => {
                             resolve(res.data.results.map(user => ({display: user.nickname,id:user.id})))
@@ -102,46 +92,47 @@ class Modal extends Component {
           
         }
         
-        handlecancle = () =>  this.props.add_parent(null)
+        handleCancel = ()=> {
+            this.props.add_username(null)
+            this.props.add_parent(null)
+        }
         
         handleComment = (parent = this.props.parent) => {
             
-        protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
+            protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
+            
+            let { contentType,obj_id } = this.props
         
-        let { contentType,obj_id } = this.props
-      
-        let content = this.state.comment
+            let content = this.state.comment
 
-        if(content !== ''){
-            axios({
-                method:'POST',
-                url:'http://127.0.0.1:8000/comment/create/',
-                data:{
+            if(content !== ''){
+                axios({
+                    method:'POST',
+                    url:'http://127.0.0.1:8000/comment/create/',
+                    data:{
+                        
+                        user: this.user_id,
+                        content_type:contentType,
+                        obj_id:obj_id,
+                        content:content,
+                        parent : parent,
+                    },
+                    headers: {
+                        "Authorization": 'Bearer ' + Cookies.get('access')
+                            },
                     
-                    user: this.user_id,
-                    content_type:contentType,
-                    obj_id:obj_id,
-                    content:content,
-                    parent : parent,
-                },
-                headers: {
-                    "Authorization": 'Bearer ' + Cookies.get('access')
-                        },
+                })
+                .then(res => {
                 
-            })
-            .then(res => {
-             
-                this.props.add_comment(res.data,parent)
-                this.props.add_parent(null)
-                this.setState({comment:''})
-                
+                    this.props.add_comment(res.data,parent)
+                    this.props.add_parent(null)
+                    this.setState({comment:''})
+                    
+            
+                })
+                .catch(e => {console.log(e);})
+            } 
         
-            })
-            .catch(e => {console.log(e);})
-        } 
-        
-        
-
     }
 
     render(){
@@ -149,11 +140,13 @@ class Modal extends Component {
       
         const comments = this.props.comments
         const parent = this.props.parent
+        
       
         return (
-            <div ref={ Modal => { this.Modal = Modal;}} id={`modal_id${this.props.id}`} className="modal bottom-sheet modal-fixed-footer">
+            <div ref={ Modal =>  this.Modal = Modal} id={`modal_id${this.props.id}`} className="modal bottom-sheet modal-fixed-footer">
                 <div className="modal-content " ref={node => this.modalRef = node}>
                     <h4>Comment</h4>
+                   
 
                     <div className="row post-row">
                         
@@ -179,38 +172,28 @@ class Modal extends Component {
                             <Avatar  className="avatar" alt="foto" src={`http://127.0.0.1:8000${this.props.user.profil}`} height="45" width="45" />
                         </div>
                         <div className="col s6 l5 post-btn-container" >
-                            {parent ? (<p onClick={() => {this.handlecancle()}}>your replies click cancel </p>) : (null)}
+                            {parent ? (<p onClick={() => this.handleCancel()}>your replies {this.props.username} click cancel  </p>) : (null)}
                             <MentionsInput
-                            value={this.state.comment}
-
-                            onChange={this.handleChange}
-                            placeholder="Type anything, use the @ symbol to tag other users."
-                            className="mentions"
+                                value={this.state.comment}
+                                onChange={this.handleChange}
+                                placeholder="Type anything, use the @ symbol to tag other users."
+                                className="mentions"
                             >
 
                             <Mention
-                            type="user"
-                            trigger="@"
-                            markup="@__display__ "
-                            data={this.handleSearchMention}
-                            className="mentions__mention"
-                            
-                           
+                                type="user"
+                                trigger="@"
+                                markup="@__display__ "
+                                data={this.handleSearchMention}
+                                className="mentions__mention"
                             />
                             </MentionsInput>
-                            
-                            
-                            {/* <input
-                                value={this.state.comment}
-                                onChange={(event) => {this.handleCommentContent(event)}}
-                                placeholder={`Add a comment Ass ${this.props.user.username}` }
-                            />         */}
                         
                         </div>
                     <a className="modal-close waves-effect waves-green btn-flat" onClick={() => {this.handleComment(this.state.parentid)}}>
                     Send 
                     </a>
-                    <a className="modal-close waves-effect waves-green btn-flat" >
+                    <a className="modal-close waves-effect waves-green btn-flat" onClick={() => this.handleCancel()}>
                     cancel 
                     </a>
                 </div>
@@ -224,9 +207,10 @@ const mapStateToProps = state => {
     return {
         user : state.auth.user,
         parent : state.comment.parent,
+        username : state.comment.username,
         comments : state.comment.comments,
        
     }
 }
 
-export default connect(mapStateToProps,{get_comment,add_parent,add_comment  })(Modal) ;
+export default connect(mapStateToProps,{get_comment,add_parent,add_comment,add_username  })(Modal) ;

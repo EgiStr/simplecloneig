@@ -80,6 +80,12 @@ export const add_parent = (parent) => (dispatch) => {
         payload : parent,
     })
 }
+export const add_username = username => (dispatch) => {
+    dispatch({
+        type:'UPDATE_USERNAME',
+        payload : username,
+    })
+}
 export const reset_replies = () => (dispatch) => {
     dispatch({
         type:'RESET_REPLIES'

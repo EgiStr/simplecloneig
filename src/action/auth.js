@@ -41,6 +41,42 @@ export const get_post_like = () => (dispatch) => {
     .catch(e => console.log(e.request))
 }
 
+export const get_post_save = () => dispatch => {
+    axios.get('http://127.0.0.1:8000/api/post/save/',{
+        headers:
+        {
+            "Authorization": 'Bearer ' + Cookies.get('access'),
+        }
+    })
+    .then(res => {
+        const post = res.data.map(e => e.post)
+        dispatch({
+            type:'GET_SAVE_POST',
+            payload : post
+        })
+    })
+    .catch(e => console.log(e.request))
+}
+
+export const post_save = (prev,post_id) => dispatch => {
+    dispatch({
+        type:'SAVE_POST',
+        payload : {
+            post_id : post_id,
+            prev:prev
+        },
+    })
+}
+
+export const post_unsave = (prev,post_id) => dispatch => {
+    dispatch({
+        type: 'UNSAVE_POST',
+        payload:{
+            post_id : post_id,
+            prev:prev
+        }
+    })
+}
 
 export const like_post_with = (prev,post_id) => (dispatch) => {
 
