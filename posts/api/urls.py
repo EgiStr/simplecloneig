@@ -7,6 +7,7 @@ from .views import (PostApiViews,
                     LikePost,
                     SavePost,
                     GetPostLike,
+                    GetSavePost,
                     GetPostSaveApiView,)
 
 
@@ -16,6 +17,7 @@ urlpatterns = [
     path('<int:pk>/edit/',PostEditApiView.as_view(),name='edit'),
     path("like/", LikePost.as_view(), name="like"),
     path("save/", SavePost.as_view(), name="save_post"),
+    path("save/post/", GetSavePost.as_view(), name="Post-save_post"),
     path("create/", CreatePostAPiView.as_view(), name="create"),
     path("post/like/", GetPostLike.as_view(), name="getPost"),
     path("post/save/", GetPostSaveApiView.as_view(), name="savePost"),

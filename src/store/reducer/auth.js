@@ -39,6 +39,7 @@ const unsave_Post = (prev,post) => {
 
      like_post : [],
      save_post : [],
+     post_data : [],
      user : access,
      
     }
@@ -101,6 +102,16 @@ const auth = (state = initialState,action) => {
             return {
                 ...state,
                 like_post: unLike_Post(py.prev,py.post_id)
+            }
+        case 'GET_POST_DATA':
+            return {
+                ...state,
+                post_data: py
+            }
+        case 'GET_POST_SAVE_DATA':
+            return {
+                ...state,
+                save_post : py
             }
             
         default:

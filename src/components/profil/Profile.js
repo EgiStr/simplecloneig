@@ -7,11 +7,15 @@ import Cookies from 'js-cookie'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
-import { protectAuth } from '../auth/auth'
+import { BrowserRouter as Switch, Route } from 'react-router-dom'
+
+// import { protectAuth } from '../auth/auth'
 import { getFollower, is_follow } from '../../action/follow'
+import { get_post_data } from '../../action/auth'
 
 import ModalFollow from './follow/modelFollow'
-import Content from '../home/content'
+import Posts from './posts'
+import SavePosts from './save_post'
 
 import '../../Profile.css'
 
@@ -34,13 +38,14 @@ class Profile extends Component {
 
     componentDidMount() {
 
-        protectAuth(this.state.access, this.state.refresh).then(e => !e ? window.location.reload() : this.setState({ redirect: false }))
+        // protectAuth(this.state.access, this.state.refresh).then(e => !e ? window.location.reload() : this.setState({ redirect: false }))
         this.props.getFollower(this.state.access)
 
         const id = this.props.match.params.id;
 
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
             .then(res => {
+                this.props.get_post_data(res.data.post_data)
                 this.props.is_follow(res.data.follower.map(e => e.id))
                 this.setState({ data: res.data })
             })
@@ -124,59 +129,28 @@ class Profile extends Component {
 
                 <div className="divider"></div>
                 <div className="post_nav">
-
-                    <div className="post__nav active"><i className="material-icons tiny" >grid_on</i>POSTS</div>
-                    <div className="post__nav"><i className="material-icons tiny" >turned_in_not</i>SAVED</div>
-                    <div className="post__nav"><i className="material-icons tiny" >person_pin</i>TAGGED</div>
+                    <a className="post__nav active" href={`/profile/${idUser}`}><i className="material-icons tiny" >grid_on</i>POSTS</a>
+                    {idUser === authUser ? <a className="post__nav" href={`/profile/${idUser}/savePost`}><i className="material-icons tiny" >turned_in_not</i>SAVED</a> : null }
+                     <div className="post__nav"><i className="material-icons tiny" >person_pin</i>TAGGED</div>
                 </div>
-                <div className="posts">
-                    <div className="posts_wrap">
+                <Switch>
+                    <Route exact path={`/profile/${idUser}`} component={Posts} />
+                    <Route path={`/profile/${idUser}/savePost`} component={SavePosts} />
+                </Switch>
 
-                        {post_data ? (post_data.map((item, index) => {
-
-                            return (
-                                <Content
-                                    key={index}
-                                    id={index}
-                                    contentType={item.content_type_id}
-                                    postId={item.id}
-                                    userId={item.user.id}
-                                    username={item.user.nickname}
-                                    captions={item.caption}
-                                    imageUrl={`http://127.0.0.1:8000${item.post}`}
-                                    avatar={item.user.profil}
-                                    like={item.likes}
-                                />
-
-                            )
-                        }))
-                            : (null)}
-
-                    </div>
-                </div>
             </div>
         )
     }
 
 }
 
-// function Profile() {
-//     const [contents] = useState([
-//         {
-//             imageUrl: "https://lh3.googleusercontent.com/2Fz6Fn5zq_hh75oNLsyNqyGSHzPopHojN77Eu6GImw_3bb4JteONR_K8lnCY2nRbZQV9RD7ACVYvTHEEoW6oGt2GNkAVXzsGdHl1XI9JWwr9ojo3N7t5mYgqaux8lESdvi4mJTti4Ok=w2400"
-//         }
-
-//     ]);
-
-// }
 
 const mapStateToProps = (state) => {
     return {
         user: state.auth.user,
-
         follow_user: state.follow.is_following,
     }
 }
 
 
-export default connect(mapStateToProps, { getFollower, is_follow })(Profile)
+export default connect(mapStateToProps, { getFollower, is_follow,get_post_data })(Profile)

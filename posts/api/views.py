@@ -44,6 +44,16 @@ class LikePost(CreateAPIView,DestroyModelMixin):
 class SavePost(CreateAPIView,DestroyModelMixin):
     queryset = SavePostUser.objects.all()
     serializer_class = SavePostSerializer
+
+class GetSavePost(ListAPIView):
+    queryset = SavePostUser.objects.all()
+    serializer_class = PostSerializer
+    
+    def get_queryset(self):
+        query = SavePostUser.objects.filter(user__user__id=self.request.user.id)
+        qs = [qs.post for qs in query]
+    
+        return qs
  
 class DeleteLike(DestroyAPIView):
     queryset = Like.objects.all()

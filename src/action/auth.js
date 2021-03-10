@@ -98,28 +98,25 @@ export const unlike_post_with = (prev,post_id) => (dispatch) => {
        }
    })
 }
+export const get_post_data = (data) => dispatch => {
+    dispatch({
+        type:'GET_POST_DATA',
+        payload: data
+    })
+}
 
-
-// export const has_like = (mylike,post) => (dispatch) => {
-  
-//     if(mylike.includes(post)){
-//         dispatch({
-//             type:'IS_HAS_LIKE',
-//         })
+export const get_post_save_data = () => dispatch => {
+    axios.get('http://127.0.0.1:8000/api/save/post/',{
+        headers:
+        {
+            "Authorization": 'Bearer ' + Cookies.get('access'),
+        }
+    })
+    .then(res => {
+        dispatch({
+            type:'GET_POST_SAVE_DATA',
+            payload: res.data
+        })
+    })
     
-//     }else{
-//         dispatch({type:'NOT_HAS_LIKE'})
-//     }
-
-// }
-
-// export const unlike_post_with = (prev,post_id) => (dispatch) => {
-
-//     dispatch({
-//         type:'UNLIKE_POST',
-//         payload:{
-//             post_id : post_id,
-//             prev   : prev,
-//         }
-//     })
-// }
+}
