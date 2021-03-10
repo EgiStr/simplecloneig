@@ -8,8 +8,11 @@ import $ from 'jquery'
 
 
 function Navbar({ user,notif,read,get_notif_user,clear_notif_user }) {
+    if(window.location.pathname === '/register') {
+        if (user === null) return <Redirect to={'/register'} />
+    }
+    
     if (user === null) return <Redirect to={'/login'} />
-
     useEffect(() => {
         const M = window.M;
         var elems = document.querySelectorAll('.dropdown-trigger');
@@ -48,8 +51,9 @@ function Navbar({ user,notif,read,get_notif_user,clear_notif_user }) {
                                 notif={notif}
                             />
                         </ul>
+                     
                         <ul id='dropdown1' className='dropdown-content'>
-                            <li><a href={`/profile/${user.username}`}>Profile</a></li>
+                            <li><a href={`/profile/${user.username === null ? 'login' : user.username}`}>Profile</a></li>
                             <li className="divider" tabIndex="-1"></li>
                             <li><a href='/logout'>Logout</a></li>
                         </ul>

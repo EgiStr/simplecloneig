@@ -3,8 +3,6 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
-
 export const get_notif_user = () => (dispatch,getState) => {
     axios.get(`http://127.0.0.1:8000/notif/user/`,{
         headers: 

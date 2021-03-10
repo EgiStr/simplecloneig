@@ -84,7 +84,7 @@ class Profile extends Component {
 
         const data = this.state.data
 
-        const { follower, following, post_data, id } = data
+        const { follower, following, id } = data
 
 
         return (

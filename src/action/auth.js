@@ -4,7 +4,6 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 export const loginUser = (access) => (dispatch) => {
     const user = parseJwt(access)

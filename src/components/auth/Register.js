@@ -13,6 +13,7 @@ class Register extends Component {
       redirect: false,
       error:null,
     }
+    delete axios.defaults.headers.common["Authorization"];
   }
 
   handleUsername = event => this.setState({ username: event.target.value })
@@ -32,19 +33,18 @@ class Register extends Component {
         password2: this.state.password2,
         email: this.state.email,
       }
+   
     })
       .then((res) => {
         this.setState({ redirect: true });
       })
       .catch(e => {
         if (e.request.status === 400) { console.clear(); }
-        this.setState({ username: '', password: '', password2: '', email: '', validate: true, redirect: false, error: e.request.response })
+        this.setState({ validate: true, redirect: false, error: e.request.response })
       })
   }
   render() {
-    if (this.state.redirect) return <Redirect to="/login" />
-    
-  
+    if(this.state.redirect) return <Redirect to={'/login'}/>
     return (
       <div className="container_login">
         <div className="box_login">
