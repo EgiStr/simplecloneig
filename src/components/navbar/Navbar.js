@@ -7,7 +7,7 @@ import { NotifDropdown } from './notifDropdown'
 import $ from 'jquery'
 
 
-function Navbar({ user,notif,get_notif_user,clear_notif_user }) {
+function Navbar({ user,notif,read,get_notif_user,clear_notif_user }) {
     if (user === null) return <Redirect to={'/login'} />
 
     useEffect(() => {
@@ -15,7 +15,7 @@ function Navbar({ user,notif,get_notif_user,clear_notif_user }) {
         var elems = document.querySelectorAll('.dropdown-trigger');
         M.Dropdown.init(elems, {});
 
-    },[]);
+    },[read]);
     
     const notifTrigger = () => {
         $(".box-notif").fadeToggle()
@@ -64,6 +64,7 @@ const mapStateToProps = state => {
     return {
         user: state.auth.user,
         notif:state.notifikasi.notifications,
+        read:state.notifikasi.unreadNotifications,
     }
 }
 export default connect(mapStateToProps,{get_notif_user,clear_notif_user})(Navbar);

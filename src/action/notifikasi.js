@@ -13,6 +13,7 @@ export const get_notif_user = () => (dispatch,getState) => {
         }
     })
     .then(res => {
+        console.log(res)
         dispatch({
             type:'GET_NOTIFICATIONS',
             payload: res.data
@@ -35,9 +36,10 @@ export const get_notif_login = () => (dispatch,getState) => {
             type:'GET_NOTIFICATIONS',
             payload: res.data
         })
+    
         dispatch({
             type:'GET_UNREAD_NOTIFICATIONS',
-            payload: getState().notifikasi.notifications.length
+            payload: getState().notifikasi.notifications.filter(e => e.is_seen !== true).length
         }) 
         
     })
@@ -45,6 +47,12 @@ export const get_notif_login = () => (dispatch,getState) => {
 }
 
 export const clear_notif_user = () => dispatch => {
+    axios.put(`http://127.0.0.1:8000/notif/update/`,null,
+    {
+        headers: {
+            'Authorization' : 'Bearer ' + Cookies.get('access')
+        }
+    })
     dispatch({
         type:'CLEAR_NOTIFICATIONS',
     })

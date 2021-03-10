@@ -1,7 +1,8 @@
 from posts.api.serializers import PostNotifSerializer
 from usercostumer.api.serializers import UserProfilPostserializer
-from rest_framework.serializers import ModelSerializer,SerializerMethodField
+from rest_framework.serializers import ModelSerializer,SerializerMethodField,Serializer
 from notif.models import Notifikasi
+from rest_framework import serializers
 
 class NotifSerializer(ModelSerializer):
     post = SerializerMethodField()
@@ -31,3 +32,11 @@ class NotifSerializer(ModelSerializer):
         except:
             return None
         return PostNotifSerializer(obj.post).data
+
+class NotifUpdateSerializer(Serializer):
+    model = Notifikasi
+    """
+    Serializer for password change endpoint.
+    """
+
+    
