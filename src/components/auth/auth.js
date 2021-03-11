@@ -45,7 +45,6 @@ export const protectAuth = async (access,refresh) => {
 }
 
 export const resfeshLogin = async resfreshToken => {
-    
    
     if(!resfreshToken){
         return false
@@ -72,16 +71,6 @@ export const resfeshLogin = async resfreshToken => {
         }).catch(e => resolve(false))
     })
 
-    // axios.post('http://127.0.0.1:8000/auth/login/refresh/',
-    // formData
-    // )
-    // .then( res =>{
-         
-    // })
-    // .catch(e => console.log(e))
-    // Cookies.set('access',token.access)
-    // Cookies.set('refresh',token.refresh)
-    // return token
 }
 
 export const requestLogin = async (accessToken ,refreshToken) => {
@@ -104,7 +93,6 @@ export const requestLogin = async (accessToken ,refreshToken) => {
                 // kalau emang kadaluarsa maka akan refresh dan test ulang
                 if(e.request.response === '{"detail":"Given token not valid for any token type","code":"token_not_valid","messages":[{"token_class":"AccessToken","token_type":"access","message":"Token is invalid or expired"}]}'){
 
-    
                         const token = resfeshLogin(refresh)
                         token.then(e => {
                             if(!e){
@@ -114,8 +102,6 @@ export const requestLogin = async (accessToken ,refreshToken) => {
                             }
                         })
                         
-                        
-                    
                     
                 }else{
                     // jika bukan kadaluarsa maka login ulang

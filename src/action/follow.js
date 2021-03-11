@@ -2,60 +2,61 @@ import axios from 'axios'
 
 
 // terbalik di apinya harusnya  following 
-export const getFollower = (access) => (dispatch,getstate) => {
-    
-    axios.get('http://127.0.0.1:8000/auth/follower/detail/',
-    {headers:{
+export const getFollower = access => dispatch => {
+    const config = {
+        headers:{
         "Authorization": 'Bearer ' + access
-    }})
-    .then(res => {
-        
-        localStorage.setItem('follow' , res.data.map(e => e.following_user.id))
-        dispatch({
-            type:'GET_FOLLOWING',
-            payload : res.data,
+    }}
+    axios.get('http://127.0.0.1:8000/auth/follower/detail/',config )
+        .then(res => {
+            
+            localStorage.setItem('follow' , res.data.map(e => e.following_user.id))
+            dispatch({
+                type:'GET_FOLLOWING',
+                payload : res.data,
+            })
         })
-    })
-    .catch(e => console.log(e.request))
+        .catch(e => console.log(e.request))
 }
 
-export const getFollowerUser = (access,id) => (dispatch,getstate) => {
-    
-    axios.get(`http://127.0.0.1:8000/auth/following/detail/${id}/`,
-    {headers:{
+export const getFollowerUser = (access,id) => dispatch => {
+    const config = {
+        headers: {
         "Authorization": 'Bearer ' + access
-    }})
-    .then(res => {
-        
-        dispatch({
-            type:'GET_FOLLOWER',
-            payload : res.data,
+    }}
+    
+    axios.get(`http://127.0.0.1:8000/auth/following/detail/${id}/`,config)
+        .then(res => { 
+            dispatch({
+                type:'GET_FOLLOWER',
+                payload : res.data,
+            })
         })
-    })
-    .catch(e => console.log(e.request))
+        .catch(e => console.log(e.request))
 }
 
 export const getFollowingUser = (access,id) => (dispatch,getstate) => {
-    
-    axios.get(`http://127.0.0.1:8000/auth/follower/detail/${id}/`,
-    {headers:{
+    const config = {
+        headers: {
         "Authorization": 'Bearer ' + access
-    }})
-    .then(res => {
-        
-       
-        dispatch({
-            type:'GET_FOLLOWING_USER',
-            payload : res.data,
+    }}
+
+    axios.get(`http://127.0.0.1:8000/auth/follower/detail/${id}/`, config )
+        .then(res => {
+            dispatch({
+                type:'GET_FOLLOWING_USER',
+                payload : res.data,
+            })
         })
-    })
-    .catch(e => console.log(e.request))
+        .catch(e => console.log(e.request))
 }
 
-export const is_follow = (array) => (dispatch,getstate) => {
+export const is_follow = array => (dispatch,getstate) => {
     const me = getstate().follow.followings.map(e => e.id)
+    
     const target = array
     let trueorfalse = false
+    
     for(let i =0 ; i < me.length ; i++){
         if(target.includes(me[i])){
             trueorfalse = true

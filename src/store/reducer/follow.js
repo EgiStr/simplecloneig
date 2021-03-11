@@ -1,23 +1,12 @@
-// const follower = (followers, n) => {
-//     followers.unshift(n)
-//     return followers
-// }
-// const unfollower = (followers, n) =>
-//   followers.filter(ff => ff.id !== parseInt(n))
-
 const following = (followings, n) => {
-  followings.unshift(n)
-  return followings
+    followings.unshift(n)
+    return followings
 }
-
+  
 const unfollowing = (followings, n) => {
-    followings.filter(ff => ff.id !== parseInt(n,10))
-//   followings.filter(ff => ff.id !== parseInt(n))
-  return followings 
+      followings.filter(ff => ff.id !== parseInt(n,10))
+    return followings 
 }
-
-
-
 
 const initialState = {
     is_following : false,
@@ -28,26 +17,45 @@ const initialState = {
 }
 
 const follow = (state = initialState,action) => {
+
     let py = action.payload
    
     switch (action.type) {
         case 'IS_FOLLOWING':
-            return { ...state, is_following: py }
-           
+            return { 
+                ...state,
+                is_following: py 
+            }
+
         case 'GET_FOLLOWER':
-            return {...state,followers:py}
+            return {
+                ...state,
+                followers:py
+            }
             
         case 'GET_FOLLOWING_USER':
-            return {...state,followingUser:py}
+            return {
+                ...state,
+                followingUser:py
+            }
             
         case 'GET_FOLLOWING':
-            return {...state,followings:py}
+            return {
+                ...state,
+                followings:py
+            }
                 
         case 'FOLLOWING':
-            return {...state,followings:following(state.followings,py)}
+            return {
+                ...state,
+                followings:following(state.followings,py)
+            }
            
         case 'UNFOLLOWING':
-            return {...state,followings:unfollowing(state.followings,py)}
+            return {
+                ...state,
+                followings:unfollowing(state.followings,py)
+            }
            
         default:
             return state
@@ -55,4 +63,5 @@ const follow = (state = initialState,action) => {
     }       
 
 }
+
 export default follow ;

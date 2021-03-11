@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect,useHistory } from 'react-router-dom'
 
 import { connect } from 'react-redux'
-import { get_notif_user,clear_notif_user } from '../../action/notifikasi'
+import { get_notif_user } from '../../action/notifikasi'
 import { NotifDropdown } from './notifDropdown'
 import $ from 'jquery'
 
 
-function Navbar({ user,notif,read,get_notif_user,clear_notif_user }) {
+function Navbar({ user,notif,read,get_notif_user }) {
     if(window.location.pathname === '/register') {
         if (user === null) return <Redirect to={'/register'} />
     }
     
     if (user === null) return <Redirect to={'/login'} />
+    const history = useHistory()
     useEffect(() => {
         const M = window.M;
         var elems = document.querySelectorAll('.dropdown-trigger');
@@ -23,7 +24,6 @@ function Navbar({ user,notif,read,get_notif_user,clear_notif_user }) {
     const notifTrigger = () => {
         $(".box-notif").fadeToggle()
         get_notif_user()
-        clear_notif_user()
     }
   
     return (
@@ -31,9 +31,9 @@ function Navbar({ user,notif,read,get_notif_user,clear_notif_user }) {
             <nav>
                 <div className="container">
                     <div className="nav-wrapper">
-                        <a href="/" className="brand-logo ">Logo</a>
+                        <a onClick={() => history.push('/')} className="brand-logo ">Logo</a>
                         <ul className="right hide-on-med-and-down">
-                            <li><a href="/"><i className="material-icons">home</i></a></li>
+                            <li><a onClick={() => history.push('/')} ><i className="material-icons">home</i></a></li>
                             <li><a href="/search"><i className="material-icons">search</i></a></li>
                             <li><a
                                 onClick={() => notifTrigger()}
@@ -44,7 +44,7 @@ function Navbar({ user,notif,read,get_notif_user,clear_notif_user }) {
                                 className="new badge"
                                 style={{ position: "absolute", marginTop: "10px", marginLeft: "10px" }}
                                 >
-                                {localStorage.getItem('notif')}
+                                {localStorage.getItem('notif') ? localStorage.getItem('notif') : read}
                                 </span></a></li>
                             <li><a className='dropdown-trigger' data-target='dropdown1'><i className="material-icons">people</i></a></li>
                             <NotifDropdown 
@@ -71,4 +71,4 @@ const mapStateToProps = state => {
         read:state.notifikasi.unreadNotifications,
     }
 }
-export default connect(mapStateToProps,{get_notif_user,clear_notif_user})(Navbar);
+export default connect(mapStateToProps,{get_notif_user})(Navbar);

@@ -1,3 +1,4 @@
+
 const add_comment = (prev,comment) => {
     prev.push(comment)
     return prev
@@ -13,8 +14,6 @@ const delete_comment_replies = (prev,comment) => {
     return newcomment
 }
 
-
-
 const initialState = {
     comments : [],
     replies : [],
@@ -24,8 +23,11 @@ const initialState = {
 }
 
 const comment = (state =initialState, action) => {
+    
     let py = action.payload
+    
     switch(action.type){
+    
         case 'GET_COMMENT':
             return {
                 ...state,
@@ -66,18 +68,17 @@ const comment = (state =initialState, action) => {
                 ...state,
                 parent:py,
             }
+
         case 'UPDATE_USERNAME' :
             return {
                 ...state,
                 username:py,
             }
-        
-
-            
 
         default :
             return state
     }
 }
+
 
 export default comment ;

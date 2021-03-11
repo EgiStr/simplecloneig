@@ -41,8 +41,8 @@ class Login extends Component {
       .catch((e) => this.setState({ notValide: true }));
   }
 
-  handleTitleChange = (event) => this.setState({ title: event.target.value })
-  handlePasswordChange = (event) => this.setState({ password: event.target.value })
+  handleTitleChange = event => this.setState({ title: event.target.value })
+  handlePasswordChange = event => this.setState({ password: event.target.value })
   handleValidatePassword = event => this.setState({ password2: event.target.value, notValide: event.target.value !== this.state.password });
 
 

@@ -8,13 +8,9 @@ const Logout = ({LogoutAuth}) => {
     Cookies.remove('access');
     Cookies.remove('refresh');
     LogoutAuth()
+    localStorage.clear()
     return <Redirect to='/login' />
 }
 
-const mapStateToProps = state => {
-    return {
-        state
-    }
-}
 
-export default connect(mapStateToProps,{LogoutAuth})(Logout) ; 
+export default connect(null,{LogoutAuth})(Logout) ; 
