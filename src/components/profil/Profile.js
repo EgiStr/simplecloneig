@@ -133,7 +133,7 @@ class Profile extends Component {
                      <i className="material-icons tiny" >grid_on</i>POSTS
                     </a>
                     
-                    {idUser === authUser ? <a className="post__nav" href={`/profile/${idUser}/savepost`}>
+                    {idUser === authUser ? <a className="post__nav" href={`/profile/${idUser}/savePost`}>
                      <i className="material-icons tiny" >turned_in_not</i>SAVES
                     </a>: null }
                      <div className="post__nav"><i className="material-icons tiny" >person_pin</i>TAGGED</div>
