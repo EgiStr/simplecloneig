@@ -28,13 +28,13 @@ def comment_notif_create(instance,created,*args, **kwargs):
                     receiverMention = list(UserProfil.objects.filter(nickname=mention[1::]))[0]
                 except:
                     receiverMention = False
-                if receiverMention != False:
+                if receiverMention != False and instance.user != receiverMention:
                     Notifikasi.objects.create(
                         post = post,
                         sender = instance.user,
                         receiver=receiverMention,
                         type_notif=4,
-                        more_text = f'{instance.user} was mention you in {user} post'
+                        more_text = f' was mention you in {user} post'
                     )
                 
         
@@ -45,7 +45,7 @@ def comment_notif_create(instance,created,*args, **kwargs):
             sender=instance.user,
             receiver=user,
             type_notif=3,
-            more_text=f'{instance.user} was comment {instance.content} in your post'
+            more_text=f' was comment {instance.content} in your post'
         )
         
 

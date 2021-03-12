@@ -103,20 +103,22 @@ export const get_post_data = data => dispatch => {
     })
 }
 
-export const get_post_save_data = () => dispatch => {
+export const get_post_save_data = () => (dispatch,getState) => {
     const config = {
         headers: {
             "Authorization": 'Bearer ' + Cookies.get('access'),
         }
     }
-
-    axios.get('http://127.0.0.1:8000/api/save/post/', config )
-        .then(res => {
-            dispatch({
-                type:'GET_POST_SAVE_DATA',
-                payload: res.data
+    if(getState().auth.save_post.length === 0){
+        console.log('ada lagi')
+        axios.get('http://127.0.0.1:8000/api/save/post/', config )
+            .then(res => {
+                dispatch({
+                    type:'GET_POST_SAVE_DATA',
+                    payload: res.data
+                })
             })
-        })
-        .catch(e => console.log(e.request))
+            .catch(e => console.log(e.request))
+    }
     
 }

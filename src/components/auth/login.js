@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import { Redirect } from "react-router-dom";
 import Cookies from 'js-cookie'
 
@@ -24,10 +25,11 @@ class Login extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    axios.post(`http://127.0.0.1:8000/auth/login/`, {
-      username: this.state.title,
+    const data = {
+      username: this.state.title,                   
       password: this.state.password,
-    })
+    }
+    axios.post(`http://127.0.0.1:8000/auth/login/`, data)
       .then((res) => {
         Cookies.set('access', res.data.access)
         Cookies.set('refresh', res.data.refresh)
@@ -47,11 +49,8 @@ class Login extends Component {
 
 
   render() {
-
-    if (this.state.redirect) {
-      return <Redirect to="/" />;
-    }
-
+    if (this.state.redirect) return <Redirect to="/" />;
+  
     return (
 
       <div className="container_login">
@@ -101,10 +100,5 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    is_auth: state.auth.is_auth
-  }
-}
 
-export default connect(mapStateToProps, { loginUser, get_post_like, get_notif_login,getFollower,get_post_save  })(Login);
+export default connect(null, { loginUser, get_post_like, get_notif_login,getFollower,get_post_save  })(Login);

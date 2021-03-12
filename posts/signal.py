@@ -14,7 +14,7 @@ def Like_notif_create(instance,created,*args, **kwargs):
                 sender=instance.user,
                 receiver=instance.post.user,
                 type_notif=1,
-                more_text=f'{instance.user.nickname} has liked your post {instance.post.caption}'
+                more_text=f' has liked your post {instance.post.caption}'
             )
 
 # menghapus jiga batal

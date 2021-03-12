@@ -15,8 +15,11 @@ const Modal = lazy(()=> import('./comment/modal'))
 // menganti react-intersection-observer dengan observer API non npm
 
 const Content = memo((props) => {
+    
     const history = useHistory()
+   
     if(props.user === null) history.push('/login')
+    
     const [state,setState] = useState({
                                         likes : props.like,
                                         buttonLikeClass:'small material-icons icon red-text',
@@ -26,9 +29,10 @@ const Content = memo((props) => {
                                         })
 
 
-    const handleProfilRedirect = Userid => history.push(`/profile/${Userid}`)
-    
     useEffect(() => console.log('re-render'),[])
+    
+    const handleProfilRedirect = Userid => history.push(`/profile/${Userid}`)
+
     // lazy loading
     const preloadingImg = img => {
         const src = img.getAttribute('data-src')
@@ -41,14 +45,12 @@ const Content = memo((props) => {
             post:postId,
             user:props.user.user_id
         }
+        const config = {
+            headers : {
+            "Authorization": 'Bearer ' + Cookies.get('access')
+            }}
 
-        axios.post('http://127.0.0.1:8000/api/like/',
-        data,
-        {headers : {
-                    "Authorization": 'Bearer ' + Cookies.get('access')
-                    }
-        })
-        
+        axios.post('http://127.0.0.1:8000/api/like/', data, config)
             .then(res => {
                 const prev = localStorage.getItem('like').split(",").map(Number)
                 // jiga ga ada id berarti menghapus
@@ -75,16 +77,14 @@ const Content = memo((props) => {
             user:props.user.user_id
         }
 
-        axios.post('http://127.0.0.1:8000/api/save/',
-        data,
-        {headers : {
-                    "Authorization": 'Bearer ' + Cookies.get('access')
-                    }
-        })
-        
+        const config = {
+            headers : {
+            "Authorization": 'Bearer ' + Cookies.get('access')
+            }}
+
+        axios.post('http://127.0.0.1:8000/api/save/', data, config)
             .then(res => {
                 const prev = localStorage.getItem('save').split(",").map(Number)
-        
                 // jiga ga ada id berarti menghapus
                 res.data.id === undefined ? setState(prev => {
                                             return {...prev , 
@@ -102,17 +102,19 @@ const Content = memo((props) => {
             })
             .catch(e => {console.log(e)})
     }
+     
+    // lazy loading
     const observer = useRef(null)
     const post = useCallback ( node => {   
         // kalau udh pernah ada yang terakhir disconnect 
         if (observer.current) observer.current.disconnect()
         // bikin baru observer baru
-            observer.current = new IntersectionObserver(entries => {
+            observer.current = new IntersectionObserver(entries => {  
         // kalau ada observer terlihat maka fecth baru 
         if (entries[0].isIntersecting ) {
             preloadingImg(entries[0].target.firstChild)
         }})
-        // kalo ada node inisialisasi dengan observer
+        // kalo ada node, inisialisasi dengan observer
 
         if (node) observer.current.observe(node)
   },[])
@@ -124,7 +126,6 @@ const Content = memo((props) => {
     return (
         <div className="box">
             <div className="head">             
-           
                 <Avatar 
                         className="avatar" 
                         alt="foto" 
@@ -132,6 +133,7 @@ const Content = memo((props) => {
                 />        
                 <h6 onClick={()=> {handleProfilRedirect(props.username)}}>{props.username}</h6>
             </div>
+
             {/* membuat post image menjadi loading lazy alias diloading jika post an dilayar */}
             <div ref={post}>
                 <img src='data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAJAA4DASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAlEAABAgQEBwAAAAAAAAAAAAABAgMABAYRBRIhMRM0NXGBkbL/xAAVAQEBAAAAAAAAAAAAAAAAAAABA//EABoRAAICAwAAAAAAAAAAAAAAAAECABIDERP/2gAMAwEAAhEDEQA/AAaWpluWZM5OKYmV3HACX0hYJ1JIzaWNt/Rg+qMQcUzKsmWQXGhYvFGVat9DY7RHhvTF90fKoFq7nfAh57axkmKrjqBP/9k=' className="contentImage" data-src={props.imageUrl} alt="foto" />
@@ -140,13 +142,12 @@ const Content = memo((props) => {
             <div className="icon__box">
                 <p>{state.likes}</p> 
                     <a onClick={()=>{handleLikeButton(props.postId)}}><i className={ has_like ? state.buttonLikeClass : state.buttonNotClass }>favorite</i></a>
-            <div>
 
                 {/* comment  */}
                 <a className="modal-trigger"  href={`#modal_id${props.id}`}><i className="small material-icons icon ">comment</i></a>
                     {/* lazy loading modal dengan react */}
                             
-                    <Suspense fallback={<div></div>}>
+                    <Suspense key={props.id} fallback={<div></div>}>
                         <Modal 
                             key ={props.id}
                             id = {props.id}
@@ -159,7 +160,8 @@ const Content = memo((props) => {
                     </Suspense>
                 
                 <a onClick={()=> handleSaveButton(props.postId)}><i className="small material-icons icon " >{has_save ? state.saveButton : state.unsaveButton}</i></a>
-            </div>
+                </div>
+            <div>
                     {/* feature */}
             </div>
                 <h6 className="caption">

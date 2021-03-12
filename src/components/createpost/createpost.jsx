@@ -1,29 +1,26 @@
 import React, { Component } from 'react'
 
-import M from "materialize-css";
-
-import ReactCrop from 'react-image-crop'
-
 import { image64toCanvasRef, extractImageFileExtensionFromBase64, base64StringtoFile } from '../method/base64'
-
 import { formatBytes } from '../method/convert'
 
+import M from "materialize-css";
+import { Avatar } from '@material-ui/core'
+
+import ReactCrop from 'react-image-crop'
+import axios from 'axios'
 import Cookies from 'js-cookie'
+
 import { protectAuth } from '../auth/auth'
 import { Redirect } from 'react-router-dom'
-import { Avatar } from '@material-ui/core'
 import { connect } from 'react-redux'
 
-import axios from 'axios'
-
-import '../../cp.css'
 import 'react-image-crop/dist/ReactCrop.css';
+import '../../cp.css'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 // validate data yang diinginkan
 const imageSize = 2520000 /* 2,4 mb */
-
 const accepFileType = 'image/x-png,image/png,image/jpg,image/jpeg,image/gif'
 const accepFileTypeArray = accepFileType.split(",").map((item) => { return item.trim() })
 
@@ -49,8 +46,6 @@ class CreatePost extends Component {
     }
 
     componentDidMount() {
-
-
         const options = {
             inDuration: 250,
             outDuration: 250,
@@ -63,7 +58,7 @@ class CreatePost extends Component {
     }
 
     // method validate foto
-    verifyFile = (files) => {
+    verifyFile = files => {
         if (files && files.length > 0) {
 
             const currentFile = files[0]
@@ -83,7 +78,6 @@ class CreatePost extends Component {
     }
 
     handleOnDrop = (event) => {
-
         // validasi file
         if (event.target.files && event.target.files.length > 0) {
             if (this.verifyFile(event.target.files)) {
@@ -93,10 +87,7 @@ class CreatePost extends Component {
                 const reader = new FileReader()
 
                 // menyimpan data ke url agar bisa di load di preview                
-                reader.addEventListener('load', () => {
-                    this.setState({ urlMentah: reader.result })
-                }, false)    
-                
+                reader.addEventListener('load', () => this.setState({ urlMentah: reader.result }), false)    
                 // membuat base64
                 reader.readAsDataURL(currentFile)
             }    
@@ -107,9 +98,8 @@ class CreatePost extends Component {
 
     handleCaption = event => this.setState({ caption: event.target.value })
 
-    handleOnChange = (crop) => this.setState({ crop: crop })
+    handleOnChange = crop => this.setState({ crop: crop })
 
-    handleImageLoaded = (image) => { }
 
     handleCrop = (crop, pixelCrop) => {
 
@@ -121,6 +111,7 @@ class CreatePost extends Component {
         // menampilkan priview
         image64toCanvasRef(canvas, urlMentah, pixelCrop)
 
+        // mengambil url file
         const exstensi = extractImageFileExtensionFromBase64(urlMentah)
 
         let filename = `image${this.state.caption}${Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}.${exstensi}`
@@ -129,7 +120,6 @@ class CreatePost extends Component {
 
         let dataBaru = this.canvasRef.current.toDataURL('image/' + exstensi)
         if (dataBaru === 'data:,') {
-
         } else {
             // mengubah base64 mejadi file dan menyimpan ke state
             const file = base64StringtoFile(dataBaru, filename)
@@ -145,21 +135,20 @@ class CreatePost extends Component {
 
         const { urlJadi, caption } = this.state
         const user = this.props.user_id.user_id
+
         let formData = new FormData()
 
         formData.append('post', urlJadi)
         formData.append('user', user)
         formData.append('caption', caption)
 
-
-        axios.post('http://127.0.0.1:8000/api/create/',
-            formData, {
+        const config = {
             headers: {
                 "Authorization": 'Bearer ' + Cookies.get('access'),
                 'Content-Type': 'multipart/form-data'
             }
-        })
-
+        }
+        axios.post('http://127.0.0.1:8000/api/create/',formData,config)
             .then((res) => {
                 // jika succes redirect ke profil
                 this.setState({ redirect: true, urlJadi: null, caption: '', })
@@ -168,11 +157,6 @@ class CreatePost extends Component {
             .catch(e =>  console.log(e.request.responseText) )
     }
 
-    /* testing input file local */
-    // handleUploadImage = (event) => {
-    //     this.setState({urlMentah:event.target.files[0]})
-    //     console.log(event.target.files[0])
-    // }
     
     render() {
         if (this.state.redirect || this.props.user_id === null) return <Redirect to={this.state.redirectUrl} />
@@ -183,6 +167,7 @@ class CreatePost extends Component {
                     <div style={{ display: "flex", alignItems: "center" }}>
                         <Avatar 
                             src={`http://127.0.0.1:8000${this.props.user_id.profil}`}
+                            alt={'profil'}
                         />
                         <a className="caption modal-trigger" href="#modal1" style={{ flex: "1", borderRadius: "50px", padding: "10px", marginLeft: "5px" }}>What Do You mind?</a>
                     </div>
@@ -190,7 +175,7 @@ class CreatePost extends Component {
                     <div >
                         <a className="imageVid modal-trigger" href="#modal1" style={{ display: "flex", justifyContent: "center" }}>
                             <i className="material-icons" style={{ color: "#ee6e73" }}>image</i>
-                            Foto/Video
+                            Foto
                         </a>
                     </div>
                 </div>
@@ -220,7 +205,7 @@ class CreatePost extends Component {
                                     src={this.state.urlMentah}
                                     crop={this.state.crop}
                                     onChange={this.handleOnChange}
-                                    onImageLoaded={this.handleImageLoaded}
+                           
                                     onComplete={this.handleCrop}
                                 />
                                 <button className="btn" onClick={this.Confirmfoto}>Confirm</button>
@@ -236,7 +221,7 @@ class CreatePost extends Component {
                     <label className="insert" htmlFor="files"  >
                         
                        
-                        <label>Add to Your Post</label>
+                        <label htmlFor="files" >Add to Your Post</label>
                         <input
                         onChange={this.handleOnDrop}
                         type="file"

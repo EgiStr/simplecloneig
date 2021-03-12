@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { Redirect,useHistory } from 'react-router-dom'
 
 import { connect } from 'react-redux'
-import { get_notif_user } from '../../action/notifikasi'
+import { get_notif_user,clear_notif_user } from '../../action/notifikasi'
 import { NotifDropdown } from './notifDropdown'
 import $ from 'jquery'
 
 
-function Navbar({ user,notif,read,get_notif_user }) {
+function Navbar({ user,notif,read,get_notif_user,clear_notif_user }) {
     if(window.location.pathname === '/register') {
         if (user === null) return <Redirect to={'/register'} />
     }
@@ -19,11 +19,12 @@ function Navbar({ user,notif,read,get_notif_user }) {
         var elems = document.querySelectorAll('.dropdown-trigger');
         M.Dropdown.init(elems, {});
 
-    },[read]);
+    },[notif]);
     
     const notifTrigger = () => {
         $(".box-notif").fadeToggle()
         get_notif_user()
+    
     }
   
     return (
@@ -71,4 +72,4 @@ const mapStateToProps = state => {
         read:state.notifikasi.unreadNotifications,
     }
 }
-export default connect(mapStateToProps,{get_notif_user})(Navbar);
+export default connect(mapStateToProps,{get_notif_user,clear_notif_user})(Navbar);

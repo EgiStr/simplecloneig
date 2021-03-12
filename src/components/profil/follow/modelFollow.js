@@ -44,7 +44,7 @@ class ModalFollow extends Component {
       
         return (
             <div id="modal_id_follow" ref={ Modal => { this.Modal = Modal }} className="modal">
-                <div className="modal-content">
+                <div className="modal-content" style={{ height: 400, overflow: 'auto' }} >
                     
                     {this.props.type === true ? (<h4>follower</h4>) : (<h4>following</h4>)}
                     {this.props.type === true ? (

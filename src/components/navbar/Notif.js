@@ -25,11 +25,15 @@ const Notif = ({user_id,post,sender,text,type}) => {
     },[])
 
     const check_is_follow = (id) => {
-        const target = localStorage.getItem('follow').split(",").map(Number)
-        if(target.includes(id)){
-            return true
+        if(localStorage.getItem('follow') !== null){
+            const target = localStorage.getItem('follow').split(",").map(Number)
+            if(target.includes(id)){
+                return true
+            }
+            return false 
+        }else{
+            window.location.reload()
         }
-        return false 
     }
 
     const handleFollow = () => {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component,lazy,Suspense } from 'react'
 
 import M from "materialize-css";
 import Avatar from "@material-ui/core/Avatar";
@@ -16,15 +16,11 @@ import { get_comment,
          
                         } from '../../../action/comment'
 
-import CommentUser  from './comment'
-
 import { protectAuth } from '../../auth/auth'
 
 import './mentionStyle.css'
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
- 
-
+const CommentUser = lazy(() => import('./comment'))
 class Modal extends Component {
     constructor(props){
         super(props)
@@ -35,20 +31,22 @@ class Modal extends Component {
         this.user_id = this.props.user.user_id
 
     }
+
     componentDidUpdate(prevProps){
-        if(prevProps.parent !== this.props.parent){       
+        // jiga user ingin mereplies seseorang
+        if(prevProps.parent !== this.props.parent || prevProps.username !== this.props.username){  
+            // membuat si commet user ada @ diawal
             this.setState(prevState => ({
                 comment:`@${this.props.username} ` + prevState.comment
             }))
+            // kalau ga ubahnya mengancel replies maka akan menhapus mention @
             if(this.props.parent === null){
                 this.setState({comment:''})
             }
         }
-        // console.log(this.state.comment === '')
     }
     
     componentDidMount(){
-        
 
         const options = {
             onOpenStart: () => {
@@ -66,71 +64,63 @@ class Modal extends Component {
         }
 
        
-        handleChange = (event, newValue, newPlainTextValue, mentions) => {
-            
-            this.setState({
-                comment:newValue,
-            })
-        }
-
+        handleChange = (event, newValue, newPlainTextValue, mentions) => this.setState({comment:newValue})
+        
+        // liveSearch buat data mentoin recommend
         handleSearchMention = (query, callback) => {
             if(query === '') return 
-                //  cancal untuk membuat cancel token 
+                //  cancal untuk membuat cancel token
                 var cancel;
-                axios.get(`http://127.0.0.1:8000/auth/search/?search=${query}`,
-                    {
-                        cancelToken :  new axios.CancelToken(c => cancel = c)
-                    })
+
+                const config = { cancelToken :  new axios.CancelToken(c => cancel = c ) }
+                
+                axios.get(`http://127.0.0.1:8000/auth/search/?search=${query}`,config)
                     // membuat membuat promoise unutk memasukan kecallback
                     .then(res => {
-                        return new Promise((resolve,reject) => {
-                            resolve(res.data.results.map(user => ({display: user.nickname,id:user.id})))
-                        })
+                        return new Promise( (resolve,reject) => resolve(res.data.results.map(user => ({display: user.nickname,id:user.id}))))
                     })
                     .then(callback)
+                    // return untuk mengancel token
                 return () => cancel()
-          
         }
         
-        handleCancel = ()=> {
+        handleCancel = () => {
             this.props.add_username(null)
             this.props.add_parent(null)
+            
         }
         
         handleComment = (parent = this.props.parent) => {
-            
+            // memastukan user login
             protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
             
-            let { contentType,obj_id } = this.props
+            let { contentType, obj_id } = this.props
         
             let content = this.state.comment
 
+            const data = {           
+                user: this.user_id,
+                content_type: contentType,
+                obj_id: obj_id,
+                content: content,
+                parent : parent,
+            }
             if(content !== ''){
                 axios({
                     method:'POST',
                     url:'http://127.0.0.1:8000/comment/create/',
-                    data:{
-                        
-                        user: this.user_id,
-                        content_type:contentType,
-                        obj_id:obj_id,
-                        content:content,
-                        parent : parent,
-                    },
+                    data:data,
                     headers: {
                         "Authorization": 'Bearer ' + Cookies.get('access')
-                            },
+                    },
                     
                 })
-                .then(res => {
-                
-                    this.props.add_comment(res.data,parent)
-                    this.props.add_parent(null)
-                    this.setState({comment:''})
-                    
-            
-                })
-                .catch(e => {console.log(e);})
+                    .then(res => {              
+                        this.props.add_comment(res.data,parent)
+                        this.props.add_parent(null)
+                        this.setState({comment:''})
+                    })
+                    .catch(e => console.log(e) )
             } 
         
     }
@@ -144,58 +134,63 @@ class Modal extends Component {
       
         return (
             <div ref={ Modal =>  this.Modal = Modal} id={`modal_id${this.props.id}`} className="modal bottom-sheet modal-fixed-footer">
-                <div className="modal-content " ref={node => this.modalRef = node}>
+                <div className="modal-content "  >
                     <h4>Comment</h4>
-                   
 
                     <div className="row post-row">
-                        
+ 
                         {comments ? (
-                                comments.map((item,i) => {
-                                    
-                                       return <CommentUser 
-                                            key ={i}
-                                            user = {this.user_id === item.user.id}
-                                            id = {item.id}
-                                            profil = {item.user.profil}
-                                            nickname = {item.user.nickname}
-                                            content = {item.content}
-                                            replies = {item.replies}
-                                        />
+                            comments.map((item,i) => {                    
+                                    return <Suspense key={i} fallback={<div>loading..</div>}>
+                                                <CommentUser 
+                                                    key ={i}
+                                                    user = {this.user_id === item.user.id}
+                                                    id = {item.id}
+                                                    profil = {item.user.profil}
+                                                    nickname = {item.user.nickname}
+                                                    content = {item.content}
+                                                    replies = {item.replies}
+                                                />
+                                            </Suspense>
                                 })
                             ) : (null)}       
-                    </div>
-                    {/* style={{position:'fixed',bottom:0,left:0,}} need fix position */}
+                    </div>    
                 </div>
+
                 <div className="modal-footer" style={{height:'110px'}}>
-                <div className="col s3 l2 offset-l1">
-                            <Avatar  className="avatar" alt="foto" src={`http://127.0.0.1:8000${this.props.user.profil}`} height="45" width="45" />
-                        </div>
-                        <div className="col s6 l5 post-btn-container" >
-                            {parent ? (<p onClick={() => this.handleCancel()}>your replies {this.props.username} click cancel  </p>) : (null)}
+
+                    <div className="col s3 l2 offset-l1">
+                            <Avatar  
+                                className="avatar"
+                                alt="foto" src={`http://127.0.0.1:8000${this.props.user.profil}`} 
+                                height="45" width="45" 
+                            />
+                    </div>
+                    
+                    <div className="col s6 l5 post-btn-container"  >
+                             {parent ? (<p onClick={() => this.handleCancel()}>your replies {this.props.username} click cancel  </p>) : (null)}
                             <MentionsInput
                                 value={this.state.comment}
                                 onChange={this.handleChange}
                                 placeholder="Type anything, use the @ symbol to tag other users."
                                 className="mentions"
                             >
-
-                            <Mention
-                                type="user"
-                                trigger="@"
-                                markup="@__display__ "
-                                data={this.handleSearchMention}
-                                className="mentions__mention"
-                            />
+                                <Mention
+                                    type="user"
+                                    trigger="@"
+                                    markup="@__display__ "
+                                    data={this.handleSearchMention}
+                                    className="mentions__mention"
+                                />
                             </MentionsInput>
                         
-                        </div>
-                    <a className="modal-close waves-effect waves-green btn-flat" onClick={() => {this.handleComment(this.state.parentid)}}>
-                    Send 
-                    </a>
-                    <a className="modal-close waves-effect waves-green btn-flat" onClick={() => this.handleCancel()}>
-                    cancel 
-                    </a>
+                    </div>
+                        <a className="modal-close waves-effect waves-green btn-flat" onClick={() => {this.handleComment(this.state.parentid)}}>
+                        Send 
+                        </a>
+                        <a className="modal-close waves-effect waves-green btn-flat" onClick={() => this.handleCancel()}>
+                        cancel 
+                        </a>
                 </div>
         </div>
         )

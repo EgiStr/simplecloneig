@@ -1,18 +1,21 @@
-import React , {useEffect} from "react";
+import React , { useEffect } from "react";
 import Content from '../home/content'
-import { get_post_save_data } from '../../action/auth'
-import {connect} from 'react-redux'
 
-const SavePosts = ({post_data,get_post_save_data}) => {
+import { get_post_save_data } from '../../action/auth'
+import { connect } from 'react-redux'
+
+const SavePosts = ({post_data,get_post_save_data,}) => {
+ 
+
     useEffect(() => {
         get_post_save_data()
     },[])
-    console.log(post_data)
+    
     return (
         <div className="posts">
             <div className="posts_wrap">
           
-            {post_data ? (post_data.map((item, index) => {
+            { post_data ? (post_data.map((item, index) => {
 
                 return (
                     <Content

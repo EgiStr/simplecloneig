@@ -1,32 +1,28 @@
 import React , { useState,useEffect,useRef,useCallback } from 'react'
 
-import Content from './content'
-
-
-import FecthData from './fetchData'
-import { protectAuth } from '../auth/auth'
+import axios from 'axios'
 import { connect } from 'react-redux'
-
 import { Redirect } from 'react-router-dom'
 import Cookies from 'js-cookie'
-import axios from 'axios'
+
+import Content from './content'
+import FecthData from './fetchData'
 import CreatePost from '../createpost/createpost'
+import { protectAuth } from '../auth/auth'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 
 export const home = ({ user }) => {
-  const [state,setState] = useState({redirect:false,})
+  const [redirect,setRedirect] = useState(false)
   const [page,setPage] = useState(1)
   
   // fetch data dari api
-  
+  // costume hooks 
   const [data,hasMore,loading] = FecthData(page,Cookies.get('access'))
   
   useEffect(() => {
-    // window.location.reload()
-    protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : setState({redirect:true}))
-
+    protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : setRedirect(true) )
   },[])
   
   
@@ -50,12 +46,15 @@ export const home = ({ user }) => {
   }, [loading,hasMore])
   
   
-  if(state.redirect || user === null) return <Redirect to='/login'/>
+  if(redirect || user === null) return <Redirect to='/login'/>
   return (
     <div className="container">
             <div className="row">
                 <div className="col s8">
+                  {/* for post  */}
                   <CreatePost />
+
+                  {/* data post homepage */}
                     {data.length > 0 ? data.map( (item ,i) => {
                         if(data.length === i + 1){
                           return ( 
@@ -75,13 +74,10 @@ export const home = ({ user }) => {
                                   like        = {item.likes}
                                   comment     = {item.comments}
                                   />
-                          </div>
-
-                                                   
+                          </div>                                                
                           )
 
-                        }else{
-
+                        } else {
                           return ( 
                           <Content 
                                   key        = {i}
@@ -114,84 +110,12 @@ export const home = ({ user }) => {
                         </div>
                       </div>
                     ) : (null) }
-                  
                     {loading && <p>relog if take to long</p>}
                 </div>
             </div>
         </div>
-        
   )
 }
-
-// class Home extends Component {
-//   constructor(props){
-//       super(props)
-//       this.state = {
-//         access : Cookies.get('access'),
-//         refresh : Cookies.get('refresh'),
-//         data : [],
-//         redirect: false,
-//       }
-//   }  
-
-//   componentDidMount(){
-//     const page = 1
-//     const [data,hasPage] = FecthData(page)
-//     if(!protectAuth(this.state.access,this.state.refresh)) this.setState({redirect:true})
-//     if(this.state.access !== undefined){
-//         axios({
-//             method:'GET',
-//             url:'http://127.0.0.1:8000/api/',
-//             headers:{
-//               "Authorization": 'Bearer ' + this.state.access
-//             }            
-//         })
-//         .then(res => {this.setState({data:res.data})
-//         console.log(res)
-//       })
-//         .catch( e => {
-//             console.log(e.request)
-//             this.setState({redirect:true})
-//         })
-//     }     
-// }
-     
-     
-//   render(){
-    
-    
-//     if(this.state.redirect) return <Redirect to='/login'/>
-    
-//     const data = this.state.data
-//     return (
-//         <div className="container">
-//             <div className="row">
-//                 <div className="col s8">
-//                     {/* data postingan */}
-//                     {data.map( (item ,i) => {
-//                         return ( 
-//                         <Content 
-//                                 key        = {i}
-//                                             // membuat uniq key untuk modal
-//                                 id         = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
-//                                 contentType= {item.content_type_id}
-//                                 postId     = {item.id}
-//                                 userId     = {item.user.id}
-//                                 username   = {item.user.nickname}
-//                                 captions   = {item.caption}
-//                                 imageUrl   = {item.post}
-//                                 avatar     = {item.user.profil}
-//                                 like       = {item.likes}
-//                                 comment    = {item.comments}
-//                                 />)
-//                     })}
-//                 </div>
-//             </div>
-//         </div>
-        
-//     )
-//   }
-// }; 
 const mapStateToProps = state => {
   return {
     user : state.auth.user,

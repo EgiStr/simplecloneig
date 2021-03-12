@@ -10,8 +10,7 @@ import CreatePost from './components/createpost/createpost'
 import Logout from './components/auth/logout'
 import editProfile from './components/profil/edit/editProfile'
 import SearchUser from './components/navbar/searchUser'
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 
 function App() {
@@ -24,14 +23,14 @@ function App() {
       <Switch>
         {/* daerah switch bakal keganti otamatis sesuai lick dan compoenent */}
         <Route exact path="/" component={Home} />
-        <Route path="/message" component={Message} />
-        <Route path="/profile/:id" component={Profile} />
-        <Route path="/create" component={CreatePost} />
-        <Route path="/login" component={Login} />
-        <Route path="/logout" component={Logout} />
-        <Route path="/account" component={editProfile} />
-        <Route path="/register" component={Register} />
-        <Route path="/search" component={SearchUser} />
+        <Route exact path="/message" component={Message} />
+        <Route exact path="/profile/:id" component={Profile} />
+        <Route exact path="/create" component={CreatePost} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/logout" component={Logout} />
+        <Route exact path="/account" component={editProfile} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/search" component={SearchUser} />
       </Switch>
     </Router>
   );

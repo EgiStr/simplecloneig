@@ -19,6 +19,10 @@ export const get_notif_user = () => (dispatch,getState) => {
         headers: {
         "Authorization": 'Bearer ' + Cookies.get('access')
     }}
+    if(Number(localStorage.getItem('notif')) > 0){
+        clear_notif_user()
+        dispatch({ type:'CLEAR_NOTIFICATIONS' })
+    }
     if(getState().notifikasi.notifications.length === 0){
         axios.get(`http://127.0.0.1:8000/notif/user/`, config )
             .then(res => {
@@ -26,10 +30,6 @@ export const get_notif_user = () => (dispatch,getState) => {
                     type:'GET_NOTIFICATIONS',
                     payload: res.data
                 })
-                if(getState().notifikasi.unreadNotifications > 0){
-                    clear_notif_user()
-                    dispatch({ type:'CLEAR_NOTIFICATIONS' })
-                }
                 dispatch({type:'READ_NOTIFICATIONS'})
                 
             })

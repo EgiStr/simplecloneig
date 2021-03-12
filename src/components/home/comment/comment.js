@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState,lazy,Suspense } from 'react'
 
 import { protectAuth } from '../../auth/auth'
 
 import Cookies from 'js-cookie'
 
-import Childcomment from './comments'
-
 import { 
     delete_comment,
     add_username,
     add_parent
-} from '../../../action/comment'
+    } from '../../../action/comment'
 
 import { connect } from 'react-redux'
 
+
+const Childcomment = lazy(() => import('./comments'))
 
 
 const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent,delete_comment,add_username}) => {
@@ -21,7 +21,6 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
     const [limit,setLimit] = useState(0)
     
     let child = replies.length !== 0 ? (replies.length - limit)  : null 
-    // const [hide,setHide] = useState(false)
  
     const handleRemove = id => {
         protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
@@ -31,33 +30,33 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
         add_parent(parent_id)
         add_username(user_username)
     }
-
     
-    
+    // mengekstrak replies
     const renderReplies = () => {
             return replies.slice(0,limit).map((e,i)=>{
     
-                return  <Childcomment   
-                        key={i}
-                        nickname = {e.user.nickname}
-                        profil = {e.user.profil}
-                        content = {e.content}
-                        id    = {e.id}
-                        user = {user_id === e.user.id}                                     
-                        /> 
+                return   <Suspense key={i} fallback={<div>loading</div>}>
+                            <Childcomment   
+                                key={i}
+                                parent = {id}
+                                nickname = {e.user.nickname}
+                                profil = {e.user.profil}
+                                content = {e.content}
+                                id    = {e.id}
+                                user = {user_id === e.user.id}                                     
+                            /> 
+                        </Suspense>
             })
-    
     }
 
-// mengekstrak replies
     if(user){
         return (
             <ul className="collection">
                 <li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} className="collection-item avatar">                                       
-                    <img loading='lazy' src={`http://127.0.0.1:8000${profil}`} className="circle" alt="...."/>
+                    <img loading='lazy' src={`http://127.0.0.1:8000${profil}`} className="circle" alt="profil"/>
                     <span className="title">{nickname}</span>
                     <p>{content}</p>
-                    <a className="btn" onClick={()=>{handleRemove(id)}}><i className="material-icons">send</i></a>
+                    <a className="btn" onClick={()=>{handleRemove(id)}}><i className="material-icons">delete</i></a>
                     <a className="secondary-content btn" onClick={()=>{handleReplies(id,nickname)}}><i className="material-icons">send</i></a>
                     {/* agar membuat hanya di itu sendiri replies dimuat  */}
                     {renderReplies()}      
@@ -89,7 +88,7 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
                     <img loading='lazy' src={`http://127.0.0.1:8000${profil}`} className="circle" alt="...."/>
                     <span className="title">{nickname}</span>
                     <p>{content}</p>
-                    <a className="secondary-content btn" onClick={()=>{handleReplies(id)}}><i className="material-icons">send</i></a>
+                    <a className="secondary-content btn" onClick={()=>{handleReplies(id,nickname)}}><i className="material-icons">send</i></a>
                     {/* sama kayak diatas */}
                     {renderReplies()}      
                     {

@@ -5,7 +5,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect,Link } from 'react-router-dom'
 
 import { BrowserRouter as Switch, Route } from 'react-router-dom'
 
@@ -83,7 +83,6 @@ class Profile extends Component {
         const idUser = this.props.match.params.id
 
         const data = this.state.data
-
         const { follower, following, id } = data
 
 
@@ -129,13 +128,19 @@ class Profile extends Component {
 
                 <div className="divider"></div>
                 <div className="post_nav">
-                    <a className="post__nav active" href={`/profile/${idUser}`}><i className="material-icons tiny" >grid_on</i>POSTS</a>
-                    {idUser === authUser ? <a className="post__nav" href={`/profile/${idUser}/savePost`}><i className="material-icons tiny" >turned_in_not</i>SAVED</a> : null }
+        
+                    <a className="post__nav active" href={`/profile/${idUser}`}>
+                     <i className="material-icons tiny" >grid_on</i>POSTS
+                    </a>
+                    
+                    {idUser === authUser ? <a className="post__nav" href={`/profile/${idUser}/savepost`}>
+                     <i className="material-icons tiny" >turned_in_not</i>SAVES
+                    </a>: null }
                      <div className="post__nav"><i className="material-icons tiny" >person_pin</i>TAGGED</div>
                 </div>
                 <Switch>
-                    <Route exact path={`/profile/${idUser}`} component={Posts} />
-                    <Route path={`/profile/${idUser}/savePost`} component={SavePosts} />
+                    <Route exact path={`/profile/${idUser}`} render={() => <Posts />} />
+                    <Route path={`/profile/${idUser}/savePost`} render={() => <SavePosts  /> } />
                 </Switch>
 
             </div>
