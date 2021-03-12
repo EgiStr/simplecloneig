@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import {} from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -32,15 +32,15 @@ class Profile extends Component {
             data: [],
             redirect: false,
             redirectUrl: '',
-
         }
+        delete axios.defaults.headers.common["Authorization"];
     }
 
     componentDidMount() {
 
         // protectAuth(this.state.access, this.state.refresh).then(e => !e ? window.location.reload() : this.setState({ redirect: false }))
         this.props.getFollower(this.state.access)
-
+        
         const id = this.props.match.params.id;
 
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
