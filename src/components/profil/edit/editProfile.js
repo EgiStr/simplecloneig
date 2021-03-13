@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { BrowserRouter as Switch, Route } from 'react-router-dom'
+import { Switch, Route, Link } from 'react-router-dom'
 
 import AccountEdit from './accountEdit'
 import changePassword from './changePassword'
@@ -9,8 +9,8 @@ function editProfile() {
     return (
         <div className="row box_edit">
             <div className="col s3">
-                <a className="nav_edit" href="/account/edit">Edit Profile</a>
-                <a className="nav_edit" href="/account/password/change">Change Password</a>
+                <Link className="nav_edit" to={"/account/edit"}>Edit Profile</Link>
+                <Link className="nav_edit" to={"/account/password/change"} >Change Password</Link>
             </div>
             <Switch>
                 <Route path="/account/edit" component={AccountEdit} />

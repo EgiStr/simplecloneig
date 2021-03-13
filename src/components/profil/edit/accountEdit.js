@@ -4,7 +4,7 @@ import axios from "axios";
 import { parseJwt } from "../../method/parseJwt";
 import Cookies from "js-cookie";
 
-import { protectAuth } from "../../auth/auth";
+import { protectAuth } from "../../../utils/auth/auth";
 
 import Avatar from "@material-ui/core/Avatar";
 

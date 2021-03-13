@@ -3,11 +3,12 @@ import { Avatar } from '@material-ui/core'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import '../../notif.css'
 
 const Notif = ({user_id,post,sender,text,type}) => {
-    
+    const history = useHistory()
     const [state,setState] = useState({
         follow : 'follow back',
         unfollow: 'following',
@@ -66,7 +67,7 @@ const Notif = ({user_id,post,sender,text,type}) => {
                             height={30}
                            
                         />
-                <div className="notif-txt" onClick={() => window.location = `/profile/${sender.nickname}`} ><b> {sender.nickname}</b>{text}</div>
+                <div className="notif-txt" onClick={() => history.push(`/profile/${sender.nickname}`)} ><b> {sender.nickname}</b>{text}</div>
             </div>
             {type === 2 ? (
                 <button className="follow" onClick={() => handleFollow() } >{state.is_follow ? state.unfollow : state.follow}</button>

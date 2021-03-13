@@ -3,8 +3,6 @@ import { parseJwt } from '../components/method/parseJwt'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-
-
 export const loginUser = access => dispatch => {
     const user = parseJwt(access)
     return dispatch({
@@ -109,7 +107,7 @@ export const get_post_save_data = () => (dispatch,getState) => {
             "Authorization": 'Bearer ' + Cookies.get('access'),
         }
     }
-    if(getState().auth.save_post.length === 0){
+    if(getState().auth.save_post_data.length === 0){
         console.log('ada lagi')
         axios.get('http://127.0.0.1:8000/api/save/post/', config )
             .then(res => {
@@ -122,3 +120,4 @@ export const get_post_save_data = () => (dispatch,getState) => {
     }
     
 }
+

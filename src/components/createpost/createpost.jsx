@@ -10,7 +10,7 @@ import ReactCrop from 'react-image-crop'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-import { protectAuth } from '../auth/auth'
+import { protectAuth } from '../../utils/auth/auth'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 

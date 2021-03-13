@@ -4,12 +4,16 @@ import Content from '../home/content'
 import { get_post_save_data } from '../../action/auth'
 import { connect } from 'react-redux'
 
-const SavePosts = ({post_data,get_post_save_data,}) => {
- 
+import {withRouter, useHistory} from 'react-router-dom'
 
+const SavePosts = ({user,param,post_data,get_post_save_data}) => {
+    const history = useHistory()
+    if(user !== param) history.push(`/profile/${param}`)
+    
     useEffect(() => {
         get_post_save_data()
     },[])
+    
     
     return (
         <div className="posts">
@@ -43,8 +47,9 @@ const SavePosts = ({post_data,get_post_save_data,}) => {
 
 const mapStateToProps = state => {
     return {
-        post_data : state.auth.save_post
+        user : state.auth.user.username,
+        post_data : state.auth.save_post_data
     }
 }
 
-export default connect(mapStateToProps,{get_post_save_data})(SavePosts) ; 
+export default withRouter(connect(mapStateToProps,{get_post_save_data})(SavePosts)) ; 

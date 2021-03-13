@@ -5,7 +5,6 @@ import Cookies from 'js-cookie'
 
 import { Redirect } from 'react-router-dom'
 
-
 export const LoginAuth = async (AccessToken , RefresToken) => {
     // jika tidak pernah login akan null yang membuat dia akan redirect
     if(!RefresToken) return null

@@ -8,7 +8,7 @@ import Cookies from 'js-cookie'
 import Content from './content'
 import FecthData from './fetchData'
 import CreatePost from '../createpost/createpost'
-import { protectAuth } from '../auth/auth'
+import { protectAuth } from '../../utils/auth/auth'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 

@@ -3,9 +3,7 @@ const initialState = {
     notifications : [],
     unreadNotifications : 0
 }
-
-export default (state = initialState, action) => {
-
+const notifikasi = (state = initialState, action) => {
   let py = action.payload
 
   switch (action.type) {
@@ -24,7 +22,6 @@ export default (state = initialState, action) => {
       
 
     case 'GET_UNREAD_NOTIFICATIONS':
-      console.log(py)
       localStorage.setItem('notif', py)
       return { 
         ...state,
@@ -43,3 +40,4 @@ export default (state = initialState, action) => {
 
   return state
 }
+export default notifikasi ;

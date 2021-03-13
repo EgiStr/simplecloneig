@@ -1,5 +1,4 @@
 import React from "react";
-// import Content from './components/content'
 import Navbar from "./components/navbar/Navbar";
 import Message from "./components/massage/Message";
 import Profile from "./components/profil/Profile";
@@ -10,13 +9,14 @@ import CreatePost from './components/createpost/createpost'
 import Logout from './components/auth/logout'
 import editProfile from './components/profil/edit/editProfile'
 import SearchUser from './components/navbar/searchUser'
+
 import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      {/* {localStorage.getItem('token') === null ? window.location.reload() : null } */}
+    <Router >
+      
       <Navbar />
       {/* daerah content page atas*/}
       

@@ -35,6 +35,7 @@ const initialState ={
 
      like_post : [],
      save_post : [],
+     save_post_data : [],
      post_data : [],
      user : access,
      
@@ -105,7 +106,7 @@ const auth = (state = initialState,action) => {
         case 'GET_POST_SAVE_DATA':
             return {
                 ...state,
-                save_post : py
+                save_post_data : py
             }
             
         default:

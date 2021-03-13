@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { protectAuth } from '../../auth/auth'
+import { protectAuth } from '../../../utils/auth/auth'
 
 import Cookies from 'js-cookie'
 

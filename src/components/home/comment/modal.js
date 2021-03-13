@@ -16,7 +16,7 @@ import { get_comment,
          
                         } from '../../../action/comment'
 
-import { protectAuth } from '../../auth/auth'
+import { protectAuth } from '../../../utils/auth/auth'
 
 import './mentionStyle.css'
 

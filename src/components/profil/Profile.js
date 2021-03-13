@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import {} from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
-import { Redirect,Link } from 'react-router-dom'
 
-import { BrowserRouter as Switch, Route } from 'react-router-dom'
+
+import { Switch, Route,Redirect,NavLink } from 'react-router-dom'
 
 // import { protectAuth } from '../auth/auth'
 import { getFollower, is_follow } from '../../action/follow'
@@ -37,22 +36,34 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-
+        const id = this.props.match.params.id;
         // protectAuth(this.state.access, this.state.refresh).then(e => !e ? window.location.reload() : this.setState({ redirect: false }))
         this.props.getFollower(this.state.access)
         
-        const id = this.props.match.params.id;
-
         axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
-            .then(res => {
-                this.props.get_post_data(res.data.post_data)
-                this.props.is_follow(res.data.follower.map(e => e.id))
-                this.setState({ data: res.data })
-            })
-            .catch(e => console.log(e.request))
-
+        .then(res => {
+            this.props.get_post_data(res.data.post_data)
+            this.props.is_follow(res.data.follower.map(e => e.id))
+            this.setState({ data: res.data })
+        })
+        .catch(e => console.log(e.request))
     }
-
+    componentDidUpdate({match}){
+        if(this.props.match.url !== match.url){
+            this.props.getFollower(this.state.access)
+        
+            const id = this.props.match.params.id;
+    
+            axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
+                .then(res => {
+                    this.props.get_post_data(res.data.post_data)
+                    this.props.is_follow(res.data.follower.map(e => e.id))
+                    this.setState({ data: res.data })
+                })
+                .catch(e => console.log(e.request))
+        }
+    }
+   
     handleEditProfil = () => this.setState({ redirect: true, redirectUrl: '/account/edit' })
 
     handleFollow = () => {
@@ -78,10 +89,10 @@ class Profile extends Component {
 
     render() {
         if (this.state.redirect || this.props.user === null) return <Redirect to={this.state.redirectUrl} />
-
+        const {url,path} = this.props.match
         const authUser = this.props.user.username
         const idUser = this.props.match.params.id
-
+        
         const data = this.state.data
         const { follower, following, id } = data
 
@@ -128,19 +139,33 @@ class Profile extends Component {
 
                 <div className="divider"></div>
                 <div className="post_nav">
-        
-                    <a className="post__nav active" href={`/profile/${idUser}`}>
-                     <i className="material-icons tiny" >grid_on</i>POSTS
-                    </a>
-                    
-                    {idUser === authUser ? <a className="post__nav" href={`/profile/${idUser}/savePost`}>
-                     <i className="material-icons tiny" >turned_in_not</i>SAVES
-                    </a>: null }
-                     <div className="post__nav"><i className="material-icons tiny" >person_pin</i>TAGGED</div>
+                
+                {/* masih ada masalah didalam navlink , ga mau pindah route */}
+                                {/* isuue is beres ajg , jangan buat roouter baru lagi disini karna routernya udh di app */}
+                <NavLink
+                    to={`${url}`}
+                    exact
+                    activeClassName="post__nav active"
+                    className="post__nav"
+                >
+                   <i className="material-icons tiny" >grid_on</i>POSTS
+                </NavLink>
+                
+                {idUser === authUser 
+                    ? (<NavLink
+                            to={`${url}/savePost`}
+                            activeClassName="post__nav active"
+                            className="post__nav"
+                            >
+                            <i className="material-icons tiny" >turned_in_not</i>SAVES
+                        </NavLink>)
+                    : null }
+                     {/* <div className="post__nav"><i className="material-icons tiny" >person_pin</i>TAGGED</div> */}
                 </div>
+
                 <Switch>
-                    <Route exact path={`/profile/${idUser}`} render={() => <Posts />} />
-                    <Route path={`/profile/${idUser}/savePost`} render={() => <SavePosts  /> } />
+                    <Route path={`${path}`} exact component={()=> <Posts param={idUser} />} />
+                    <Route path={`${path}/savePost`} exact component={() => <SavePosts param={idUser} />} />
                 </Switch>
 
             </div>

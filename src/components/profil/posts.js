@@ -1,12 +1,15 @@
-import React from "react";
+import React ,{useEffect}from "react";
 import Content from '../home/content'
 import {connect} from 'react-redux'
-
+import {withRouter} from 'react-router-dom'
 const Posts = ({post_data}) => {
+    useEffect(()=>{
+        console.log('testing')
+    },[])
+
     return (
         <div className="posts">
             <div className="posts_wrap">
-           
             {post_data ? (post_data.map((item, index) => {
 
                 return (
@@ -39,4 +42,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Posts) ; 
+export default withRouter(connect(mapStateToProps)(Posts)) ; 
