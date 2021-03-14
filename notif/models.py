@@ -1,6 +1,8 @@
-from posts.models import Post
 from django.db import models
+
+from posts.models import Post
 from usercostumer.models import UserProfil
+
 from django.contrib.humanize.templatetags import humanize
 
 # Create your models here.

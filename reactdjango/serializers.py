@@ -4,9 +4,6 @@ from usercostumer.models import UserProfil
 def to_json_user(query):
     return query.profil.url 
 
-# def to_json(query):
-#     return [{'profil':t.__dict__} for t in query]
-
 class Tokenserializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):

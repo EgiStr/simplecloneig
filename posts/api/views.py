@@ -1,10 +1,15 @@
+from django.db.models import query
 from rest_framework.mixins import DestroyModelMixin
-from rest_framework.generics import DestroyAPIView, ListAPIView,RetrieveAPIView,RetrieveUpdateDestroyAPIView,CreateAPIView,RetrieveUpdateAPIView
+
+from rest_framework.generics import ( 
+                                        ListAPIView,
+                                        RetrieveAPIView,
+                                        RetrieveUpdateDestroyAPIView,
+                                        CreateAPIView,)
+
 from rest_framework.permissions import IsAuthenticated
 
 from posts.models import Post,Like,SavePostUser
-
-
 from usercostumer.models import UserProfil
 
 from .pagination import LimitPagination
@@ -32,7 +37,7 @@ class PostApiViews(ListAPIView):
         # Post.objects.get_post_homepage(self.request.user.UserProfil)
         return qs
 
-
+# proses
 class PostDetailApiView(RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerialzer
@@ -45,22 +50,8 @@ class SavePost(CreateAPIView,DestroyModelMixin):
     queryset = SavePostUser.objects.all()
     serializer_class = SavePostSerializer
 
-class GetSavePost(ListAPIView):
-    queryset = SavePostUser.objects.all()
-    serializer_class = PostSerializer
-    
-    def get_queryset(self):
-        query = SavePostUser.objects.filter(user__user__id=self.request.user.id)
-        qs = [qs.post for qs in query]
-    
-        return qs
  
-class DeleteLike(DestroyAPIView):
-    queryset = Like.objects.all()
-    serializer_class = JustLikeSerializer
-
 class CreatePostAPiView(CreateAPIView):
-    
     serializer_class = CreatePostSerializer
     
     def get_queryset(self):
@@ -71,14 +62,6 @@ class PostEditApiView(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = EditPostSerializer
 
-
-class GetPostLike(ListAPIView):
-    serializer_class = UserLikePost
-
-    def get_queryset(self):
-        qs =Like.objects.filter(user__user__id=self.request.user.id)
-        return qs
-    
 class GetPostSaveApiView(ListAPIView):
     serializer_class= UserSavePost
     permission_classes = [IsOwnerOrReadOnly]
@@ -86,5 +69,30 @@ class GetPostSaveApiView(ListAPIView):
     def get_queryset(self):
         qs = SavePostUser.objects.filter(user__user__id=self.request.user.id)
         return qs
+        
+class GetPostLikeApiView(ListAPIView):
+    serializer_class= UserSavePost
+    permission_classes = [IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        qs = SavePostUser.objects.filter(user__user__id=self.request.user.id)
+        return qs
+
+class GetSavePost(ListAPIView):
+    serializer_class = PostSerializer
+    
+    def get_queryset(self):
+        query = SavePostUser.objects.filter(user__user__id=self.request.user.id)
+        qs = [qs.post for qs in query]
+    
+        return qs
+class GetPostLike(ListAPIView):
+    serializer_class = UserLikePost
+
+    def get_queryset(self):
+        query = Like.objects.filter(user__user__id=self.request.user.id)
+        qs = [qs.post for qs in query]
+        return qs
+    
     
 

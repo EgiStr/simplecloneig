@@ -1,6 +1,9 @@
 from django.urls import path
 
-from .views import CommentApiView,CreateCommentApiView,GetCommentByPostApiView,GetRepliesByPostApiView
+from .views import (CommentApiView,
+                    CreateCommentApiView,
+                    GetCommentByPostApiView,
+                    GetRepliesByPostApiView)
 
 urlpatterns = [
     path("<int:pk>/edit/", CommentApiView.as_view(), name="edit"),

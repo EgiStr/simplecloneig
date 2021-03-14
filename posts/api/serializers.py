@@ -1,14 +1,13 @@
 from rest_framework.serializers import ModelSerializer,SerializerMethodField
-from rest_framework import fields, serializers
+from rest_framework import serializers
+
+from comment.models import Comments
 from posts.models import Post,Like, SavePostUser
 
 from usercostumer.api.serializers import UserProfilPostserializer
-
-
 from comment.api.serializers import CommentChildrenSerializer
-from comment.models import Comments
 
-
+# for post notif
 class PostNotifSerializer(ModelSerializer):
     class Meta:
         model = Post
@@ -18,8 +17,8 @@ class PostNotifSerializer(ModelSerializer):
             'post',
         ]
 
+# for post home
 class PostSerializer(ModelSerializer):
-    
     user = SerializerMethodField()
     likes = SerializerMethodField()
     
@@ -59,23 +58,49 @@ class PostSerializer(ModelSerializer):
         """ for make replies comment """
         return content_type.id
         
+# for post detail
+# masih proses
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
-    likes_count = SerializerMethodField()
+    likes = SerializerMethodField()
+    
+    comments = SerializerMethodField()
+    content_type_id = SerializerMethodField()
     create_at = SerializerMethodField()
     class Meta:
         model = Post
-        fields = '__all__'
-    
+        fields = [
+            
+            'id',
+            'user',
+            'caption',
+            'post',
+            'likes',
+            'create_at',
+            'content_type_id',      
+            'comments',
+        ]
+
     def get_create_at(self,obj):
         return obj.get_time
     
     def get_user(self,obj):
-        return UserProfilPostserializer(obj.user,context={'request':None}).data
+        user = obj.user
+        return UserProfilPostserializer(user,context={'request':None}).data
     
-    def get_likes_count(self,obj):
-        return obj.likes.count()
+    def get_likes(self,obj):
+        return obj.liked_post.all().count()
 
+    def get_comments(self,obj):
+        comments_qs = Comments.objects.fillter_by_instance(obj)
+        return CommentChildrenSerializer(comments_qs,many=True,context ={'request':None}).data
+    
+    def get_content_type_id(self,obj):
+        content_type = obj.get_content_type
+        """ for make replies comment """
+        return content_type.id
+    
+# buat history like user
 class UserLikePost(ModelSerializer):
     post = SerializerMethodField()
     class Meta:
@@ -84,9 +109,11 @@ class UserLikePost(ModelSerializer):
             'id',
             'post'
         ]
+
     def get_post(self,obj):
         return obj.post.id
 
+# for history savepost user
 class UserSavePost(ModelSerializer):
     post = SerializerMethodField()
     class Meta:
@@ -148,14 +175,11 @@ class UserSavePost(ModelSerializer):
 #         return extension
 
 
-
+# buat post
 class CreatePostSerializer(ModelSerializer):
-    user = serializers.ModelField
-    
     class Meta:
         model = Post
         fields = [
-            'user',
             'post',
             'caption'
         ]
@@ -177,6 +201,7 @@ class EditPostSerializer(ModelSerializer):
             'private'
         ]
 
+# savepost Create
 class SavePostSerializer(ModelSerializer):
     class Meta:
         model = SavePostUser
@@ -194,11 +219,11 @@ class SavePostSerializer(ModelSerializer):
         conennet_save.delete()
             
         return validated_data
+# like created
 class JustLikeSerializer(ModelSerializer):
     class Meta:
         model = Like
         fields =['id','post','user']
-
 
     def create(self, validated_data):
    
