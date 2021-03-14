@@ -177,12 +177,15 @@ class UserSavePost(ModelSerializer):
 
 # buat post
 class CreatePostSerializer(ModelSerializer):
+    user = serializers.ModelField    
     class Meta:
         model = Post
         fields = [
+            'user',
             'post',
             'caption'
         ]
+
 
     def create(self, validated_data):
     
