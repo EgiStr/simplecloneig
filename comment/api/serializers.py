@@ -13,28 +13,21 @@ class UserProfilPostserializer(ModelSerializer):
             'profil',
         ]
 
-class UpdateOrDeleteCommentSerializer(ModelSerializer):
- 
-
+class UpdateOrDeleteCommentSerializer(ModelSerializer): 
     class Meta:
         model = Comments 
         fields =[ 
             'content',   
         ]
 
-   
-
 class CommentChildrenToSerializer(ModelSerializer):
-    
     user = SerializerMethodField()
-    
     class Meta:
         model = Comments
         fields= [
             
             'id',
             'user',
-            
             'obj_id',
             'content',
             'timestamp',
@@ -123,6 +116,5 @@ class CommentCreateSerializer(ModelSerializer):
                         content = validated_data['content'],
                     )
         new_comment.save()
-        # print(new_comment.__dict__)
         
         return new_comment

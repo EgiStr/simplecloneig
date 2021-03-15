@@ -1,11 +1,8 @@
-
-import datetime
-
 from rest_framework.generics import ListAPIView,UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import NotifSerializer,NotifUpdateSerializer
-# from posts.api.permission import IsOwnerOrReadOnly
+
 from rest_framework.response import Response
 from rest_framework import status
 from notif.models import Notifikasi
@@ -18,7 +15,7 @@ class UserNotifikasiApiView(ListAPIView):
         
         qs = Notifikasi.objects.filter(receiver__user__id = self.request.user.id,is_seen = False)
         if len(qs) <= 10 :
-            queryTambahan = Notifikasi.objects.filter(receiver__user__id = self.request.user.id,is_seen = True,)[:10]
+            queryTambahan = Notifikasi.objects.filter(receiver__user__id = self.request.user.id,is_seen = True,)[:20]
             qs = qs | queryTambahan
         return qs
 

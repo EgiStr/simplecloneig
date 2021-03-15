@@ -2,7 +2,6 @@ from posts.api.serializers import PostNotifSerializer
 from usercostumer.api.serializers import UserProfilPostserializer
 from rest_framework.serializers import ModelSerializer,SerializerMethodField,Serializer
 from notif.models import Notifikasi
-from rest_framework import serializers
 
 class NotifSerializer(ModelSerializer):
     post = SerializerMethodField()
