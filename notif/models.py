@@ -1,6 +1,8 @@
-from posts.models import Post
 from django.db import models
+
+from posts.models import Post
 from usercostumer.models import UserProfil
+
 from django.contrib.humanize.templatetags import humanize
 
 # Create your models here.
@@ -15,7 +17,7 @@ class Notifikasi(models.Model):
         (4,'mention')
     )
     
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="postingan")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="postingan",blank=True, null=True)
     sender = models.ForeignKey(UserProfil,on_delete=models.CASCADE,related_name="pengirim",related_query_name="pengirim")
     receiver = models.ForeignKey(UserProfil, on_delete=models.CASCADE,related_query_name="penerima",related_name="penerima")
     create_at = models.DateTimeField(auto_now=False, auto_now_add=True)

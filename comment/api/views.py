@@ -1,9 +1,9 @@
 from rest_framework.generics import (RetrieveUpdateDestroyAPIView,
                                         CreateAPIView,
                                         ListAPIView
-                                        )
+                                    )
 
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny,IsAuthenticated
 
 
 from .serializers import (UpdateOrDeleteCommentSerializer,
@@ -32,12 +32,12 @@ class GetRepliesByPostApiView(ListAPIView):
 class CommentApiView(RetrieveUpdateDestroyAPIView):
     serializer_class = UpdateOrDeleteCommentSerializer
     permission_classes = [IsOwnerOrReadOnly,]
+    
     def get_queryset(self):
         queryset = Comments.objects.filter(pk=self.kwargs['pk'])
-       
         return queryset
 
 class CreateCommentApiView(CreateAPIView):
-    queryset = Comments.objects.all()
+    queryset = Comments.objects.get(id=1)
     serializer_class = CommentCreateSerializer
-    
+    permission_classes = [ IsAuthenticated, ]

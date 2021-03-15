@@ -7,6 +7,7 @@ from .views import (PostApiViews,
                     LikePost,
                     SavePost,
                     GetPostLike,
+                    GetPostLikeApiView,
                     GetSavePost,
                     GetPostSaveApiView,)
 

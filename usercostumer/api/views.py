@@ -133,12 +133,7 @@ class UserFollowingApiView(CreateAPIView):
     serializer_class = FollowingOrWerSerializer
     permission_classes = [IsAuthenticated]
 
-class UserUnfollowApiView(DestroyAPIView):
-    queryset = UserFollowing.objects.all()
-    serializer_class = UserProfilApiView
-    permission_classes=[IsAuthenticated,]
-
-    
+ 
 class UserEditProfil(RetrieveUpdateAPIView):
     queryset= UserProfil.objects.all()
     serializer_class = UserEditProfil

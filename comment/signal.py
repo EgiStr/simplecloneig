@@ -3,24 +3,25 @@ from usercostumer.models import UserProfil
 
 from django.db.models.signals import post_save,post_delete
 from django.dispatch import receiver
+
 from notif.models import Notifikasi
 from .models import Comments
 
-# dapet notif jiga ada follow
+# dapet notif jiga ada comment model dibuat
 @receiver(post_save,sender=Comments)
 def comment_notif_create(instance,created,*args, **kwargs):
     if created:
         post = list(Post.objects.filter(id=instance.obj_id))[0]
         user = post.user
+
+        # buat filter
         filters = instance.content.split(" ")    
-       
         mentionUser = []
         for i in filters:
             if len(i) != 0:
                 if i[0] == '@':
                     mentionUser.append(i)
                     
-        
         # mengcheck jika ada user mention di comment agar mengirim notifikasi
         if len(mentionUser) != 0 :
             for mention in mentionUser:

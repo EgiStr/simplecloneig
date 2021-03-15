@@ -1,14 +1,13 @@
 from rest_framework.serializers import ModelSerializer,SerializerMethodField
 from rest_framework import serializers
+
+from comment.models import Comments
 from posts.models import Post,Like, SavePostUser
 
 from usercostumer.api.serializers import UserProfilPostserializer
-
-
 from comment.api.serializers import CommentChildrenSerializer
-from comment.models import Comments
 
-
+# for post notif
 class PostNotifSerializer(ModelSerializer):
     class Meta:
         model = Post
@@ -18,8 +17,8 @@ class PostNotifSerializer(ModelSerializer):
             'post',
         ]
 
+# for post home
 class PostSerializer(ModelSerializer):
-    
     user = SerializerMethodField()
     likes = SerializerMethodField()
     
@@ -59,6 +58,8 @@ class PostSerializer(ModelSerializer):
         """ for make replies comment """
         return content_type.id
         
+# for post detail
+# masih proses
 class PostDetailSerialzer(ModelSerializer):
     user = SerializerMethodField()
     likes = SerializerMethodField()
@@ -99,8 +100,7 @@ class PostDetailSerialzer(ModelSerializer):
         """ for make replies comment """
         return content_type.id
 class CreatePostSerializer(ModelSerializer):
-    user = serializers.ModelField
-    
+    user = serializers.ModelField    
     class Meta:
         model = Post
         fields = [
@@ -108,6 +108,7 @@ class CreatePostSerializer(ModelSerializer):
             'post',
             'caption'
         ]
+
 
     def create(self, validated_data):
         post = Post.objects.create(
@@ -142,12 +143,10 @@ class SavePostSerializer(ModelSerializer):
         
         conennet_save.delete()    
         return validated_data
-
 class JustLikeSerializer(ModelSerializer):
     class Meta:
         model = Like
         fields =['id','post','user']
-
 
     def create(self, validated_data):
    

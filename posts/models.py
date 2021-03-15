@@ -9,10 +9,9 @@ from django.contrib.humanize.templatetags import humanize
 
 class PostManage(models.Manager):
     def get_post_homepage(self,nickname):
-       
         users = [nickname,]
         # mencari user yang di follow si user
-        users +=  [UserProfil.objects.get(id=i) for i in  UserFollowing.objects.filter(following_user = nickname).values_list('user',flat=True)] # values_list mengembalikan gruop yang ada si user -> id 
+        users +=  [ UserProfil.objects.get(id=i) for i in  UserFollowing.objects.filter(following_user = nickname).values_list('user',flat=True)] # values_list mengembalikan gruop yang ada si user -> id 
         # memfilter user yang ada didalam list -> yang difollow 
         qs = super(PostManage,self).filter(user__in=users).filter(private=False).order_by('-create_at')
     
@@ -41,11 +40,6 @@ class Post(models.Model):
         
         img.save(self.post.path)
         
-    @property
-    def get_total_like(self):
-        return self.likes.count()
-
-
     @property
     def get_content_type(self):
         instance = self

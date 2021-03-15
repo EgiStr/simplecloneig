@@ -1,10 +1,15 @@
+from django.db.models import query
 from rest_framework.mixins import DestroyModelMixin
-from rest_framework.generics import DestroyAPIView, ListAPIView,RetrieveAPIView,RetrieveUpdateDestroyAPIView,CreateAPIView,RetrieveUpdateAPIView
+
+from rest_framework.generics import ( 
+                                        ListAPIView,
+                                        RetrieveAPIView,
+                                        RetrieveUpdateDestroyAPIView,
+                                        CreateAPIView,)
+
 from rest_framework.permissions import IsAuthenticated
 
 from posts.models import Post,Like,SavePostUser
-
-
 from usercostumer.models import UserProfil
 
 from .pagination import LimitPagination
@@ -31,7 +36,7 @@ class PostApiViews(ListAPIView):
         qs = Post.objects.get_post_homepage(nickname)
         return qs
 
-
+# proses
 class PostDetailApiView(RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerialzer
@@ -46,7 +51,6 @@ class SavePost(CreateAPIView):
 
  
 class CreatePostAPiView(CreateAPIView):
-    
     serializer_class = CreatePostSerializer
     
     def get_queryset(self):
@@ -64,10 +68,10 @@ class GetPostLike(ListAPIView):
     serializer_class = UserLikePost
 
     def get_queryset(self):
-        qs =Like.objects.filter(user__user__id=self.request.user.id)
+        qs = SavePostUser.objects.filter(user__user__id=self.request.user.id)
         return qs
-    
-class GetPostSaveApiView(ListAPIView):
+        
+class GetPostLikeApiView(ListAPIView):
     serializer_class= UserSavePost
     permission_classes = [IsOwnerOrReadOnly]
 
