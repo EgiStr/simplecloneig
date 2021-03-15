@@ -71,7 +71,7 @@ class GetPostLike(ListAPIView):
         qs = SavePostUser.objects.filter(user__user__id=self.request.user.id)
         return qs
         
-class GetPostLikeApiView(ListAPIView):
+class GetPostSaveApiView(ListAPIView):
     serializer_class= UserSavePost
     permission_classes = [IsOwnerOrReadOnly]
 
