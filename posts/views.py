@@ -28,6 +28,3 @@ def index(reqeust):
     }
     return render(reqeust,'index.html',context)
 
-
-def index2(request):
-    return render(request,'testing2.html')

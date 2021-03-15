@@ -3,21 +3,21 @@ from rest_framework.generics import (RetrieveUpdateDestroyAPIView,
                                         ListAPIView
                                     )
 
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from posts.api.permission import IsOwnerOrReadOnly
+from rest_framework.permissions import AllowAny,IsAuthenticated
+
 
 from .serializers import (UpdateOrDeleteCommentSerializer,
                             CommentCreateSerializer,
                             CommentChildrenSerializer
                         )
 
+from posts.api.permission import IsOwnerOrReadOnly
 from comment.models import Comments
 
 class GetCommentByPostApiView(ListAPIView):
     serializer_class = CommentChildrenSerializer
     permission_classes = [AllowAny]
     def get_queryset(self):
-       
         qs = Comments.objects.filter(obj_id=self.kwargs['post_id']).filter(parent__isnull=True)
         return qs
 

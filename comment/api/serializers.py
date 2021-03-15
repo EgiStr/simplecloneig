@@ -12,11 +12,12 @@ class UserProfilPostserializer(ModelSerializer):
             'profil',
         ]
 
-class UpdateOrDeleteCommentSerializer(ModelSerializer):
+class UpdateOrDeleteCommentSerializer(ModelSerializer): 
     class Meta:
         model = Comments 
-        fields = [ 'content' ]
-   
+        fields =[ 
+            'content',   
+        ]
 
 class CommentChildrenToSerializer(ModelSerializer):
     user = SerializerMethodField()
@@ -95,4 +96,5 @@ class CommentCreateSerializer(ModelSerializer):
                     )
                     
         new_comment.save()
+        
         return new_comment

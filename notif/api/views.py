@@ -17,9 +17,8 @@ class UserNotifikasiApiView(ListAPIView):
                                         is_seen = False)
         # kalau notif terlalu dikit tambah 10 notif lalu
         if len(qs) <= 10 :
-            queryTambahan = Notifikasi.objects.filter(receiver__user__id = self.request.user.id,is_seen = True,)[:10]
-            qs = qs | queryTambahan # merge query
-        
+            queryTambahan = Notifikasi.objects.filter(receiver__user__id = self.request.user.id,is_seen = True,)[:20]
+            qs = qs | queryTambahan
         return qs
 
 class UpdateNotifikasiApiView(UpdateAPIView):

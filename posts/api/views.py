@@ -34,7 +34,6 @@ class PostApiViews(ListAPIView):
     def get_queryset(self):
         nickname = UserProfil.objects.get(user=self.request.user)
         qs = Post.objects.get_post_homepage(nickname)
-        # Post.objects.get_post_homepage(self.request.user.UserProfil)
         return qs
 
 # proses
@@ -42,11 +41,11 @@ class PostDetailApiView(RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerialzer
 
-class LikePost(CreateAPIView,DestroyModelMixin):
+class LikePost(CreateAPIView):
     queryset = Like.objects.all()
     serializer_class = JustLikeSerializer
  
-class SavePost(CreateAPIView,DestroyModelMixin):
+class SavePost(CreateAPIView):
     queryset = SavePostUser.objects.all()
     serializer_class = SavePostSerializer
 
@@ -58,13 +57,15 @@ class CreatePostAPiView(CreateAPIView):
         queryset = Post.objects.all()
         return queryset
 
+
 class PostEditApiView(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = EditPostSerializer
 
-class GetPostSaveApiView(ListAPIView):
-    serializer_class= UserSavePost
-    permission_classes = [IsOwnerOrReadOnly]
+# user like and post
+
+class GetPostLike(ListAPIView):
+    serializer_class = UserLikePost
 
     def get_queryset(self):
         qs = SavePostUser.objects.filter(user__user__id=self.request.user.id)
@@ -78,7 +79,9 @@ class GetPostLikeApiView(ListAPIView):
         qs = SavePostUser.objects.filter(user__user__id=self.request.user.id)
         return qs
 
+# data post dari save user 
 class GetSavePost(ListAPIView):
+    queryset = SavePostUser.objects.all()
     serializer_class = PostSerializer
     
     def get_queryset(self):
@@ -86,13 +89,4 @@ class GetSavePost(ListAPIView):
         qs = [qs.post for qs in query]
     
         return qs
-class GetPostLike(ListAPIView):
-    serializer_class = UserLikePost
-
-    def get_queryset(self):
-        query = Like.objects.filter(user__user__id=self.request.user.id)
-        qs = [qs.post for qs in query]
-        return qs
-    
-    
 
