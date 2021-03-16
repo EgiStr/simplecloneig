@@ -12,9 +12,8 @@ export const SearchUser = () => {
     }, [search])
     // dengan kata lain live seacrh
     useEffect(() => {
-      
+        delete axios.defaults.headers.common["Authorization"];
         var cancel;
-
         axios.get(`http://127.0.0.1:8000/auth/search/?search=${search}`,
         {
             cancelToken :  new axios.CancelToken(c => cancel = c)

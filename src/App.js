@@ -9,6 +9,8 @@ import CreatePost from './components/createpost/createpost'
 import Logout from './components/auth/logout'
 import editProfile from './components/profil/edit/editProfile'
 import SearchUser from './components/navbar/searchUser'
+import ForgetPassword from './components/auth/forgetPassword'
+import passwordNew from './components/auth/password-new'
 
 import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -31,6 +33,8 @@ const App = () => {
         <Route path="/account" component={editProfile} />
         <Route path="/register" component={Register} />
         <Route path="/search" component={SearchUser} />
+        <Route exact path="/forget-password" component={ForgetPassword} />
+        <Route path="/forget-password/comfirm" component={passwordNew} />
       </Switch>
     </Router>
   );

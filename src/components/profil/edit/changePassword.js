@@ -5,6 +5,8 @@ import { Container } from '@material-ui/core'
 import axios from 'axios' ;
 import Cookies from 'js-cookie'
 
+import {Link} from 'react-router-dom'
+
 import { protectAuth } from '../../../utils/auth/auth'
 
 import '../../../Password.css'
@@ -82,7 +84,7 @@ const changePassword = () => {
                         />
                 </div>
                 <div className="input-password">
-                    {/* <a>Forgot Password?</a> */}
+                    <Link to={'/forget-password'}>Reset Password?</Link>
                     <button onClick={()=> handleSubmit()} className="btn btn-primary">change Password</button>
                 </div>
                 {respone !== '' ? respone : ''}

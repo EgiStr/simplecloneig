@@ -66,9 +66,10 @@ class PostEditApiView(RetrieveUpdateDestroyAPIView):
 
 class GetPostLike(ListAPIView):
     serializer_class = UserLikePost
-
     def get_queryset(self):
-        qs = SavePostUser.objects.filter(user__user__id=self.request.user.id)
+        print(self.request.user.id)
+        qs = Like.objects.filter(user__user__id=self.request.user.id)
+        print(qs)
         return qs
         
 class GetPostSaveApiView(ListAPIView):
@@ -81,7 +82,6 @@ class GetPostSaveApiView(ListAPIView):
 
 # data post dari save user 
 class GetSavePostData(ListAPIView):
-    queryset = SavePostUser.objects.all()
     serializer_class = PostSerializer
     
     def get_queryset(self):
@@ -90,11 +90,10 @@ class GetSavePostData(ListAPIView):
     
         return qs
 class GetLikePostData(ListAPIView):
-    queryset = SavePostUser.objects.all()
     serializer_class = PostSerializer
     
     def get_queryset(self):
-        query = SavePostUser.objects.filter(user__user__id=self.request.user.id)
+        query = Like.objects.filter(user__user__id=self.request.user.id)
         qs = [qs.post for qs in query]
     
         return qs
