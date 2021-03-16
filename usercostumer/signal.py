@@ -3,6 +3,10 @@ from django.dispatch import receiver
 
 from notif.models import Notifikasi
 from .models import UserFollowing
+# reset password
+from django.urls import reverse
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.core.mail import send_mail  
 
 # dapet notif jiga ada follow
 @receiver(post_save,sender=UserFollowing)
@@ -26,3 +30,18 @@ def follow_notif_delete(instance,*args, **kwargs):
             type_notif=2,       
         )
     notif.delete()
+
+# forget password // reset password
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+    email_plaintext_message = "masuk ke link tersebut dan buat password dan masukan token \n 127.0.0.1:8000{}confirm/ \n masukan token ini \n {}".format(reverse('auth:password_reset:reset-password-request'), reset_password_token.key)
+    send_mail(
+        # title:
+        "Password Reset for {title}".format(title="SnapThin Website"),
+        # message:
+        email_plaintext_message ,
+        # from:
+        "Admin@Snapthin",
+        # to:
+        [reset_password_token.user.email]
+    )

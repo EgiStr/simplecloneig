@@ -10,6 +10,8 @@ import FecthData from './fetchData'
 import CreatePost from '../createpost/createpost'
 import { protectAuth } from '../../utils/auth/auth'
 
+import Loading from '../other/loading'
+
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 
@@ -96,20 +98,7 @@ export const home = ({ user }) => {
                         }
                     }) : null}
              
-                    {loading ? (
-                      <div className="preloader-wrapper active">
-                        <div className="spinner-layer spinner-red">
-                          <div className="circle-clipper left">
-                            <div className="circle"></div>
-                          </div><div className="gap-patch">
-                            <div className="circle"></div>
-                          </div>
-                          <div className="circle-clipper right">
-                            <div className="circle"></div>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (null) }
+                    {loading ? <Loading /> : (null) }
                     {loading && <p>relog if take to long</p>}
                 </div>
             </div>

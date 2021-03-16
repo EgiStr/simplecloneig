@@ -66,12 +66,13 @@ class PostEditApiView(RetrieveUpdateDestroyAPIView):
 
 class GetPostLike(ListAPIView):
     serializer_class = UserLikePost
-
     def get_queryset(self):
-        qs = SavePostUser.objects.filter(user__user__id=self.request.user.id)
+        print(self.request.user.id)
+        qs = Like.objects.filter(user__user__id=self.request.user.id)
+        print(qs)
         return qs
         
-class GetPostLikeApiView(ListAPIView):
+class GetPostSaveApiView(ListAPIView):
     serializer_class= UserSavePost
     permission_classes = [IsOwnerOrReadOnly]
 
@@ -80,12 +81,19 @@ class GetPostLikeApiView(ListAPIView):
         return qs
 
 # data post dari save user 
-class GetSavePost(ListAPIView):
-    queryset = SavePostUser.objects.all()
+class GetSavePostData(ListAPIView):
     serializer_class = PostSerializer
     
     def get_queryset(self):
         query = SavePostUser.objects.filter(user__user__id=self.request.user.id)
+        qs = [qs.post for qs in query]
+    
+        return qs
+class GetLikePostData(ListAPIView):
+    serializer_class = PostSerializer
+    
+    def get_queryset(self):
+        query = Like.objects.filter(user__user__id=self.request.user.id)
         qs = [qs.post for qs in query]
     
         return qs

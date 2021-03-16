@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Redirect } from "react-router-dom";
+import { Redirect,Link } from "react-router-dom";
 import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
@@ -93,7 +93,10 @@ class Login extends Component {
             <div className="icon_field">
               <i className="material-icons">email</i>
             </div>
-          </div>You dont have account? <a href="/register">sign up</a>
+          </div>
+          <div>You dont have account? <a href="/register">sign up</a></div>
+          <br></br>
+          <Link to={"/forget-password"}> Forget-password ?</Link>
         </div>
       </div>
     );

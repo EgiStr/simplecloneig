@@ -3,6 +3,7 @@ from rest_framework.serializers import ModelSerializer,SerializerMethodField
 
 from comment.models import Comments
 
+
 class UserProfilPostserializer(ModelSerializer):
     class Meta:
         model = UserProfil
@@ -12,32 +13,45 @@ class UserProfilPostserializer(ModelSerializer):
             'profil',
         ]
 
-class UpdateOrDeleteCommentSerializer(ModelSerializer): 
+class UpdateOrDeleteCommentSerializer(ModelSerializer):
+ 
+
     class Meta:
         model = Comments 
         fields =[ 
             'content',   
         ]
 
+   
+
 class CommentChildrenToSerializer(ModelSerializer):
+    
     user = SerializerMethodField()
+    
     class Meta:
         model = Comments
         fields= [
             
             'id',
             'user',
+            
             'obj_id',
             'content',
             'timestamp',
             'parent',
+      
+            
         ]
     
     def get_user(self,obj):
         return UserProfilPostserializer(obj.user,context={'request':None}).data
     
 
+
+
+
 class CommentChildrenSerializer(ModelSerializer):
+    
     user = SerializerMethodField()
     replies = SerializerMethodField()
 
@@ -63,6 +77,9 @@ class CommentChildrenSerializer(ModelSerializer):
 
 
 class CommentCreateSerializer(ModelSerializer):
+   
+    replies = SerializerMethodField()
+
     class Meta:
         model = Comments
         fields = [ 
@@ -71,7 +88,16 @@ class CommentCreateSerializer(ModelSerializer):
             'obj_id',
             'content',
             'parent',
+            'timestamp',
+            'replies',
         ]
+
+   
+    
+    def get_replies(self,obj):
+        return CommentChildrenToSerializer(obj.children(),many=True,context={'request':None}).data
+
+
 
     def create(self, validated_data):
         
@@ -80,8 +106,10 @@ class CommentCreateSerializer(ModelSerializer):
         obj_id = validated_data['obj_id']
         parent_obj = None
         
+
         try:
-            parent_id = int(validated_data['parent'])
+            parent_id = validated_data['parent']
+
         except:
             parent_id = None
 
@@ -94,7 +122,7 @@ class CommentCreateSerializer(ModelSerializer):
                         parent = parent_obj,
                         content = validated_data['content'],
                     )
-                    
         new_comment.save()
+        # print(new_comment.__dict__)
         
         return new_comment

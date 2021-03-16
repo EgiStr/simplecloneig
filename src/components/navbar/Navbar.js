@@ -8,9 +8,8 @@ import $ from 'jquery'
 
 
 function Navbar({ user,notif,read,get_notif_user }) {
-    if(window.location.pathname === '/register') {
-        if (user === null) return <Redirect to={'/register'} />
-    }
+    if(window.location.pathname === '/register') return <Redirect to={'/register'} />
+    if(window.location.pathname === '/forget-password/comfirm') return <Redirect to={'/forget-password/comfirm'} />
     
     if (user === null) return <Redirect to={'/login'} />
 
