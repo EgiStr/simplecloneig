@@ -80,7 +80,16 @@ class GetPostSaveApiView(ListAPIView):
         return qs
 
 # data post dari save user 
-class GetSavePost(ListAPIView):
+class GetSavePostData(ListAPIView):
+    queryset = SavePostUser.objects.all()
+    serializer_class = PostSerializer
+    
+    def get_queryset(self):
+        query = SavePostUser.objects.filter(user__user__id=self.request.user.id)
+        qs = [qs.post for qs in query]
+    
+        return qs
+class GetLikePostData(ListAPIView):
     queryset = SavePostUser.objects.all()
     serializer_class = PostSerializer
     
