@@ -66,7 +66,7 @@ const Content = memo((props) => {
                                                         buttonNotClass :'small material-icons icon red-text',
                                                         likes : prev.likes + 1
                                                 }})  
-                res.data.id === undefined ? props.unlike_post_with(prev,props.postId).split(",").map(Number) : props.like_post_with(prev,props.postId)
+                res.data.id === undefined ? props.unlike_post_with(prev,props.postId) : props.like_post_with(prev,props.postId)
                 
             })
             .catch(e => {console.log(e.request)})

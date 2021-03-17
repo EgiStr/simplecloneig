@@ -168,12 +168,6 @@ class FollowingOrWerSerializer(ModelSerializer):
         Connent.delete()
 
         return validated_data
-       
-        # connect = UserFollowing.objects.create(
-        #     user = validated_data['user'],
-        #     following_user = validated_data['following_user']
-        # )
-        # return connect
 
 class registeruser(ModelSerializer):
     email = serializers.EmailField(

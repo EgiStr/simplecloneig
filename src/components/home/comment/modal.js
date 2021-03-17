@@ -113,7 +113,6 @@ class Modal extends Component {
                     headers: {
                         "Authorization": 'Bearer ' + Cookies.get('access')
                     },
-                    
                 })
                     .then(res => {              
                         this.props.add_comment(res.data,parent)
