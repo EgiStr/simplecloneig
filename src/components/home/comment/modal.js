@@ -160,12 +160,12 @@ class Modal extends Component {
                 </div>
 
                 <div className="modal-footer row" >
-                            {parent ? (<p onClick={() => this.handleCancel()}>your replies {this.props.username} click cancel  </p>) : (null)}
+                            {parent ? (<p className="col s12 center-align" onClick={() => this.handleCancel()}> your replies {this.props.username}, click to cancel     </p>) : (null)}
                             <MentionsInput
                                 value={this.state.comment}
                                 onChange={this.handleChange}
                                 placeholder={`add comment as ${this.props.user.username}, @ to mention`}
-                                className="mentions col s11"
+                                className="mentions col s11 "
                             >
                                 <Mention
                                     type="user"
@@ -175,7 +175,8 @@ class Modal extends Component {
                                     className="mentions__mention"
                                 />
                             </MentionsInput>
-                            <a className="modal-close waves-effect waves-green btn-flat s1" onClick={() => {this.handleComment(this.state.parentid)}}>Send</a>      
+                            
+                            <a className="modal-close waves-effect waves-green btn-flat s1 right" onClick={() => {this.handleComment(this.state.parentid)}}>Send</a>      
                         
                     
                    
