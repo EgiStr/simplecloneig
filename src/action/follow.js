@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-
 // terbalik di apinya harusnya  following 
 export const getFollower = access => dispatch => {
     const config = {

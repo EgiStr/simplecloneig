@@ -1,13 +1,10 @@
-from django.db.models import query
-from rest_framework.mixins import DestroyModelMixin
-
 from rest_framework.generics import ( 
                                         ListAPIView,
                                         RetrieveAPIView,
                                         RetrieveUpdateDestroyAPIView,
                                         CreateAPIView,)
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from posts.models import Post,Like,SavePostUser
 from usercostumer.models import UserProfil
@@ -38,9 +35,12 @@ class PostApiViews(ListAPIView):
 
 # proses
 class PostDetailApiView(RetrieveAPIView):
-    queryset = Post.objects.all()
     serializer_class = PostDetailSerialzer
+    permission_classes = [AllowAny]
 
+    def get_queryset(self):
+        qs = Post.objects.get(id = self.kwargs['pk'])
+        return qs
 class LikePost(CreateAPIView):
     queryset = Like.objects.all()
     serializer_class = JustLikeSerializer
@@ -51,17 +51,17 @@ class SavePost(CreateAPIView):
 
  
 class CreatePostAPiView(CreateAPIView):
+    queryset = Post.objects.all()
     serializer_class = CreatePostSerializer
-    
-    def get_queryset(self):
-        queryset = Post.objects.all()
-        return queryset
 
 
 class PostEditApiView(RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all()
     serializer_class = EditPostSerializer
+    permission_classes = [IsOwnerOrReadOnly]
 
+    def get_queryset(self):
+        qs = Post.objects.filter(id=self.kwargs['id'])
+        return qs
 # user like and post
 
 class GetPostLike(ListAPIView):

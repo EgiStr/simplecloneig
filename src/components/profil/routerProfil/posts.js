@@ -1,7 +1,10 @@
 import React ,{useEffect}from "react";
-import Content from '../home/content'
+
+import Content from '../../home/content'
+
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
+
 const Posts = ({post_data}) => {
     useEffect(()=>{
         console.log('testing')

@@ -13,11 +13,10 @@
     border-radius:50px;
 }
 .modal{
-    width:485px !important;
-    height:500px !important;
-    padding: 0 20px !important;
-    overflow: hidden !important;
-    border-radius: 10px !important;
+    width:70% ;
+    padding: 5px 30px ;
+    overflow: hidden ;
+    border-radius: 10px ;
 }
 .modal-close{
     position: absolute;

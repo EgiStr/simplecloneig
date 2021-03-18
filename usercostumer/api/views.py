@@ -135,7 +135,10 @@ class UserFollowingApiView(CreateAPIView):
 
  
 class UserEditProfil(RetrieveUpdateAPIView):
-    queryset= UserProfil.objects.all()
     serializer_class = UserEditProfil
     permission_classes=[IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        qs = UserProfil.objects.filter(id=self.kwargs['pk'])
+        return qs
 

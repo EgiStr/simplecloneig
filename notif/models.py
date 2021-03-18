@@ -11,9 +11,9 @@ class Notifikasi(models.Model):
 
     # TODO: Define fields here
     NOTIF_CHOIECE = (
-        (1,'like'),
-        (2,'follow'),
-        (3,'comment'),
+        (1,'Like'),
+        (2,'Follow'),
+        (3,'Comment'),
         (4,'mention')
     )
     

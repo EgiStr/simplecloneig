@@ -1,20 +1,22 @@
 import React, { Component } from 'react'
 import Avatar from '@material-ui/core/Avatar'
+
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
 
 
-import { Switch, Route,Redirect,NavLink } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
-// import { protectAuth } from '../auth/auth'
+
 import { getFollower, is_follow } from '../../action/follow'
 import { get_post_data } from '../../action/auth'
 
 import ModalFollow from './follow/modelFollow'
-import Posts from './posts'
-import SavePosts from './save_post'
+import NavProfil from './navProfil/navProfil'
+import RouterProfil from './routerProfil/routerprofil'
+
 
 import '../../Profile.css'
 
@@ -138,35 +140,22 @@ class Profile extends Component {
                 </div>
 
                 <div className="divider"></div>
-                <div className="post_nav">
-                
-                {/* masih ada masalah didalam navlink , ga mau pindah route */}
-                                {/* isuue is beres ajg , jangan buat roouter baru lagi disini karna routernya udh di app */}
-                <NavLink
-                    to={`${url}`}
-                    exact
-                    activeClassName="post__nav active"
-                    className="post__nav"
-                >
-                   <i className="material-icons tiny" >grid_on</i>POSTS
-                </NavLink>
-                
-                {idUser === authUser 
-                    ? (<NavLink
-                            to={`${url}/savePost`}
-                            activeClassName="post__nav active"
-                            className="post__nav"
-                            >
-                            <i className="material-icons tiny" >turned_in_not</i>SAVES
-                        </NavLink>)
-                    : null }
-                     {/* <div className="post__nav"><i className="material-icons tiny" >person_pin</i>TAGGED</div> */}
-                </div>
 
-                <Switch>
-                    <Route path={`${path}`} exact component={()=> <Posts param={idUser} />} />
-                    <Route path={`${path}/savePost`} exact component={() => <SavePosts param={idUser} />} />
-                </Switch>
+                {/* zona navprofil */}
+
+                <NavProfil 
+                    idUser = {idUser}
+                    url = {url}
+                />
+               
+
+                {/* zona router profil */}
+                
+                <RouterProfil 
+                    idUser = {idUser}
+                    path   = {path}
+                />
+                
 
             </div>
         )

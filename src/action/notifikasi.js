@@ -11,7 +11,7 @@ export const get_notif_user = () => (dispatch,getState) => {
     
     if(Number(localStorage.getItem('notif')) > 0){
         axios.put(`http://127.0.0.1:8000/notif/update/`, null, config)
-            .then(res => dispatch({ type:'CLEAR_NOTIFICATIONS' }))
+            .then(res => dispatch({ type:'READ_NOTIFICATIONS' }))
             .catch(e => console.log(e.request))
     }
     
@@ -22,8 +22,6 @@ export const get_notif_user = () => (dispatch,getState) => {
                     type:'GET_NOTIFICATIONS',
                     payload: res.data
                 })
-                dispatch({type:'READ_NOTIFICATIONS'})
-                
             })
             .catch(e => console.log(e.request))
     }
