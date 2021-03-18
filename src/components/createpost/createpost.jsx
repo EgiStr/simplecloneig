@@ -17,8 +17,6 @@ import { connect } from 'react-redux'
 import 'react-image-crop/dist/ReactCrop.css';
 import '../../cp.css'
 
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
-
 // validate data yang diinginkan
 const imageSize = 2520000 /* 2,4 mb */
 const accepFileType = 'image/x-png,image/png,image/jpg,image/jpeg,image/gif'
@@ -169,18 +167,18 @@ class CreatePost extends Component {
                             src={`http://127.0.0.1:8000${this.props.user_id.profil}`}
                             alt={'profil'}
                         />
-                        <a className="caption modal-trigger" href="#modal1" style={{ flex: "1", borderRadius: "50px", padding: "10px", marginLeft: "5px" }}>What Do You mind?</a>
+                        <a className="caption modal-trigger" href="#modalCreatePost" style={{ flex: "1", borderRadius: "50px", padding: "10px", marginLeft: "5px" }}>What Do You mind?</a>
                     </div>
                     <div className="divider" style={{ margin: "10px 0" }}></div>
                     <div >
-                        <a className="imageVid modal-trigger" href="#modal1" style={{ display: "flex", justifyContent: "center" }}>
+                        <a className="imageVid modal-trigger" href="#modalCreatePost" style={{ display: "flex", justifyContent: "center" }}>
                             <i className="material-icons" style={{ color: "#ee6e73" }}>image</i>
                             Foto
                         </a>
                     </div>
                 </div>
 
-                <div ref={modal => this.Modal = modal} id="modal1" className="modal">
+                <div ref={modal => this.Modal = modal} id="modalCreatePost" className="modal">
                     <h5 align="center">Create Post</h5>
                     <a className="modal-close"><i className="material-icons">close</i></a>
                     <div className="divider" />

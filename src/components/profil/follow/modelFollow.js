@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 
 import M from "materialize-css";
 
-
 import { connect } from 'react-redux'
 
 import {getFollowerUser , getFollowingUser} from '../../../action/follow'
@@ -15,6 +14,7 @@ class ModalFollow extends Component {
         this.state = {
             follow : true,
         }
+        
     }
 
     componentDidMount(){
@@ -27,11 +27,14 @@ class ModalFollow extends Component {
                 }
               
             },
+            onCloseEnd: () => {
+                this.Modal.style.display = 'none'
+            },
             
             inDuration: 250,
             outDuration: 250,
             opacity: 0.5,
-            dismissible: false,
+            dismissible: true,
             startingTop: "4%",
             endingTop: "10%"
           };
@@ -48,6 +51,7 @@ class ModalFollow extends Component {
                     
                     {this.props.type === true ? (<h4>follower</h4>) : (<h4>following</h4>)}
                     {this.props.type === true ? (
+                    
                     follower.map((e,i) => {
                         
                         return <Follower 
@@ -57,8 +61,8 @@ class ModalFollow extends Component {
                                 />
                     })
                     ) : (
-                    following.map((e,i) => {
-                        console.log(e)
+                    
+                        following.map((e,i) => {
                         return <Following 
                                 key = {i}
                                 user ={e.following_user}
@@ -69,10 +73,6 @@ class ModalFollow extends Component {
                     )}
                     
                    
-                </div>
-                <div className="modal-footer">
-
-                    <a className="modal-close waves-effect waves-green btn-flat" >cancel</a> 
                 </div>
             </div>
         )

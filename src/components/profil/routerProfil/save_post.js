@@ -1,7 +1,7 @@
 import React , { useEffect } from "react";
-import Content from '../home/content'
+import Content from '../../home/content'
 
-import { get_post_save_data } from '../../action/auth'
+import { get_post_save_data } from '../../../action/auth'
 import { connect } from 'react-redux'
 
 import {withRouter, useHistory} from 'react-router-dom'

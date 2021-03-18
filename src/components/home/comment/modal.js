@@ -18,7 +18,7 @@ import { get_comment,
 
 import { protectAuth } from '../../../utils/auth/auth'
 
-import './mentionStyle.css'
+import './comment.css'
 
 const CommentUser = lazy(() => import('./comment'))
 class Modal extends Component {
@@ -29,6 +29,7 @@ class Modal extends Component {
             
         }
         this.user_id = this.props.user.user_id
+       
 
     }
 
@@ -52,11 +53,13 @@ class Modal extends Component {
             onOpenStart: () => {
                 this.props.get_comment(this.props.postId)        
             },
-            
+            onCloseEnd: () => {
+                this.handleCancel() 
+            },
             inDuration: 250,
             outDuration: 250,
             opacity: 0.5,
-            dismissible: false,
+            dismissible: true,
             startingTop: "4%",
             endingTop: "10%"
         };
@@ -132,7 +135,7 @@ class Modal extends Component {
         
       
         return (
-            <div ref={ Modal =>  this.Modal = Modal} id={`modal_id${this.props.id}`} className="modal bottom-sheet modal-fixed-footer">
+            <div ref={ Modal =>  this.Modal = Modal} id={`modal_id${this.props.id}`} className="modal bottom-sheet modal-fixed-footer" style={{width:'100%', height:'40%'}}>
                 <div className="modal-content "  >
                     <h4>Comment</h4>
 
@@ -156,23 +159,13 @@ class Modal extends Component {
                     </div>    
                 </div>
 
-                <div className="modal-footer" style={{height:'110px'}}>
-
-                    <div className="col s3 l2 offset-l1">
-                            <Avatar  
-                                className="avatar"
-                                alt="foto" src={`http://127.0.0.1:8000${this.props.user.profil}`} 
-                                height="45" width="45" 
-                            />
-                    </div>
-                    
-                    <div className="col s6 l5 post-btn-container"  >
-                             {parent ? (<p onClick={() => this.handleCancel()}>your replies {this.props.username} click cancel  </p>) : (null)}
+                <div className="modal-footer row" >
+                            {parent ? (<p onClick={() => this.handleCancel()}>your replies {this.props.username} click cancel  </p>) : (null)}
                             <MentionsInput
                                 value={this.state.comment}
                                 onChange={this.handleChange}
-                                placeholder="Type anything, use the @ symbol to tag other users."
-                                className="mentions"
+                                placeholder={`add comment as ${this.props.user.username}, @ to mention`}
+                                className="mentions col s11"
                             >
                                 <Mention
                                     type="user"
@@ -182,14 +175,12 @@ class Modal extends Component {
                                     className="mentions__mention"
                                 />
                             </MentionsInput>
+                            <a className="modal-close waves-effect waves-green btn-flat s1" onClick={() => {this.handleComment(this.state.parentid)}}>Send</a>      
                         
-                    </div>
-                        <a className="modal-close waves-effect waves-green btn-flat" onClick={() => {this.handleComment(this.state.parentid)}}>
-                        Send 
-                        </a>
-                        <a className="modal-close waves-effect waves-green btn-flat" onClick={() => this.handleCancel()}>
-                        cancel 
-                        </a>
+                    
+                   
+                             
+ 
                 </div>
         </div>
         )

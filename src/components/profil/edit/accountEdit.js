@@ -1,17 +1,15 @@
 import React, { Component, Fragment } from "react";
 import M from "materialize-css/dist/js/materialize.min.js";
+
 import axios from "axios";
-import { parseJwt } from "../../method/parseJwt";
 import Cookies from "js-cookie";
 
 import { protectAuth } from "../../../utils/auth/auth";
+import { connect } from 'react-redux'
 
 import Avatar from "@material-ui/core/Avatar";
 
 import "../../../AccountEdit.css";
-
-axios.defaults.headers.common["Authorization"] =
-  "Bearer " + Cookies.get("access");
 
 class AccountEdit extends Component {
   constructor(props) {
@@ -19,8 +17,6 @@ class AccountEdit extends Component {
     this.state = {
       access: Cookies.get("access"),
       refresh: Cookies.get("refresh"),
-      redirectUrl: "",
-      redirect: false,
       bio: "",
       name:'',
       username: "",
@@ -29,24 +25,25 @@ class AccountEdit extends Component {
       gender: "",
       profil: null,
       respone : null,
-      profilpriview: null,
+      profilpreview: null,
     };
     this.avatarRef = React.createRef();
   }
 
   componentDidMount() {
    
-    protectAuth(this.state.access, this.state.refresh).then((e) =>
+    protectAuth(this.state.access, this.state.refresh).then( e =>
       !e ? window.location.reload() : null
     );
+    const config = {
+      headers: {
+        Authorization: "Bearer " + this.state.access,
+      },
+    }
+    
+    const userId = this.props.user.user_id
 
-    const userId = parseJwt(this.state.access).user_id;
-
-    axios.get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, {
-        headers: {
-          Authorization: "Bearer " + this.state.access,
-        },
-      })
+    axios.get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, config)
       .then((res) => {
         const nomor = res.data.nomorHp ? res.data.nomorHp : 62
         const bio  = res.data.bio ? res.data.bio : ''
@@ -57,23 +54,24 @@ class AccountEdit extends Component {
           phone: nomor,
           gender: res.data.gender,
           profil: res.data.profil,
-          profilpriview: res.data.profil,
+          profilpreview: res.data.profil,
           bio: bio,
         });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.log(e.request));
 
     M.AutoInit();
   }
 
-  handleGender = (event) => this.setState({ gender: event.target.value });
-  // handleUsername = (event) => this.setState({ username: event.target.value });
-  handleName = (event) => this.setState({ name: event.target.value });
-  handlePhone = (event) => this.setState({ phone: event.target.value });
-  handleEmail = (event) => this.setState({ email: event.target.value });
-  handleBio = (event) => this.setState({ bio: event.target.value });
+  handleChange = event => {
+    const { name , value} = event.target ;
+    this.setState(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
-  handleProfil = (event) => {
+  handleProfil = event => {
     if (event.target.files[0].size > 2097152) {
       alert("this file to big low 2mb please");
     } else {
@@ -85,40 +83,38 @@ class AccountEdit extends Component {
       reader.addEventListener(
         "load",
         () => {
-          this.setState({ profilpriview: reader.result });
-        },
-        false
-      );
+          this.setState({ profilpreview: reader.result });
+        },false);
       // membuat base64
       reader.readAsDataURL(image);
-      this.setState({ profil: event.target.files[0] });
+      this.setState({ profil: image });
     }
   };
 
   handleSubmit = () => {
-
-    const userId = parseJwt(this.state.access).user_id;
+    const config = {
+      headers: {
+        'Authorization': "Bearer " + this.state.access,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+    const userId = this.props.user.user_id
     const { email, phone, bio, username, gender, profil,name } = this.state;
     let formdata = new FormData();
-    formdata.append("bio", bio);
-    formdata.append("gender", gender);
-    formdata.append("nickname", username);
-    formdata.append("nomorHp", phone);
-    formdata.append("email", email);
-    formdata.append("name", name);
+      formdata.append("bio", bio);
+      formdata.append("gender", gender);
+      formdata.append("nickname", username);
+      formdata.append("nomorHp", phone);
+      formdata.append("email", email);
+      formdata.append("name", name);
     if (profil.size === undefined) {
     } else {
       formdata.append("profil", profil);
     }
 
-    axios.put(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, formdata, {
-        headers: {
-          Authorization: "Bearer " + this.state.access,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => this.setState({respone:res.statusText}))
-      .catch((e) => console.log(e.request));
+    axios.put(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, formdata, config)
+      .then( res => this.setState({respone:res.statusText}))
+      .catch( e => console.log(e.request));
   };
 
   render() {
@@ -130,7 +126,7 @@ class AccountEdit extends Component {
               <div className="head_edit">
                 <Avatar
                   ref={this.avatarRef}
-                  src={this.state.profilpriview}
+                  src={this.state.profilpreview}
                   className="avatar"
                   alt="foto"
                   style={{marginTop:"27px"}}
@@ -154,8 +150,9 @@ class AccountEdit extends Component {
                 <input
                   placeholder="Name"
                   type="text"
+                  name="name"
                   value={name === null ? '' : name}
-                  onChange={this.handleName}
+                  onChange={this.handleChange}
                   className="browser-default fr" />
               </div>
               {/* <div className="input">
@@ -172,11 +169,11 @@ class AccountEdit extends Component {
               <div className="input">
                 <label>Bio</label>
                 <textarea
-                  onChange={this.handleBio}
+                  onChange={this.handleChange}
                   value={bio === null ? "" : bio}
                   placeholder="Bio"
                   type="textarea"
-                  ref={(node) => (this.textareRef = node)}
+                  name='bio'
                   className="browser-default fr"
                 />
               </div>
@@ -188,8 +185,9 @@ class AccountEdit extends Component {
                 <label>Email</label>
                 <input
                   placeholder="Email"
-                  onChange={this.handleEmail}
+                  onChange={this.handleChange}
                   value={email === null ? "" : email}
+                  name="email"
                   type="email"
                   className="browser-default fr"
                 />
@@ -198,8 +196,9 @@ class AccountEdit extends Component {
                 <label>Phone</label>
                 <input
                   placeholder="Phone Number"
-                  onChange={this.handlePhone}
+                  onChange={this.handleChange}
                   value={phone === null ? "" : phone}
+                  name="nomorHp"
                   type="tel"
                   className="browser-default fr"
                 />
@@ -207,13 +206,13 @@ class AccountEdit extends Component {
               <div className="input ">
                 <label>Gender</label>
                 <select
-                  onChange={this.handleGender}
+                  onChange={this.handleChange}
+                  name="gender"
                   defaultValue={gender === "" ? "DEFAULT" : gender}
                   className="browser-default fr" >
-                  
-                  <option value="DEFAULT" disabled>
+                  <option value={"DEFAULT"} disabled>
                     Choose a Your Gender
-                    </option>
+                  </option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
@@ -221,7 +220,7 @@ class AccountEdit extends Component {
               <div className="input">
                 <button className="btn" onClick={this.handleSubmit}>
                   send
-                  </button>
+                </button>
               </div>
               {this.state.respone === null ? '' : this.state.respone}
             </div>
@@ -231,4 +230,10 @@ class AccountEdit extends Component {
   }
 }
 
-export default AccountEdit;
+const mapStateToProps = state => {
+  return {
+    user : state.auth.user,
+  }
+}
+
+export default connect(mapStateToProps)(AccountEdit);
