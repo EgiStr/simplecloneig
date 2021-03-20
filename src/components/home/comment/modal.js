@@ -71,6 +71,7 @@ class Modal extends Component {
         
         // liveSearch buat data mentoin recommend
         handleSearchMention = (query, callback) => {
+            delete axios.defaults.headers.common["Authorization"];
             if(query === '') return 
                 //  cancal untuk membuat cancel token
                 var cancel;

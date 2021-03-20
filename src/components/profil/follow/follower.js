@@ -1,12 +1,12 @@
 import React ,{ useState , useEffect} from 'react'
+import M from "materialize-css";
 
 import axios from 'axios'
 import Cookies from 'js-cookie'
-
 import { connect } from 'react-redux'
 
-const Follower = ({user_id,user,following_user,id_follower}) => {
-    
+const Follower = ({user_id,user,following_user,id_follower,modal}) => {
+
     const [state,setState] = useState({
                                     follow : 'follow',
                                     unfollow: 'Following',
@@ -42,17 +42,26 @@ const Follower = ({user_id,user,following_user,id_follower}) => {
                 "Authorization": 'Bearer ' + Cookies.get('access')
             }})
             .then(res => {
+                const prev = localStorage.getItem('follow').split(",").map(Number)
                 res.data.id === undefined ? setState({follow:'follow back',unfollow:'follow back'}) : setState({follow:'Following',unfollow:'Following'})
+                res.data.id === undefined ? localStorage.setItem('follow',[prev.filter(e => e !== user.id)]) : localStorage.setItem('follow',[...prev,user.id])
+           
             })
             .catch(e => console.log(e.request))
         
+    }
+
+    const redirect = () => {
+        var instance = M.Modal.getInstance(modal);
+        instance.close();
+        window.location =`/profile/${user.nickname}`
     }
     
     return (
         <ul className="collection">
             <li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} className="collection-item avatar">                                       
                 <img loading='lazy' src={`http://127.0.0.1:8000${user.profil}`} className="circle" alt="...."/>
-                <span className="title">{user.nickname}</span>
+                <span style={{cursor: "pointer"}} className="title" onClick={() => redirect()}>{user.nickname}</span>
                 {user.id === user_id ? '' 
                 : <a className="secondary-content btn" onClick={() => handleFollow()} >{state.is_follow ? state.unfollow : state.follow}</a>}
             </li>

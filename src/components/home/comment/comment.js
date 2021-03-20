@@ -3,7 +3,7 @@ import React, { useState,lazy,Suspense } from 'react'
 import { protectAuth } from '../../../utils/auth/auth'
 
 import Cookies from 'js-cookie'
-
+import Loading from '../../other/loading'
 import { 
     delete_comment,
     add_username,
@@ -35,7 +35,7 @@ const CommentUser = ({user_id,user,profil,nickname,content,id,replies,add_parent
     const renderReplies = () => {
             return replies.slice(0,limit).map((e,i)=>{
     
-                return   <Suspense key={i} fallback={<div>loading</div>}>
+                return   <Suspense key={i} fallback={<Loading />}>
                             <Childcomment   
                                 key={i}
                                 parent = {id}

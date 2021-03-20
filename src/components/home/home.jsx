@@ -98,8 +98,7 @@ export const home = ({ user }) => {
                         }
                     }) : null}
              
-                    {loading ? <Loading /> : (null) }
-                    {loading && <p>relog if take to long</p>}
+                    {loading && <div className='center-align'><Loading /></div>}
                 </div>
             </div>
         </div>

@@ -114,15 +114,15 @@ class AccountEdit extends Component {
 
     axios.put(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, formdata, config)
       .then( res => this.setState({respone:res.statusText}))
-      .catch( e => console.log(e.request));
+      .catch( e => this.setState({respone:e.request.responseText}));
   };
 
   render() {
     const { username, email, phone, gender, bio,name } = this.state;
     return (
       <Fragment>
-          <div className="col s9">
-            <div className="container" style={{paddingTop:"20px"}}>
+          <div className="col s9 l9">
+            <div className="container row" style={{padding:"30px", paddingLeft:'50px', marginLeft:'30px'}}>
               <div className="head_edit">
                 <Avatar
                   ref={this.avatarRef}
@@ -145,7 +145,7 @@ class AccountEdit extends Component {
                   </div>
                 </div>
               </div>
-              <div className="input">
+              <div className="input col s12">
                 <label>Name</label>
                 <input
                   placeholder="Name"
@@ -166,7 +166,7 @@ class AccountEdit extends Component {
                   value={username === null ? "" : username}
                 />
               </div> */}
-              <div className="input">
+              <div className="input col s12">
                 <label>Bio</label>
                 <textarea
                   onChange={this.handleChange}
@@ -181,7 +181,7 @@ class AccountEdit extends Component {
                 <b>Personal Information</b>
                 <p>Provide your personal information, even if the account is used for a business, a pet or something else. This won't be a part of your public profile.</p>
               </div>
-              <div className="input">
+              <div className="input col s12">
                 <label>Email</label>
                 <input
                   placeholder="Email"
@@ -192,7 +192,7 @@ class AccountEdit extends Component {
                   className="browser-default fr"
                 />
               </div>
-              <div className="input">
+              <div className="input col s12">
                 <label>Phone</label>
                 <input
                   placeholder="Phone Number"
@@ -203,7 +203,7 @@ class AccountEdit extends Component {
                   className="browser-default fr"
                 />
               </div>
-              <div className="input ">
+              <div className="input col s12 ">
                 <label>Gender</label>
                 <select
                   onChange={this.handleChange}
@@ -217,12 +217,14 @@ class AccountEdit extends Component {
                   <option value="female">Female</option>
                 </select>
               </div>
-              <div className="input">
+              <div className="input col s12">
                 <button className="btn" onClick={this.handleSubmit}>
                   send
                 </button>
               </div>
-              {this.state.respone === null ? '' : this.state.respone}
+             
+              {this.state.respone && <p className="message-login center-align col s12">{this.state.respone}</p> }
+             
             </div>
           </div>
       </Fragment>
