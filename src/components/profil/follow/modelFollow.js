@@ -8,6 +8,8 @@ import {getFollowerUser , getFollowingUser} from '../../../action/follow'
 import Following from './following'
 import Follower from './follower'
 
+import './modalFollow.css'
+
 class ModalFollow extends Component {
     constructor(props){
         super(props)
@@ -16,7 +18,7 @@ class ModalFollow extends Component {
         }
         
     }
-
+    
     componentDidMount(){
         const options = {
             onOpenStart: () => {
@@ -35,7 +37,7 @@ class ModalFollow extends Component {
             outDuration: 250,
             opacity: 0.5,
             dismissible: true,
-            startingTop: "4%",
+            startingTop: "10%",
             endingTop: "10%"
           };
           M.Modal.init(this.Modal, options);
@@ -47,15 +49,16 @@ class ModalFollow extends Component {
       
         return (
             <div id="modal_id_follow" ref={ Modal => { this.Modal = Modal }} className="modal">
-                <div className="modal-content" style={{ height: 400, overflow: 'auto' }} >
-                    
                     {this.props.type === true ? (<h4>follower</h4>) : (<h4>following</h4>)}
+                <div className="modal-content" style={{ height: 400, overflow: 'auto', padding:'30px' }} >
+                    
                     {this.props.type === true ? (
                     
                     follower.map((e,i) => {
                         
                         return <Follower 
                                 key={i}
+                                modal ={this.Modal}
                                 user = {e.user}
                                 id_follower = {e}
                                 />
@@ -64,9 +67,10 @@ class ModalFollow extends Component {
                     
                         following.map((e,i) => {
                         return <Following 
+                                modal = {this.Modal}
                                 key = {i}
                                 user ={e.following_user}
-                                id_following = {e.id}
+                                id_following = {e}
                         />
                       
                     })

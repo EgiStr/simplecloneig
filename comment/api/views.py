@@ -3,7 +3,7 @@ from rest_framework.generics import (RetrieveUpdateDestroyAPIView,
                                         ListAPIView
                                         )
 
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from posts.api.permission import IsOwnerOrReadOnly
 from comment.models import Comments
 
@@ -31,13 +31,15 @@ class GetRepliesByPostApiView(ListAPIView):
 
 class CommentApiView(RetrieveUpdateDestroyAPIView):
     serializer_class = UpdateOrDeleteCommentSerializer
-    permission_classes = [IsOwnerOrReadOnly,]
+    permission_classes = [IsOwnerOrReadOnly | IsAdminUser]
     def get_queryset(self):
+        
         queryset = Comments.objects.filter(pk=self.kwargs['pk'])
        
         return queryset
 
 class CreateCommentApiView(CreateAPIView):
     queryset = Comments.objects.all()
+    permission_classes = [IsAuthenticated]
     serializer_class = CommentCreateSerializer
     

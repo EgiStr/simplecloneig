@@ -8,7 +8,7 @@ from rest_framework.generics import (CreateAPIView,
                                     ListAPIView,
                                     UpdateAPIView,)
 
-from rest_framework.permissions import IsAuthenticated,AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAdminUser, IsAuthenticated,AllowAny, IsAuthenticatedOrReadOnly
 
 from rest_framework.filters import  SearchFilter,OrderingFilter
 
@@ -47,7 +47,7 @@ class UserProfilApiView(RetrieveAPIView):
 
 class UserSearchApiView(ListAPIView):
     serializer_class= UserProfilPostserializer
-    permission_classes =[IsAuthenticatedOrReadOnly]
+    permission_classes =[AllowAny]
     pagination_class = LimitPaginationSearch
     filter_backends = [SearchFilter,OrderingFilter]
     search_fields = ['nickname','name']
@@ -59,7 +59,7 @@ class UserSearchApiView(ListAPIView):
 class ChangePasswordApiView(UpdateAPIView):
     model = User
     serializer_class = ChangePasswordSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated | IsAdminUser]
    
     def get_object(self, queryset=None):
         obj = self.request.user
@@ -85,7 +85,6 @@ class ChangePasswordApiView(UpdateAPIView):
                 'status': 'success',
                 'code': status.HTTP_200_OK,
                 'message': 'Password updated successfully',
-                'data': []
             }
 
             return Response(response)
@@ -94,7 +93,7 @@ class ChangePasswordApiView(UpdateAPIView):
 
 class DetailUserFollowerApiView(ListAPIView):
     serializer_class = FollowersSerializer
-    permission_classes=[IsAuthenticated]
+    permission_classes=[AllowAny]
     
     def get_queryset(self):
         
@@ -103,6 +102,7 @@ class DetailUserFollowerApiView(ListAPIView):
 
 class DetailUserFollowerUserApiView(ListAPIView):
     serializer_class = FollowersSerializer
+    permission_classes=[AllowAny]
     
     def get_queryset(self):
         
@@ -136,9 +136,10 @@ class UserFollowingApiView(CreateAPIView):
  
 class UserEditProfil(RetrieveUpdateAPIView):
     serializer_class = UserEditProfil
-    permission_classes=[IsOwnerOrReadOnly]
+    permission_classes=[IsOwnerOrReadOnly | IsAdminUser]
 
     def get_queryset(self):
+        print(self.request.META['REMOTE_ADDR'])
         qs = UserProfil.objects.filter(id=self.kwargs['pk'])
         return qs
 

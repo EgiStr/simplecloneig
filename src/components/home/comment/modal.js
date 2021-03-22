@@ -18,6 +18,8 @@ import { get_comment,
 
 import { protectAuth } from '../../../utils/auth/auth'
 
+import Loading from '../../other/loading'
+
 import './comment.css'
 
 const CommentUser = lazy(() => import('./comment'))
@@ -71,6 +73,7 @@ class Modal extends Component {
         
         // liveSearch buat data mentoin recommend
         handleSearchMention = (query, callback) => {
+            delete axios.defaults.headers.common["Authorization"];
             if(query === '') return 
                 //  cancal untuk membuat cancel token
                 var cancel;
@@ -136,14 +139,13 @@ class Modal extends Component {
       
         return (
             <div ref={ Modal =>  this.Modal = Modal} id={`modal_id${this.props.id}`} className="modal bottom-sheet modal-fixed-footer" style={{width:'100%', height:'40%'}}>
+                <h4>Comment</h4>
                 <div className="modal-content "  >
-                    <h4>Comment</h4>
-
                     <div className="row post-row">
  
                         {comments ? (
                             comments.map((item,i) => {                    
-                                    return <Suspense key={i} fallback={<div>loading..</div>}>
+                                    return <Suspense key={i} fallback={<Loading />}>
                                                 <CommentUser 
                                                     key ={i}
                                                     user = {this.user_id === item.user.id}
@@ -177,8 +179,6 @@ class Modal extends Component {
                             </MentionsInput>
                             
                             <a className="modal-close waves-effect waves-green btn-flat s1 right" onClick={() => {this.handleComment(this.state.parentid)}}>Send</a>      
-                        
-                    
                    
                              
  

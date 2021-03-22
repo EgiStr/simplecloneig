@@ -1,7 +1,5 @@
 import React,{ useState } from 'react'
 
-import { Container } from '@material-ui/core'
-
 import axios from 'axios' ;
 import Cookies from 'js-cookie'
 
@@ -51,9 +49,9 @@ const changePassword = () => {
         
    
     return (
-        <div className="col s9" style={{padding:"40px"}}>
-            <Container>
-                <div className="input-password">
+        <div className="col s9">
+            <div className="container row center-align" style={{padding:"50px",marginLeft:'20px'}}>
+                <div className="input-password col l12">
                     <label>Old Password</label>
                     <input
                         type="password"
@@ -63,7 +61,7 @@ const changePassword = () => {
                         className="browser-default rf"
                         />
                 </div>
-                <div className="input-password">
+                <div className="input-password col l12">
                     <label>New Password</label>
                     <input
                         type="password"
@@ -73,7 +71,7 @@ const changePassword = () => {
                         className="browser-default rf"
                         />
                 </div>
-                <div className="input-password">
+                <div className="input-password col l12">
                     <label>Confirm New Password</label>
                     <input
                         type="password"
@@ -83,13 +81,13 @@ const changePassword = () => {
                         className="browser-default rf"
                         />
                 </div>
-                <div className="input-password">
+                <div className="input-password col l12">
                     <Link to={'/forget-password'}>Reset Password?</Link>
                     <button onClick={()=> handleSubmit()} className="btn btn-primary">change Password</button>
                 </div>
-                {respone !== '' ? respone : ''}
+                {respone && <p className="message-login center-align">{respone}</p>}
               
-            </Container>
+            </div>
         </div>
     )
 }

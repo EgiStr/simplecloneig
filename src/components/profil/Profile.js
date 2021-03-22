@@ -38,6 +38,7 @@ class Profile extends Component {
     }
 
     componentDidMount() {
+        
         const id = this.props.match.params.id;
         // protectAuth(this.state.access, this.state.refresh).then(e => !e ? window.location.reload() : this.setState({ redirect: false }))
         this.props.getFollower(this.state.access)
@@ -83,8 +84,12 @@ class Profile extends Component {
                 "Authorization": 'Bearer ' + Cookies.get('access')
             }
         })
-
-            .then(res => res.data.id === undefined ? this.setState({ follow: 'follow', unfollow: 'follow' }) : this.setState({ follow: 'unfollow', unfollow: 'unfollow' }))
+            .then(res =>{ 
+                const prev = localStorage.getItem('follow').split(",").map(Number)
+                res.data.id === undefined ? this.setState({ follow: 'follow', unfollow: 'follow' }) : this.setState({ follow: 'unfollow', unfollow: 'unfollow' })
+                res.data.id === undefined ? localStorage.setItem('follow',[prev.filter(e => e !== diikuti)]) : localStorage.setItem('follow',[...prev,diikuti])
+                
+            })
             .catch(e => console.log(e))
 
     }
