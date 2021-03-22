@@ -2,7 +2,7 @@ import React  from 'react'
 
 import axios from 'axios'
 import Cookies from 'js-cookie'
-
+import {parseJwt} from '../../components/method/parseJwt'
 import { Redirect } from 'react-router-dom'
 
 export const LoginAuth = async (AccessToken , RefresToken) => {
@@ -43,7 +43,7 @@ export const protectAuth = async (access,refresh) => {
     }
 }
 
-export const resfeshLogin = async resfreshToken => {
+export const resfeshLogin = resfreshToken => {
    
     if(!resfreshToken){
         return false
@@ -51,6 +51,7 @@ export const resfeshLogin = async resfreshToken => {
     // membuat Promise karna tidak bisa memakai UseState
     return new Promise((resolve,reject) => {
         // membuat post request untuk membuat token baru mengunakan resfresh token
+        
         axios.post('http://127.0.0.1:8000/auth/login/refresh/',{refresh:resfreshToken})
         .then( res => {
             // jika gagal maka false / null
@@ -76,40 +77,58 @@ export const requestLogin = async (accessToken ,refreshToken) => {
     
     const token = accessToken
     const refresh = refreshToken
+    let exp_token = parseJwt(token)
+    let exp_refresh = parseJwt(refresh)
     
     // membuat promise agar bisa mengunakan resolve // seperti return ajax
     const promise = new Promise((resolve,reject) => {
-        // mengunakan home page agar dapat mengetest token
-        axios.get('http://127.0.0.1:8000/api/',{headers:{"Authorization": 'Bearer ' + token  }})
-        // jika berhasil maka hasilnya true / dan user sudah auth
-        .then(e => {
-            resolve(true)
-            return false 
-        })
-        .catch( e => {
-            // jika unauthor
-            if(e.request.status === 401){
-                // kalau emang kadaluarsa maka akan refresh dan test ulang
-                if(e.request.response === '{"detail":"Given token not valid for any token type","code":"token_not_valid","messages":[{"token_class":"AccessToken","token_type":"access","message":"Token is invalid or expired"}]}'){
+        if (Date.now() >= exp_token.exp * 1000) {
+            resolve(false)
+        }else{
+            if (Date.now() >= exp_refresh.exp * 1000) {
+                resolve(false)
+            }else{
+                const new_token = resfeshLogin(refresh)
+                new_token.then(res =>{
+                    if(!res){
+                        resolve(false)
+                    }else{
+                        return requestLogin(res.access,res.refresh)
+                    }
+                })
+            }
+        }
+        // // mengunakan home page agar dapat mengetest token
+        // axios.get('http://127.0.0.1:8000/api/',{headers:{"Authorization": 'Bearer ' + token  }})
+        // // jika berhasil maka hasilnya true / dan user sudah auth
+        // .then(e => {
+        //     resolve(true)
+        //     return false 
+        // })
+        // .catch( e => {
+        //     // jika unauthor
+        //     if(e.request.status === 401){
+        //         // kalau emang kadaluarsa maka akan refresh dan test ulang
+        //         if(e.request.response === '{"detail":"Given token not valid for any token type","code":"token_not_valid","messages":[{"token_class":"AccessToken","token_type":"access","message":"Token is invalid or expired"}]}'){
 
-                        const token = resfeshLogin(refresh)
-                        token.then(e => {
-                            if(!e){
-                                resolve(false)
-                            }else{
-                                return requestLogin(e.access,e.refresh) 
-                            }
-                        })
+        //                 const token = resfeshLogin(refresh)
+        //                 token.then(e => {
+        //                     if(!e){
+        //                         resolve(false)
+        //                     }else{
+        //                         return requestLogin(e.access,e.refresh) 
+        //                     }
+        //                 })
                         
                     
-                }else{
-                    // jika bukan kadaluarsa maka login ulang
-                    resolve(false)
-                }
-            }else{
-                resolve(true)
-            }
-        })
+        //         }else{
+        //             // jika bukan kadaluarsa maka login ulang
+        //             resolve(false)
+        //         }
+        //     }else{
+        //         resolve(true)
+        //     }
+        // })
     })
     return promise
 }
