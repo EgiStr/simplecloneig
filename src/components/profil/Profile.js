@@ -38,6 +38,7 @@ class Profile extends Component {
     }
 
     componentDidMount() {
+        
         const id = this.props.match.params.id;
         // protectAuth(this.state.access, this.state.refresh).then(e => !e ? window.location.reload() : this.setState({ redirect: false }))
         this.props.getFollower(this.state.access)

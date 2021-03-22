@@ -179,8 +179,6 @@ class Modal extends Component {
                             </MentionsInput>
                             
                             <a className="modal-close waves-effect waves-green btn-flat s1 right" onClick={() => {this.handleComment(this.state.parentid)}}>Send</a>      
-                        
-                    
                    
                              
  

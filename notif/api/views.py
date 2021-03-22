@@ -1,3 +1,4 @@
+from posts.api.permission import IsOwnerOrReadOnly
 from rest_framework.generics import ListAPIView,UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
@@ -23,8 +24,9 @@ class UserNotifikasiApiView(ListAPIView):
 
 class UpdateNotifikasiApiView(UpdateAPIView):
     serializer_class = NotifUpdateSerializer
-    permissions_classes = [IsAuthenticated]
+    permissions_classes = [IsOwnerOrReadOnly]
     model = Notifikasi
+    
 
     def get_object(self, queryset=None):
         obj = self.request.user
@@ -43,4 +45,4 @@ class UpdateNotifikasiApiView(UpdateAPIView):
             }
             return Response(response)
 
-        return Response({"user": ["user not authorized"]}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"user": ["user not authorized or not your"]}, status=status.HTTP_401_UNAUTHORIZED)

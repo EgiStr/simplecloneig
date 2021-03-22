@@ -4,7 +4,7 @@ from rest_framework.generics import (
                                         RetrieveUpdateDestroyAPIView,
                                         CreateAPIView,)
 
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 
 from posts.models import Post,Like,SavePostUser
 from usercostumer.models import UserProfil
@@ -23,7 +23,7 @@ from posts.api.serializers import (
                                     UserSavePost,
                                     )
 class PostApiViews(ListAPIView):
-
+    
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = LimitPagination
@@ -44,20 +44,23 @@ class PostDetailApiView(RetrieveAPIView):
 class LikePost(CreateAPIView):
     queryset = Like.objects.all()
     serializer_class = JustLikeSerializer
+    permission_classes = [IsAuthenticated]
  
 class SavePost(CreateAPIView):
     queryset = SavePostUser.objects.all()
     serializer_class = SavePostSerializer
+    permission_classes = [IsAuthenticated]
 
  
 class CreatePostAPiView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = CreatePostSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class PostEditApiView(RetrieveUpdateDestroyAPIView):
     serializer_class = EditPostSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly | IsAdminUser]
 
     def get_queryset(self):
         qs = Post.objects.filter(id=self.kwargs['id'])
@@ -66,6 +69,7 @@ class PostEditApiView(RetrieveUpdateDestroyAPIView):
 
 class GetPostLike(ListAPIView):
     serializer_class = UserLikePost
+    permission_classes = [IsAuthenticated | IsAdminUser]
     def get_queryset(self):
         print(self.request.user.id)
         qs = Like.objects.filter(user__user__id=self.request.user.id)
@@ -83,6 +87,7 @@ class GetPostSaveApiView(ListAPIView):
 # data post dari save user 
 class GetSavePostData(ListAPIView):
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated | IsAdminUser]
     
     def get_queryset(self):
         query = SavePostUser.objects.filter(user__user__id=self.request.user.id)
@@ -91,6 +96,7 @@ class GetSavePostData(ListAPIView):
         return qs
 class GetLikePostData(ListAPIView):
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated | IsAdminUser]
     
     def get_queryset(self):
         query = Like.objects.filter(user__user__id=self.request.user.id)

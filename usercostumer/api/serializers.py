@@ -71,6 +71,7 @@ class UserProfilPostserializer(ModelSerializer):
             'id',
             'nickname',
             'profil',
+            'name'
         ]
 
 

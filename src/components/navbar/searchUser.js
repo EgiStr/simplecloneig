@@ -39,8 +39,8 @@ export const SearchUser = () => {
                     {data.length > 0 ? data.map((item) => {
                         return (<li key={Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))} onClick={() => {redirect(item.nickname)}} className="collection-item avatar">                                       
                                     <img loading='lazy' src={item.profil} className="circle" alt="...."/>
-                                    <span className="title">{item.nickname}</span>
-                                    <p>{item.id}</p>
+                                    <span className="title"><b>{item.nickname}</b></span>
+                                    <p>{item.name}</p>
                                 
                                 </li>
                         )
