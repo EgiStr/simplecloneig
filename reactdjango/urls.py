@@ -18,13 +18,15 @@ from django.urls import path,include
 
 from django.conf import settings
 from django.conf.urls.static import static
-
+from rest_framework_social_oauth2 import urls
 
 urlpatterns =[
   path('admin/',admin.site.urls),
   path("", include(('posts.urls', 'posts'), namespace='post')),
   path("api/", include(('posts.api.urls','posts.api'),namespace='api-post')),
   path("auth/", include(('usercostumer.api.urls','usercostumer.api'),namespace='auth')),
+  path("oauth2/", include(('rest_framework_social_oauth2.urls','rest_framework_social_oauth2'),namespace="oauth2")),
+  path('oauth2/', include('social_django.urls', namespace="social")),
   path("comment/", include(('comment.api.urls', 'comment.api'),namespace='comment')),
   path("notif/", include(('notif.api.urls', 'notif.api'),namespace='notif')),
 

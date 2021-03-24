@@ -10,7 +10,6 @@ export const NotifDropdown = ({notif}) => {
   
                 return (
                     <div key={index}>
-
                         <p style={{ lineHeight: "1.6" }}>{item.create_at}</p>
                         <Notif 
                             post ={item.post}

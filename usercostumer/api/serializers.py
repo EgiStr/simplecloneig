@@ -214,4 +214,7 @@ class registeruser(ModelSerializer):
         user.save()
 
         return user
-
+class DetailUserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id','email','username',)

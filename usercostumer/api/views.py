@@ -2,11 +2,11 @@ from usercostumer.models import UserProfil,UserFollowing
 from django.contrib.auth.models import User
 
 from rest_framework.generics import (CreateAPIView, 
-                                    DestroyAPIView,
                                     RetrieveAPIView,
                                     RetrieveUpdateAPIView,
                                     ListAPIView,
                                     UpdateAPIView,)
+import jwt
 
 from rest_framework.permissions import IsAdminUser, IsAuthenticated,AllowAny, IsAuthenticatedOrReadOnly
 
@@ -14,6 +14,8 @@ from rest_framework.filters import  SearchFilter,OrderingFilter
 
 from rest_framework.response import Response
 from rest_framework import status
+
+from django.conf import settings
 
 from .serializers import (
                         registeruser,
@@ -23,7 +25,8 @@ from .serializers import (
                         UserProfilPostserializer,
                         ChangePasswordSerializer,
                         FollowingSerializer, 
-                        FollowersSerializer,)
+                        FollowersSerializer,
+                        DetailUserSerializer,)
 
 from posts.api.permission import IsOwnerOrReadOnly
 from posts.api.pagination import LimitPaginationSearch
@@ -89,7 +92,21 @@ class ChangePasswordApiView(UpdateAPIView):
 
             return Response(response)
         return Response({"password new": ["password new wrong. doesnt macth"]}, status=status.HTTP_400_BAD_REQUEST)
-            
+    
+    
+class DetailUserApiView(RetrieveAPIView):
+    serializer_class=DetailUserSerializer
+    permission_classes = [IsAuthenticated]
+    model = settings.AUTH_USER_MODEL
+    
+    def get(self, request, *args, **kwargs):
+        encoded_jwt = jwt.encode({"username":  self.request.user.username,'user_id': self.request.user.id ,'email': self.request.user.email},'secret', algorithm="HS256")
+        response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'data': encoded_jwt,
+        }
+        return Response(response)
 
 class DetailUserFollowerApiView(ListAPIView):
     serializer_class = FollowersSerializer

@@ -82,12 +82,10 @@ export const requestLogin = async (accessToken ,refreshToken) => {
     
     // membuat promise agar bisa mengunakan resolve // seperti return ajax
     const promise = new Promise((resolve,reject) => {
-        if (Date.now() >= exp_token.exp * 1000) {
-            resolve(false)
+        if (Date.now() <= exp_token.exp * 1000) {
+            resolve(true)
         }else{
-            if (Date.now() >= exp_refresh.exp * 1000) {
-                resolve(false)
-            }else{
+            if (Date.now() <= exp_refresh.exp * 1000) {
                 const new_token = resfeshLogin(refresh)
                 new_token.then(res =>{
                     if(!res){
@@ -96,6 +94,8 @@ export const requestLogin = async (accessToken ,refreshToken) => {
                         return requestLogin(res.access,res.refresh)
                     }
                 })
+            }else{
+                resolve(false)
             }
         }
         // // mengunakan home page agar dapat mengetest token

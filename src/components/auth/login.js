@@ -8,6 +8,7 @@ import { loginUser, get_post_like,get_post_save } from '../../action/auth'
 import { getFollower } from '../../action/follow'
 import { get_notif_login, } from '../../action/notifikasi'
 
+import { GoogleLogin } from 'react-google-login';
 
 import axios from "axios";
 
@@ -21,6 +22,7 @@ class Login extends Component {
       notValide: false,
       redirect: false,
     };
+    delete axios.defaults.headers.common["Authorization"];
   }
 
   handleSubmit = (e) => {
@@ -30,8 +32,8 @@ class Login extends Component {
       password: this.state.password,
     }
     axios.post(`http://127.0.0.1:8000/auth/login/`, data)
-      .then((res) => {
-        Cookies.set('access', res.data.access)
+    .then((res) => {
+      Cookies.set('access', res.data.access)
         Cookies.set('refresh', res.data.refresh)
         this.props.get_post_like()
         this.props.get_post_save()
@@ -42,7 +44,33 @@ class Login extends Component {
       })
       .catch((e) => this.setState({ notValide: true }));
   }
-
+  
+  responseGoogle = response => {
+    const data = {
+      client_id: 'GXAKvHOF27PXTF4qzLHiFTL9MdKrv5wfEHiqpnYr',                   
+      client_secret: 'BMN5fi1R9yNcmTYO53bAPeODNlu3xQK8QTpl8MxKjf7odJn7hvITOFW8B1jR0yHH6wHP11Ifpj0s1YLlutkyTs2p8rXuMTbKamr2LSHoan4jxUFkPFz70l8sE4cAlS6b',
+      grant_type:'convert_token',
+      backend : 'google-oauth2',
+      token:response.accessToken
+    }
+    axios.post(`http://127.0.0.1:8000/oauth2/convert-token/`, data)
+    .then((res) => {
+        Cookies.set('access', res.data.access_token)
+        Cookies.set('refresh', res.data.refresh_token)
+        
+        this.props.get_post_like()
+        this.props.get_post_save()
+        this.props.get_notif_login()
+        this.props.loginUser(res.data.access)
+        this.props.getFollower(res.data.access)
+        this.setState({ redirect: true });
+      })
+      .catch((e) => console.log(e.request));
+  }
+  
+  failResponse = response => {
+    console.log(response);
+  }
   handleTitleChange = event => this.setState({ title: event.target.value })
   handlePasswordChange = event => this.setState({ password: event.target.value })
   handleValidatePassword = event => this.setState({ password2: event.target.value, notValide: event.target.value !== this.state.password });
@@ -91,7 +119,13 @@ class Login extends Component {
               <i className="material-icons">facebook</i>
             </div>
             <div className="icon_field">
-              <i className="material-icons">email</i>
+              <GoogleLogin
+                clientId="853564458690-kj782663d50bbft782m1na2s9hks69gi.apps.googleusercontent.com"
+                buttonText="Login"
+                onSuccess={this.responseGoogle}
+                onFailure={this.failResponse}
+        
+              />,
             </div>
           </div>
           <div>You dont have account? <a href="/register">sign up</a></div>

@@ -123,6 +123,5 @@ class CommentCreateSerializer(ModelSerializer):
                         content = validated_data['content'],
                     )
         new_comment.save()
-        # print(new_comment.__dict__)
         
         return new_comment

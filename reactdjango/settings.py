@@ -48,8 +48,13 @@ INSTALLED_APPS = [
   'rest_framework',
   'corsheaders',
   'django_rest_passwordreset',
+  'oauth2_provider',
+  'social_django',
+  'rest_framework_social_oauth2',
 
 ]
+
+DRFSO2_URL_NAMESPACE='oauth2'
 
 MIDDLEWARE = [
   'corsheaders.middleware.CorsMiddleware',
@@ -57,6 +62,7 @@ MIDDLEWARE = [
   'django.middleware.security.SecurityMiddleware',
   'django.contrib.sessions.middleware.SessionMiddleware',
   'django.contrib.auth.middleware.AuthenticationMiddleware',
+  'oauth2_provider.middleware.OAuth2TokenMiddleware',
   'django.contrib.messages.middleware.MessageMiddleware',
   'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -69,10 +75,30 @@ CORS_ALLOWED_ORIGINS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         
     ],
 }
+
+AUTHENTICATION_BACKENDS = (
+   'social_core.backends.google.GoogleOAuth2',
+
+   'django.contrib.auth.backends.ModelBackend',
+   'rest_framework_social_oauth2.backends.DjangoOAuth2',
+)
+
+
+# Google configuration
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '853564458690-qp83fa5270i272sheigrs9ls49en1ei3.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Lo3fsT-BXYY1kcAaOlTBDTHM'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
+
 
 from datetime import timedelta
 
@@ -121,6 +147,8 @@ TEMPLATES = [
         'django.template.context_processors.request',
         'django.contrib.auth.context_processors.auth',
         'django.contrib.messages.context_processors.messages',
+        'social_django.context_processors.backends',
+        'social_django.context_processors.login_redirect',
       ],
     },
   },
@@ -138,6 +166,7 @@ DATABASES = {
 
 
 #DataFlair
+# SEND EMAIL 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True

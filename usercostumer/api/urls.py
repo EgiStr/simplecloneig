@@ -15,9 +15,12 @@ from .views import (RegisterUserApi,
                     DetailUserFollowingApiView,
                     DetailUserFollowerApiView,
                     DetailUserFollowingUserApiView,
-                    DetailUserFollowerUserApiView)
+                    DetailUserFollowerUserApiView,
+                    DetailUserApiView,)
 
 urlpatterns = [
+    # me
+    path("me/", DetailUserApiView.as_view(), name="me"),
     # login
     path("login/", MyObtainTokenPairView.as_view(), name="login"),
     path('login/refresh/',TokenRefreshView.as_view(),name='refresh'),
