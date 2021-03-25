@@ -49,8 +49,8 @@ const changePassword = () => {
         
    
     return (
-        <div className="col s9">
-            <div className="container row center-align" style={{padding:"50px",marginLeft:'20px'}}>
+        <div className="col s9" >
+            <div className="container row center-align" style={{padding:"50px",marginLeft:'20px',width:'500px',height:'400px'}}>
                 <div className="input-password col l12">
                     <label>Old Password</label>
                     <input

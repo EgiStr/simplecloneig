@@ -5,12 +5,13 @@ import { connect } from 'react-redux'
 import { get_notif_user } from '../../action/notifikasi'
 import { NotifDropdown } from './notifDropdown'
 import $ from 'jquery'
+import { Avatar } from '@material-ui/core'
 
 
 function Navbar({ user,notif,read,get_notif_user }) {
     if(window.location.pathname === '/register') return <Redirect to={'/register'} />
     if(window.location.pathname === '/forget-password/comfirm') return <Redirect to={'/forget-password/comfirm'} />
-    
+       
     if (user === null) return <Redirect to={'/login'} />
 
     useEffect(() => {
@@ -30,6 +31,7 @@ function Navbar({ user,notif,read,get_notif_user }) {
         <div className="navbar-fixed">
             <nav>
                 <div className="container">
+                    
                     <div className="nav-wrapper">
                         <Link to={'/'} className="brand-logo ">Logo</Link>
                         <ul className="right hide-on-med-and-down">
@@ -46,7 +48,16 @@ function Navbar({ user,notif,read,get_notif_user }) {
                                 >
                                 {localStorage.getItem('notif') ? localStorage.getItem('notif') : read}
                                 </span></a></li>
-                            <li><a className='dropdown-trigger' data-target='dropdown1'><i className="material-icons">people</i></a></li>
+                            <li>
+                                <Avatar
+                                    style={{marginTop:'10px',marginLeft:'10px'}} 
+                                    className='dropdown-trigger'
+                                    data-target='dropdown1'
+                                    src = {`http://127.0.0.1:8000`+ user.profil}
+                                    alt={'profil mu....'}
+                                    height={30}
+                                    width = {30}
+                                /></li>
                             <NotifDropdown 
                                 notif={notif}
                             />

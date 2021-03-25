@@ -51,9 +51,15 @@ export const resfeshLogin = resfreshToken => {
     // membuat Promise karna tidak bisa memakai UseState
     return new Promise((resolve,reject) => {
         // membuat post request untuk membuat token baru mengunakan resfresh token
-        
-        axios.post('http://127.0.0.1:8000/auth/login/refresh/',{refresh:resfreshToken})
+        const data = {
+            grant_type : 'refresh_token',
+            client_id: 'qDqQ2k5cz2HNaHsuyZC4JPwRRHxPOm2PJUoSXeTJ',
+            client_secret : '6Xb1TvCPLJRmKsrQ4XhGg0uPnwLSvwmJ96DZiUKyG1pB87I6YfkJYhyDycl4vX6EBWCG4lFeDcuHecSGboz6gckgo3RWwSSj0xaBdnvwUwLWUYZOO1HBVdLSOsBrIcVe',
+            refresh_token : resfreshToken,
+        }
+        axios.post('http://127.0.0.1:8000/auth/token/',data)
         .then( res => {
+            
             // jika gagal maka false / null
             if(res.statusText === "OK"){
                 // memakai resolve karna ini adalah promise
@@ -74,28 +80,25 @@ export const resfeshLogin = resfreshToken => {
 }
 
 export const requestLogin = async (accessToken ,refreshToken) => {
+    let exp_token = parseJwt(Cookies.get('ud')).exp
     
-    const token = accessToken
-    const refresh = refreshToken
-    let exp_token = parseJwt(token)
-    let exp_refresh = parseJwt(refresh)
     
     // membuat promise agar bisa mengunakan resolve // seperti return ajax
     const promise = new Promise((resolve,reject) => {
-        if (Date.now() <= exp_token.exp * 1000) {
+        if (Date.now() <= exp_token * 1000) {
             resolve(true)
         }else{
-            if (Date.now() <= exp_refresh.exp * 1000) {
-                const new_token = resfeshLogin(refresh)
+            if (Date.now() >= exp_token * 1000) {
+                const new_token = resfeshLogin(refreshToken)
                 new_token.then(res =>{
                     if(!res){
                         resolve(false)
                     }else{
-                        return requestLogin(res.access,res.refresh)
+                        resolve(true)
                     }
                 })
             }else{
-                resolve(false)
+                resolve(true)
             }
         }
         // // mengunakan home page agar dapat mengetest token

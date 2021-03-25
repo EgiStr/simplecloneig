@@ -28,19 +28,22 @@ class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const data = {
-      username: this.state.title,                   
+      grant_type : 'password',
+      client_id: 'qDqQ2k5cz2HNaHsuyZC4JPwRRHxPOm2PJUoSXeTJ',
+      client_secret : '6Xb1TvCPLJRmKsrQ4XhGg0uPnwLSvwmJ96DZiUKyG1pB87I6YfkJYhyDycl4vX6EBWCG4lFeDcuHecSGboz6gckgo3RWwSSj0xaBdnvwUwLWUYZOO1HBVdLSOsBrIcVe',
+      username : this.state.title, 
       password: this.state.password,
-    }
-    axios.post(`http://127.0.0.1:8000/auth/login/`, data)
+  }
+    axios.post('http://127.0.0.1:8000/auth/token/',data)
     .then((res) => {
-      Cookies.set('access', res.data.access)
-        Cookies.set('refresh', res.data.refresh)
-        this.props.get_post_like()
-        this.props.get_post_save()
-        this.props.get_notif_login()
-        this.props.loginUser(res.data.access)
-        this.props.getFollower(res.data.access)
-        this.setState({ redirect: true });
+      Cookies.set('access', res.data.access_token)
+      Cookies.set('refresh', res.data.refresh_token)
+      this.props.get_post_like()  
+      this.props.get_post_save()
+      this.props.get_notif_login()
+      this.props.getFollower(res.data.access_token)
+      this.props.loginUser(res.data.access_token)
+      
       })
       .catch((e) => this.setState({ notValide: true }));
   }
@@ -55,16 +58,16 @@ class Login extends Component {
     }
     axios.post(`http://127.0.0.1:8000/oauth2/convert-token/`, data)
     .then((res) => {
-        Cookies.set('access', res.data.access_token)
-        Cookies.set('refresh', res.data.refresh_token)
-        
-        this.props.get_post_like()
-        this.props.get_post_save()
-        this.props.get_notif_login()
-        this.props.loginUser(res.data.access)
-        this.props.getFollower(res.data.access)
-        this.setState({ redirect: true });
-      })
+      Cookies.set('access', res.data.access_token)
+      Cookies.set('refresh', res.data.refresh_token)
+      
+      this.props.get_post_like()
+      this.props.get_post_save()
+      this.props.getFollower(res.data.access_token)
+      this.props.get_notif_login()
+      this.props.loginUser(res.data.access_token)
+      
+    })
       .catch((e) => console.log(e.request));
   }
   
@@ -77,8 +80,8 @@ class Login extends Component {
 
 
   render() {
-    if (this.state.redirect) return <Redirect to="/" />;
-  
+    if (this.props.user != null) return <Redirect to="/" />
+
     return (
 
       <div className="container_login">
@@ -138,4 +141,8 @@ class Login extends Component {
 }
 
 
-export default connect(null, { loginUser, get_post_like, get_notif_login,getFollower,get_post_save  })(Login);
+const mapStateToProps = state => {
+  return {user : state.auth.user}
+}
+
+export default connect(mapStateToProps, { loginUser, get_post_like, get_notif_login,getFollower,get_post_save  })(Login);

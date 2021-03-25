@@ -16,7 +16,7 @@ class UserProfil(models.Model):
         ('male','Male'),
         ('female','Female')
     )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='profil',on_delete=models.CASCADE)
     nickname = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
     profil = models.ImageField(upload_to='media/image/profil',default='media/image/profil/default.png')

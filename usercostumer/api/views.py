@@ -100,13 +100,17 @@ class DetailUserApiView(RetrieveAPIView):
     model = settings.AUTH_USER_MODEL
     
     def get(self, request, *args, **kwargs):
-        encoded_jwt = jwt.encode({"username":  self.request.user.username,'user_id': self.request.user.id ,'email': self.request.user.email},'secret', algorithm="HS256")
-        response = {
-                'status': 'success',
-                'code': status.HTTP_200_OK,
-                'data': encoded_jwt,
-        }
-        return Response(response)
+        profil = self.request.user.profil.first()
+        payload = {
+                'user_id': self.request.user.id ,
+                "username":  self.request.user.username,
+                'email': self.request.user.email,
+                'profil':profil.profil.url,
+                'token' : request._auth.token,
+                'exp':request._auth.expires,}
+        print(request._auth.expires)
+        encoded_jwt = jwt.encode(payload,'secret', algorithm="HS256")
+        return Response(encoded_jwt,status=status.HTTP_200_OK)
 
 class DetailUserFollowerApiView(ListAPIView):
     serializer_class = FollowersSerializer
