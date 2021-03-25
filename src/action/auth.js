@@ -2,13 +2,24 @@ import { parseJwt } from '../components/method/parseJwt'
 
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import {Redirect} from 'react-router-dom'
 
 export const loginUser = access => dispatch => {
-    const user = parseJwt(access)
-    return dispatch({
-        type:'LOGIN_SUCCESS',
-        payload : user,
-    })
+    const config = {
+        headers: {
+            "Authorization": 'Bearer ' + access,
+        }
+    }
+
+    axios.get(`http://127.0.0.1:8000/auth/me/?t=${access}`,config)
+        .then(res => {
+            const user = res.data
+            Cookies.set('ud',user)
+            dispatch({
+                type:'LOGIN_SUCCESS',
+                payload : parseJwt(user),
+            })
+        })
 } 
 
 export const LogoutAuth = () => dispatch => {

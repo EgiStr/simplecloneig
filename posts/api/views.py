@@ -71,9 +71,7 @@ class GetPostLike(ListAPIView):
     serializer_class = UserLikePost
     permission_classes = [IsAuthenticated | IsAdminUser]
     def get_queryset(self):
-        print(self.request.user.id)
         qs = Like.objects.filter(user__user__id=self.request.user.id)
-        print(qs)
         return qs
         
 class GetPostSaveApiView(ListAPIView):

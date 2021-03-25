@@ -161,7 +161,7 @@ class Modal extends Component {
                     </div>    
                 </div>
 
-                <div className="modal-footer row" >
+                <div className="modal-footer" >
                             {parent ? (<p className="col s12 center-align" onClick={() => this.handleCancel()}> your replies {this.props.username}, click to cancel     </p>) : (null)}
                             <MentionsInput
                                 value={this.state.comment}
@@ -180,8 +180,7 @@ class Modal extends Component {
                             
                             <a className="modal-close waves-effect waves-green btn-flat s1 right" onClick={() => {this.handleComment(this.state.parentid)}}>Send</a>      
                    
-                             
- 
+                        
                 </div>
         </div>
         )

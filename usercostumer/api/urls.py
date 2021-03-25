@@ -1,11 +1,5 @@
 from django.urls import path,include
 
-
-from rest_framework_simplejwt.views import TokenRefreshView
-
-from reactdjango.views import MyObtainTokenPairView
-
-
 from .views import (RegisterUserApi,
                     UserProfilApiView,
                     UserFollowingApiView,
@@ -15,12 +9,13 @@ from .views import (RegisterUserApi,
                     DetailUserFollowingApiView,
                     DetailUserFollowerApiView,
                     DetailUserFollowingUserApiView,
-                    DetailUserFollowerUserApiView)
+                    DetailUserFollowerUserApiView,
+                    DetailUserApiView,)
 
 urlpatterns = [
+    # me
+    path("me/", DetailUserApiView.as_view(), name="me"),
     # login
-    path("login/", MyObtainTokenPairView.as_view(), name="login"),
-    path('login/refresh/',TokenRefreshView.as_view(),name='refresh'),
     path("register/", RegisterUserApi.as_view(), name="register"),
     # search
     path("search/",UserSearchApiView.as_view(),name="filter"),
