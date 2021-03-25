@@ -108,7 +108,6 @@ class DetailUserApiView(RetrieveAPIView):
                 'profil':profil.profil.url,
                 'token' : request._auth.token,
                 'exp':request._auth.expires,}
-        print(request._auth.expires)
         encoded_jwt = jwt.encode(payload,'secret', algorithm="HS256")
         return Response(encoded_jwt,status=status.HTTP_200_OK)
 
