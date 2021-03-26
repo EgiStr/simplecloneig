@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+
 import { Redirect,Link } from 'react-router-dom'
 
 import { connect } from 'react-redux'
@@ -26,7 +27,7 @@ function Navbar({ user,notif,read,get_notif_user }) {
         get_notif_user()
     
     }
-  
+    const notifNum = localStorage.getItem('notif') ? Number(localStorage.getItem('notif')) : Number(read)
     return (
         <div className="navbar-fixed">
             <nav>
@@ -42,12 +43,11 @@ function Navbar({ user,notif,read,get_notif_user }) {
                                 style={{ display: "flex", flexDirection: "row" }}
                                 >
                                 <i className="material-icons">notifications</i>
-                                <span
-                                className="new badge"
+                                {notifNum > 0 ? (<span
+                                className={"new badge"}
                                 style={{ position: "absolute", marginTop: "10px", marginLeft: "10px" }}
-                                >
-                                {localStorage.getItem('notif') ? localStorage.getItem('notif') : read}
-                                </span></a></li>
+                                >notifNum</span>) : (null)}
+                                </a></li>
                             <li>
                                 <Avatar
                                     style={{marginTop:'10px',marginLeft:'10px'}} 

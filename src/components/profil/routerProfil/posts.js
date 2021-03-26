@@ -4,16 +4,14 @@ import Content from '../../home/content'
 
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
+import PageNull from '../../other/pageNull'
 
 const Posts = ({post_data}) => {
-    useEffect(()=>{
-        console.log('testing')
-    },[])
 
     return (
         <div className="posts">
             <div className="posts_wrap">
-            {post_data ? (post_data.map((item, index) => {
+            {post_data.length > 0 ? (post_data.map((item, index) => {
 
                 return (
                     <Content
@@ -30,9 +28,8 @@ const Posts = ({post_data}) => {
                     />
 
                 )
-            }))
-                : (null)}
-
+            })): <PageNull page=" THIS PROFIL"/>}
+       
         </div>
     </div>
     )

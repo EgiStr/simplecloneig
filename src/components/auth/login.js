@@ -9,6 +9,7 @@ import { getFollower } from '../../action/follow'
 import { get_notif_login, } from '../../action/notifikasi'
 
 import { GoogleLogin } from 'react-google-login';
+import Loading from '../other/loading'
 
 import axios from "axios";
 
@@ -20,7 +21,7 @@ class Login extends Component {
       title: "",
       password: "",
       notValide: false,
-      redirect: false,
+      loading: false,
     };
     delete axios.defaults.headers.common["Authorization"];
   }
@@ -33,7 +34,8 @@ class Login extends Component {
       client_secret : '6Xb1TvCPLJRmKsrQ4XhGg0uPnwLSvwmJ96DZiUKyG1pB87I6YfkJYhyDycl4vX6EBWCG4lFeDcuHecSGboz6gckgo3RWwSSj0xaBdnvwUwLWUYZOO1HBVdLSOsBrIcVe',
       username : this.state.title, 
       password: this.state.password,
-  }
+    }
+    this.setState({loading:true})
     axios.post('http://127.0.0.1:8000/auth/token/',data)
     .then((res) => {
       Cookies.set('access', res.data.access_token)
@@ -43,11 +45,12 @@ class Login extends Component {
       this.props.get_notif_login()
       this.props.getFollower(res.data.access_token)
       this.props.loginUser(res.data.access_token)
+      this.setState({loading:false})
       
-      })
-      .catch((e) => this.setState({ notValide: true }));
-  }
-  
+    })
+      .catch((e) => this.setState({ notValide: true,loading:false }));
+    }
+    
   responseGoogle = response => {
     const data = {
       client_id: 'GXAKvHOF27PXTF4qzLHiFTL9MdKrv5wfEHiqpnYr',                   
@@ -56,23 +59,25 @@ class Login extends Component {
       backend : 'google-oauth2',
       token:response.accessToken
     }
-    axios.post(`http://127.0.0.1:8000/oauth2/convert-token/`, data)
+    this.setState({loading:true})
+    
+    axios.post(`http://127.0.0.1:8000/auth/convert-token/`, data)
     .then((res) => {
       Cookies.set('access', res.data.access_token)
       Cookies.set('refresh', res.data.refresh_token)
-      
       this.props.get_post_like()
       this.props.get_post_save()
       this.props.getFollower(res.data.access_token)
       this.props.get_notif_login()
       this.props.loginUser(res.data.access_token)
+      this.setState({loading:false})
       
     })
-      .catch((e) => console.log(e.request));
+      .catch((e) => this.setState({notValide:true,loading:false}));
   }
   
   failResponse = response => {
-    console.log(response);
+    this.setState({notValide:true,loading:false})
   }
   handleTitleChange = event => this.setState({ title: event.target.value })
   handlePasswordChange = event => this.setState({ password: event.target.value })
@@ -87,6 +92,7 @@ class Login extends Component {
       <div className="container_login">
         <div className="box_login">
           <h5>Sign in</h5>
+          {this.state.loading && <Loading /> }
           {this.state.notValide && <p className="message-login">Password or Username Not Valid</p>}
           <div className="input-field">
             <i className="material-icons prefix">person</i>

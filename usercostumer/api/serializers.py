@@ -48,7 +48,7 @@ class PostProfilSerializer(ModelSerializer):
 class UserEditProfil(ModelSerializer):
     email = serializers.EmailField(
             validators=[
-                UniqueValidator(queryset=UserProfil.objects.all(),message='This email has use')
+                UniqueValidator(queryset=User.objects.all(),message='This email has use')
                 ]
     )
     class Meta:

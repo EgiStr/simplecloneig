@@ -16,7 +16,7 @@ import { get_post_data } from '../../action/auth'
 import ModalFollow from './follow/modelFollow'
 import NavProfil from './navProfil/navProfil'
 import RouterProfil from './routerProfil/routerprofil'
-
+import Loading from '../other/loading'
 
 import '../../Profile.css'
 
@@ -33,6 +33,7 @@ class Profile extends Component {
             data: [],
             redirect: false,
             redirectUrl: '',
+            loading : true,
         }
         delete axios.defaults.headers.common["Authorization"];
     }
@@ -47,7 +48,7 @@ class Profile extends Component {
         .then(res => {
             this.props.get_post_data(res.data.post_data)
             this.props.is_follow(res.data.follower.map(e => e.id))
-            this.setState({ data: res.data })
+            this.setState({ data: res.data,loading:false })
         })
         .catch(e => console.log(e.request))
     }
@@ -56,12 +57,12 @@ class Profile extends Component {
             this.props.getFollower(this.state.access)
         
             const id = this.props.match.params.id;
-    
+            this.setState({loading:true})
             axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
                 .then(res => {
                     this.props.get_post_data(res.data.post_data)
                     this.props.is_follow(res.data.follower.map(e => e.id))
-                    this.setState({ data: res.data })
+                    this.setState({ data: res.data,loading:false })
                 })
                 .catch(e => console.log(e.request))
         }
@@ -106,6 +107,7 @@ class Profile extends Component {
 
         return (
             <div className="container">
+                {this.state.loading && <Loading />}
                 <div className="row header" >
                     <div>
                         <Avatar
