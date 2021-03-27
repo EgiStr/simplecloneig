@@ -11,8 +11,7 @@ import { Avatar } from '@material-ui/core'
 
 function Navbar({ user,notif,read,get_notif_user }) {
     if(window.location.pathname === '/register') return <Redirect to={'/register'} />
-    if(window.location.pathname === '/forget-password/comfirm') return <Redirect to={'/forget-password/comfirm'} />
-       
+    if(window.location.pathname === '/forget-password/comfirm') return <Redirect to={'/forget-password/comfirm'} />       
     if (user === null) return <Redirect to={'/login'} />
 
     useEffect(() => {
@@ -28,11 +27,11 @@ function Navbar({ user,notif,read,get_notif_user }) {
     
     }
     const notifNum = localStorage.getItem('notif') ? Number(localStorage.getItem('notif')) : Number(read)
+    
     return (
         <div className="navbar-fixed">
             <nav>
-                <div className="container">
-                    
+                <div className="container">                
                     <div className="nav-wrapper">
                         <Link to={'/'} className="brand-logo ">Logo</Link>
                         <ul className="right hide-on-med-and-down">
@@ -43,10 +42,12 @@ function Navbar({ user,notif,read,get_notif_user }) {
                                 style={{ display: "flex", flexDirection: "row" }}
                                 >
                                 <i className="material-icons">notifications</i>
-                                {notifNum > 0 ? (<span
-                                className={"new badge"}
-                                style={{ position: "absolute", marginTop: "10px", marginLeft: "10px" }}
-                                >notifNum</span>) : (null)}
+                                {notifNum > 0 ? (
+                                    <span
+                                    className={"new badge"}
+                                    style={{ position: "absolute", marginTop: "10px", marginLeft: "10px" }}
+                                    >{notifNum}</span>) 
+                                            : (null)}
                                 </a></li>
                             <li>
                                 <Avatar

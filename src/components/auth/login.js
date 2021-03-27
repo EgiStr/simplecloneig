@@ -7,13 +7,16 @@ import { connect } from 'react-redux'
 import { loginUser, get_post_like,get_post_save } from '../../action/auth'
 import { getFollower } from '../../action/follow'
 import { get_notif_login, } from '../../action/notifikasi'
-
+import FacebookLogin from 'react-facebook-login';
 import { GoogleLogin } from 'react-google-login';
+ 
 import Loading from '../other/loading'
 
 import axios from "axios";
 
 import '../../login.css'
+
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +29,7 @@ class Login extends Component {
     delete axios.defaults.headers.common["Authorization"];
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const data = {
       grant_type : 'password',
@@ -51,12 +54,38 @@ class Login extends Component {
       .catch((e) => this.setState({ notValide: true,loading:false }));
     }
     
-  responseGoogle = response => {
+  responseCallbackGoogle = response => {
     const data = {
       client_id: 'GXAKvHOF27PXTF4qzLHiFTL9MdKrv5wfEHiqpnYr',                   
       client_secret: 'BMN5fi1R9yNcmTYO53bAPeODNlu3xQK8QTpl8MxKjf7odJn7hvITOFW8B1jR0yHH6wHP11Ifpj0s1YLlutkyTs2p8rXuMTbKamr2LSHoan4jxUFkPFz70l8sE4cAlS6b',
       grant_type:'convert_token',
       backend : 'google-oauth2',
+      token:response.accessToken
+    }
+    this.setState({loading:true})
+    
+    axios.post(`http://127.0.0.1:8000/auth/convert-token/`, data)
+    .then((res) => {
+      Cookies.set('access', res.data.access_token)
+      Cookies.set('refresh', res.data.refresh_token)
+      this.props.get_post_like()
+      this.props.get_post_save()
+      this.props.getFollower(res.data.access_token)
+      this.props.get_notif_login()
+      this.props.loginUser(res.data.access_token)
+      this.setState({loading:false})
+      
+    })
+      .catch((e) => this.setState({notValide:true,loading:false}));
+  }
+    
+  responseCallbackFacebook = response => {
+
+    const data = {
+      client_id: 'M2jCI0zmsBQAhJJGWl1FHZIRcCor3y7zFVibFjgj',                   
+      client_secret: '3QVb9j86NnCrhAoZsnALFjY3hNg25a7zGgdeFVH6Q88zew2iTv3QHg1ZgW5Xw2Ef0BwdKEgz6T6gbJqBJ9NQuO88Y6ZPN8bxHNf76z7VTx4B1sPOATSqV541cgxNUMEe',
+      grant_type:'convert_token',
+      backend : 'facebook',
       token:response.accessToken
     }
     this.setState({loading:true})
@@ -123,15 +152,21 @@ class Login extends Component {
           <i className="material-icons right">send</i>
           </button>
           <div className="line"><span>OR</span></div>
+         
           <div className="icon_box">
             <div className="icon_field">
-              <i className="material-icons">facebook</i>
+            <FacebookLogin
+              appId="800571104144427"
+              autoLoad={false}
+              fields="name,email,picture"
+              callback={this.responseCallbackFacebook} 
+            />         
             </div>
             <div className="icon_field">
               <GoogleLogin
                 clientId="853564458690-kj782663d50bbft782m1na2s9hks69gi.apps.googleusercontent.com"
                 buttonText="Login"
-                onSuccess={this.responseGoogle}
+                onSuccess={this.responseCallbackGoogle}
                 onFailure={this.failResponse}
         
               />,

@@ -11,7 +11,7 @@ export const loginUser = access => dispatch => {
         }
     }
 
-    axios.get(`http://127.0.0.1:8000/auth/me/?t=${access}`,config)
+    axios.get(`http://127.0.0.1:8000/auth/me/`,config)
         .then(res => {
             const user = res.data
             Cookies.set('ud',user)
