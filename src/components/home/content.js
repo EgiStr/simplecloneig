@@ -1,4 +1,5 @@
-import React ,{ useState,useEffect,lazy,Suspense,memo,useCallback,useRef } from "react";
+import React ,{ useState,useEffect,lazy,Suspense,useCallback,useRef } from "react";
+
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { like_post_with,unlike_post_with,post_save,post_unsave } from '../../action/auth'
@@ -9,12 +10,12 @@ import Cookies from 'js-cookie'
 
 import '../../content.css'
 
-const Modal = lazy(()=> import('./comment/modal'))
+const Modal = lazy(()=> import('../detail/comment/modal'))
 
 
 // menganti react-intersection-observer dengan observer API non npm
 
-const Content = memo((props) => {
+const Content =(props) => {
     
     const history = useHistory()
    
@@ -136,7 +137,7 @@ const Content = memo((props) => {
 
             {/* membuat post image menjadi loading lazy alias diloading jika post an dilayar */}
             <div ref={post}>
-                <img src='data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAJAA4DASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAlEAABAgQEBwAAAAAAAAAAAAABAgMABAYRBRIhMRM0NXGBkbL/xAAVAQEBAAAAAAAAAAAAAAAAAAABA//EABoRAAICAwAAAAAAAAAAAAAAAAECABIDERP/2gAMAwEAAhEDEQA/AAaWpluWZM5OKYmV3HACX0hYJ1JIzaWNt/Rg+qMQcUzKsmWQXGhYvFGVat9DY7RHhvTF90fKoFq7nfAh57axkmKrjqBP/9k=' className="contentImage" data-src={props.imageUrl} alt="foto" />
+                <img src="data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAJAA4DASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAlEAABAgQEBwAAAAAAAAAAAAABAgMABAYRBRIhMRM0NXGBkbL/xAAVAQEBAAAAAAAAAAAAAAAAAAABA//EABoRAAICAwAAAAAAAAAAAAAAAAECABIDERP/2gAMAwEAAhEDEQA/AAaWpluWZM5OKYmV3HACX0hYJ1JIzaWNt/Rg+qMQcUzKsmWQXGhYvFGVat9DY7RHhvTF90fKoFq7nfAh57axkmKrjqBP/9k=" className="contentImage" data-src={props.imageUrl} alt="foto" />
             </div>
 
             <div className="icon__box">
@@ -171,7 +172,7 @@ const Content = memo((props) => {
             </div>
         
     )
-})
+}
 
 const mapStateToProps = state => {
     return {

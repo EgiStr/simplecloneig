@@ -32,8 +32,6 @@ const Notif = ({user_id,post,sender,text,type}) => {
                 return true
             }
             return false 
-        }else{
-            window.location.reload()
         }
     }
 

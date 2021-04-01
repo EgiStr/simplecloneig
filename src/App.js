@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "./components/navbar/Navbar";
-import Message from "./components/massage/Message";
 import Profile from "./components/profil/Profile";
 import Login from "./components/auth/login";
 import Home from "./components/home/home";
@@ -11,7 +10,7 @@ import editProfile from './components/profil/edit/editProfile'
 import SearchUser from './components/navbar/searchUser'
 import ForgetPassword from './components/auth/forgetPassword'
 import passwordNew from './components/auth/password-new'
-
+import DetailPost from './components/detail/Posts'
 import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 
@@ -25,8 +24,9 @@ const App = () => {
       <Switch>
         {/* daerah switch bakal keganti otamatis sesuai lick dan compoenent */}
         <Route exact path="/" component={Home} />
-        <Route path="/message" component={Message} />
+        {/* <Route path="/message" component={Message} /> */}
         <Route path="/profile/:id" component={Profile} />
+        <Route path="/detail/:id" component={DetailPost} />
         <Route path="/create" component={CreatePost} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />

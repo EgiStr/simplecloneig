@@ -37,10 +37,7 @@ class PostApiViews(ListAPIView):
 class PostDetailApiView(RetrieveAPIView):
     serializer_class = PostDetailSerialzer
     permission_classes = [AllowAny]
-
-    def get_queryset(self):
-        qs = Post.objects.get(id = self.kwargs['pk'])
-        return qs
+    queryset = Post.objects.all()
 class LikePost(CreateAPIView):
     queryset = Like.objects.all()
     serializer_class = JustLikeSerializer

@@ -105,9 +105,6 @@ class Login extends Component {
       .catch((e) => this.setState({notValide:true,loading:false}));
   }
   
-  failResponse = response => {
-    this.setState({notValide:true,loading:false})
-  }
   handleTitleChange = event => this.setState({ title: event.target.value })
   handlePasswordChange = event => this.setState({ password: event.target.value })
   handleValidatePassword = event => this.setState({ password2: event.target.value, notValide: event.target.value !== this.state.password });
@@ -158,7 +155,7 @@ class Login extends Component {
             <FacebookLogin
               appId="800571104144427"
               autoLoad={false}
-              fields="name,email,picture"
+              fields="name,email"
               callback={this.responseCallbackFacebook} 
             />         
             </div>
@@ -167,8 +164,6 @@ class Login extends Component {
                 clientId="853564458690-kj782663d50bbft782m1na2s9hks69gi.apps.googleusercontent.com"
                 buttonText="Login"
                 onSuccess={this.responseCallbackGoogle}
-                onFailure={this.failResponse}
-        
               />,
             </div>
           </div>

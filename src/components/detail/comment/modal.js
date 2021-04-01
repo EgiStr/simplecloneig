@@ -1,7 +1,7 @@
 import React, { Component,lazy,Suspense } from 'react'
 
 import M from "materialize-css";
-import Avatar from "@material-ui/core/Avatar";
+
 
 import axios from 'axios'
 

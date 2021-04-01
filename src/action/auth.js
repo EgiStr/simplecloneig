@@ -2,7 +2,7 @@ import { parseJwt } from '../components/method/parseJwt'
 
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import {Redirect} from 'react-router-dom'
+
 
 export const loginUser = access => dispatch => {
     const config = {

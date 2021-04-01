@@ -27,6 +27,7 @@ class UpdateOrDeleteCommentSerializer(ModelSerializer):
 class CommentChildrenToSerializer(ModelSerializer):
     
     user = SerializerMethodField()
+    timestamp = SerializerMethodField()
     
     class Meta:
         model = Comments
@@ -42,7 +43,10 @@ class CommentChildrenToSerializer(ModelSerializer):
       
             
         ]
-    
+    def get_timestamp(self,obj):
+        return obj.get_time
+        
+
     def get_user(self,obj):
         return UserProfilPostserializer(obj.user,context={'request':None}).data
     
@@ -54,6 +58,7 @@ class CommentChildrenSerializer(ModelSerializer):
     
     user = SerializerMethodField()
     replies = SerializerMethodField()
+    timestamp = SerializerMethodField()
 
     class Meta:
         model = Comments
@@ -69,6 +74,9 @@ class CommentChildrenSerializer(ModelSerializer):
             
         ]
     
+    def get_timestamp(self,obj):
+        return obj.get_time
+
     def get_user(self,obj):
         return UserProfilPostserializer(obj.user,context={'request':None}).data
     
