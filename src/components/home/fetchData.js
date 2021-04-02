@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import axios from 'axios'
+import axios from '../../utils/axios'
 
 export default function FecthData(page,access) {
     
@@ -15,7 +15,7 @@ export default function FecthData(page,access) {
             "Authorization": 'Bearer ' + access,
         }}
         setLoading(true)
-        axios.get(`http://127.0.0.1:8000/api/?page=${page}`,config)
+        axios.get(`api/?page=${page}`,config)
         .then( res => {
             setLoading(false)
             setHasMore(res.data.next === null )

@@ -3,6 +3,7 @@ const initialState = {
     notifications : [],
     unreadNotifications : 0
 }
+
 const notifikasi = (state = initialState, action) => {
   let py = action.payload
 
@@ -35,9 +36,12 @@ const notifikasi = (state = initialState, action) => {
         ...state,
         unreadNotifications: 0 
       }
+    case 'SUCCESS_NOTIFICATIONS':
+      return state
+    default:
+      return state
       
   }
 
-  return state
 }
-export default notifikasi ;
+export default notifikasi

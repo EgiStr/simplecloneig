@@ -19,6 +19,12 @@
     display: flex;
     justify-content: space-evenly;
     padding: 5px;
+    
+    margin-bottom: 0 !important;
+}
+
+.caption-area {
+    padding-left: 20px;
 }
 .icon{
     color: #2e81F4;

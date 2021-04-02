@@ -1,9 +1,10 @@
 import React , { useEffect } from "react";
-import Content from '../../home/content'
+
+import Thumb from './tumbPost'
 
 import { get_post_save_data } from '../../../action/auth'
 import { connect } from 'react-redux'
-
+import Loading from '../../other/loading'
 import {withRouter, useHistory} from 'react-router-dom'
 
 const SavePosts = ({user,param,post_data,get_post_save_data}) => {
@@ -17,27 +18,19 @@ const SavePosts = ({user,param,post_data,get_post_save_data}) => {
     
     return (
         <div className="posts">
-            <div className="posts_wrap">
+            <div className="posts_wrap row">
           
-            { post_data ? (post_data.map((item, index) => {
+            { post_data ? post_data.map((item, index) => {
 
                 return (
-                    <Content
-                        key={index}
-                        id={index}
-                        contentType={item.content_type_id}
-                        postId={item.id}
-                        userId={item.user.id}
-                        username={item.user.nickname}
-                        captions={item.caption}
-                        imageUrl={item.post}
-                        avatar={item.user.profil}
-                        like={item.likes}
+                    <Thumb 
+                    key={index}
+                    postId={item.id}
+                    url={item.post}
                     />
 
                 )
-            }))
-                : (null)}
+            }) : <Loading page={'YOUR SAVE'}/>}
 
         </div>
     </div>

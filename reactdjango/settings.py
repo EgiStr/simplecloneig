@@ -83,8 +83,13 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = (
+    # google
    'social_core.backends.google.GoogleOAuth2',
+    # facebook
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
 
+    # token drf and djanoo model
    'django.contrib.auth.backends.ModelBackend',
    'rest_framework_social_oauth2.backends.DjangoOAuth2',
 )
@@ -98,7 +103,16 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',
 ]
+# Facebook configuration
+SOCIAL_AUTH_FACEBOOK_KEY = '800571104144427'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'df80716922b48b9c05166a22a7df69cc'
 
+# Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
+# Email is not sent by default, to get it, you must request the email permission.
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email'
+}
 
 ROOT_URLCONF = 'reactdjango.urls'
 

@@ -50,7 +50,7 @@ class Post(models.Model):
   
     @property
     def get_time(self):
-        return humanize.naturalday(self.create_at)
+        return humanize.naturaltime(self.create_at)
 
     def __str__(self):
         return 'post of {}. caption:{}'.format(self.user,self.caption)

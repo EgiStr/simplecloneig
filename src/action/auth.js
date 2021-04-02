@@ -1,8 +1,8 @@
 import { parseJwt } from '../components/method/parseJwt'
 
-import axios from 'axios'
+import axios from '../utils/axios'
 import Cookies from 'js-cookie'
-import {Redirect} from 'react-router-dom'
+
 
 export const loginUser = access => dispatch => {
     const config = {
@@ -11,7 +11,7 @@ export const loginUser = access => dispatch => {
         }
     }
 
-    axios.get(`http://127.0.0.1:8000/auth/me/?t=${access}`,config)
+    axios.get(`auth/me/`,config)
         .then(res => {
             const user = res.data
             Cookies.set('ud',user)
@@ -35,7 +35,7 @@ export const get_post_like = () => dispatch => {
             "Authorization": 'Bearer ' + Cookies.get('access'),
         }
     }
-    axios.get('http://127.0.0.1:8000/api/post/like/',config)
+    axios.get('api/post/like/',config)
         .then(res => {
 
             const post = res.data.map(e => e.post)
@@ -53,7 +53,7 @@ export const get_post_save = () => dispatch => {
             "Authorization": 'Bearer ' + Cookies.get('access'),
         }
     }
-    axios.get('http://127.0.0.1:8000/api/post/save/', config)
+    axios.get('api/post/save/', config)
         .then(res => {
             const post = res.data.map(e => e.post)
             dispatch({
@@ -120,7 +120,7 @@ export const get_post_save_data = () => (dispatch,getState) => {
     }
     if(getState().auth.save_post_data.length === 0){
         console.log('ada lagi')
-        axios.get('http://127.0.0.1:8000/api/save/post/', config )
+        axios.get('api/save/post/', config )
             .then(res => {
                 dispatch({
                     type:'GET_POST_SAVE_DATA',

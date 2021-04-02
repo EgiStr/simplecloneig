@@ -1,6 +1,6 @@
 import React , {useEffect,useState} from 'react'
 import { Avatar } from '@material-ui/core'
-import axios from 'axios'
+import axios from '../../utils/axios'
 import Cookies from 'js-cookie'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -32,8 +32,6 @@ const Notif = ({user_id,post,sender,text,type}) => {
                 return true
             }
             return false 
-        }else{
-            window.location.reload()
         }
     }
 
@@ -41,7 +39,7 @@ const Notif = ({user_id,post,sender,text,type}) => {
         let formData = new FormData() ;
         formData.append('user', sender.id)
         formData.append('following_user',user_id)
-        axios.post('http://127.0.0.1:8000/auth/following/',
+        axios.post('auth/following/',
         formData,{
             headers:{
                 "Authorization": 'Bearer ' + Cookies.get('access')

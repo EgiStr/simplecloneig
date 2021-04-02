@@ -1,6 +1,5 @@
 import React , { useState,useEffect,useRef,useCallback } from 'react'
 
-import axios from 'axios'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import Cookies from 'js-cookie'
@@ -9,14 +8,11 @@ import Content from './content'
 import FecthData from './fetchData'
 import CreatePost from '../createpost/createpost'
 import { protectAuth } from '../../utils/auth/auth'
-
+import PageNull from '../other/pageNull'
 import Loading from '../other/loading'
-
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('access')
 
 
 export const home = ({ user }) => {
-  const [redirect,setRedirect] = useState(false)
   const [page,setPage] = useState(1)
   
   // fetch data dari api
@@ -24,7 +20,7 @@ export const home = ({ user }) => {
   const [data,hasMore,loading] = FecthData(page,Cookies.get('access'))
   
   useEffect(() => {
-    protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : setRedirect(true) )
+    protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '' )
   },[])
   
   
@@ -48,7 +44,7 @@ export const home = ({ user }) => {
   }, [loading,hasMore])
   
   
-  if(redirect || user === null) return <Redirect to='/login'/>
+  if(user === null) return <Redirect to='/login'/>
   return (
     <div className="container">
             <div className="row">
@@ -96,7 +92,7 @@ export const home = ({ user }) => {
                                   comment    = {item.comments}
                                   />)
                         }
-                    }) : null}
+                    }) : !loading && <PageNull page={'HOME PAGE'}/> }
              
                     {loading && <div className='center-align'><Loading /></div>}
                 </div>

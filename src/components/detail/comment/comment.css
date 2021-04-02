@@ -1,15 +1,4 @@
-.modal {
-  width:100% !important;
-  padding: 5px 30px !important;
-  border-radius: 10px !important;
-  
-}
 
-.modal .modal-footer {
-  height: 70px;
-  overflow-y: auto;
-
-}
 
 .mentions--multiLine .mentions__control {
     font-size: 14pt;
@@ -46,4 +35,5 @@
     background-color: #cee4e5;
   }
 
+ 
   

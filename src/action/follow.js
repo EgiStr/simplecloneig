@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../utils/axios'
 
 // terbalik di apinya harusnya  following 
 export const getFollower = access => dispatch => {
@@ -6,7 +6,7 @@ export const getFollower = access => dispatch => {
         headers:{
         "Authorization": 'Bearer ' + access
     }}
-    axios.get('http://127.0.0.1:8000/auth/follower/detail/',config )
+    axios.get('auth/follower/detail/',config )
         .then(res => {
             
             localStorage.setItem('follow' , res.data.map(e => e.following_user.id))
@@ -24,7 +24,7 @@ export const getFollowerUser = (access,id) => dispatch => {
         "Authorization": 'Bearer ' + access
     }}
     
-    axios.get(`http://127.0.0.1:8000/auth/following/detail/${id}/`,config)
+    axios.get(`auth/following/detail/${id}/`,config)
         .then(res => { 
             dispatch({
                 type:'GET_FOLLOWER',
@@ -40,7 +40,7 @@ export const getFollowingUser = (access,id) => (dispatch,getstate) => {
         "Authorization": 'Bearer ' + access
     }}
 
-    axios.get(`http://127.0.0.1:8000/auth/follower/detail/${id}/`, config )
+    axios.get(`auth/follower/detail/${id}/`, config )
         .then(res => {
             dispatch({
                 type:'GET_FOLLOWING_USER',

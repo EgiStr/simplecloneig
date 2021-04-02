@@ -1,5 +1,5 @@
 import React,{ useState } from 'react'
-import axios from 'axios'
+import axios from '../../utils/axios'
 import Loading from '../other/loading'
 import {useHistory} from 'react-router-dom'
 
@@ -28,7 +28,7 @@ const passwordNew = () => {
             token:token,
             password:password,
         }
-        axios.post(`http://127.0.0.1:8000/auth/password_reset/`,data)
+        axios.post(`auth/password_reset/`,data)
             .then(res => {
                 setLoading(false)
                 history.push('/login')

@@ -1,1 +1,0 @@
-curl -X POST -d "client_id=qDqQ2k5cz2HNaHsuyZC4JPwRRHxPOm2PJUoSXeTJ&client_secret=6Xb1TvCPLJRmKsrQ4XhGg0uPnwLSvwmJ96DZiUKyG1pB87I6YfkJYhyDycl4vX6EBWCG4lFeDcuHecSGboz6gckgo3RWwSSj0xaBdnvwUwLWUYZOO1HBVdLSOsBrIcVe&grant_type=password&username=egistr&password=sweverdam12" http://localhost:8000/auth/oauth2/token/

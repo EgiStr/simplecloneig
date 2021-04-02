@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 
-import axios from 'axios'
+import axios from '../../utils/axios'
 import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
@@ -16,7 +16,7 @@ import { get_post_data } from '../../action/auth'
 import ModalFollow from './follow/modelFollow'
 import NavProfil from './navProfil/navProfil'
 import RouterProfil from './routerProfil/routerprofil'
-
+import Loading from '../other/loading'
 
 import '../../Profile.css'
 
@@ -33,6 +33,7 @@ class Profile extends Component {
             data: [],
             redirect: false,
             redirectUrl: '',
+            loading : true,
         }
         delete axios.defaults.headers.common["Authorization"];
     }
@@ -43,11 +44,11 @@ class Profile extends Component {
         // protectAuth(this.state.access, this.state.refresh).then(e => !e ? window.location.reload() : this.setState({ redirect: false }))
         this.props.getFollower(this.state.access)
         
-        axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
+        axios.get(`auth/profil/${id}/`)
         .then(res => {
             this.props.get_post_data(res.data.post_data)
             this.props.is_follow(res.data.follower.map(e => e.id))
-            this.setState({ data: res.data })
+            this.setState({ data: res.data,loading:false })
         })
         .catch(e => console.log(e.request))
     }
@@ -56,12 +57,12 @@ class Profile extends Component {
             this.props.getFollower(this.state.access)
         
             const id = this.props.match.params.id;
-    
-            axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
+            this.setState({loading:true})
+            axios.get(`auth/profil/${id}/`)
                 .then(res => {
                     this.props.get_post_data(res.data.post_data)
                     this.props.is_follow(res.data.follower.map(e => e.id))
-                    this.setState({ data: res.data })
+                    this.setState({ data: res.data,loading:false })
                 })
                 .catch(e => console.log(e.request))
         }
@@ -78,7 +79,7 @@ class Profile extends Component {
         form.append('user', diikuti)
         form.append('following_user', pefollow)
 
-        axios.post('http://127.0.0.1:8000/auth/following/',
+        axios.post('auth/following/',
             form, {
             headers: {
                 "Authorization": 'Bearer ' + Cookies.get('access')
@@ -106,6 +107,7 @@ class Profile extends Component {
 
         return (
             <div className="container">
+                {this.state.loading && <Loading />}
                 <div className="row header" >
                     <div>
                         <Avatar

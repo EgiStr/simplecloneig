@@ -1,5 +1,5 @@
 
-import axios from 'axios'
+import axios from '../utils/axios'
 import Cookies from 'js-cookie'
 
 
@@ -10,13 +10,13 @@ export const get_notif_user = () => (dispatch,getState) => {
     }}
     
     if(Number(localStorage.getItem('notif')) > 0){
-        axios.put(`http://127.0.0.1:8000/notif/update/`, null, config)
+        axios.put(`notif/update/`, null, config)
             .then(res => dispatch({ type:'READ_NOTIFICATIONS' }))
             .catch(e => console.log(e.request))
     }
     
     if(getState().notifikasi.notifications.length === 0){
-        axios.get(`http://127.0.0.1:8000/notif/user/`, config )
+        axios.get(`notif/user/`, config )
             .then(res => {
                 dispatch({
                     type:'GET_NOTIFICATIONS',
@@ -33,7 +33,7 @@ export const get_notif_login = () => dispatch => {
         "Authorization": 'Bearer ' + Cookies.get('access')
     }}
 
-    axios.get(`http://127.0.0.1:8000/notif/user/`,config )
+    axios.get(`notif/user/`,config )
         .then(res => {
             dispatch({
                 type:'GET_NOTIFICATIONS',

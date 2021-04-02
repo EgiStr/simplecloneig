@@ -1,5 +1,5 @@
 import React,{ useState } from 'react'
-import axios from 'axios'
+import axios from '../../utils/axios'
 import Loading from '../other/loading'
 
 const forgetPassword = () => {
@@ -15,7 +15,7 @@ const forgetPassword = () => {
         const data = {
             email:email
         }
-        axios.post(`http://127.0.0.1:8000/auth/password_reset/`,data)
+        axios.post(`auth/password_reset/`,data)
             .then(res => {
                 setLoading(false)
                 setRespone(`${res.data.status} check your email from snapthina`)

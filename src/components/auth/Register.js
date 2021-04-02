@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from 'axios'
+import axios from '../../utils/axios'
 import { Redirect } from 'react-router-dom'
 
 class Register extends Component {
@@ -30,17 +30,13 @@ class Register extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    axios({
-      method: 'post',
-      url: 'http://127.0.0.1:8000/auth/register/',
-      data: {
-        username: this.state.username,
-        password: this.state.password,
-        password2: this.state.password2,
-        email: this.state.email,
-      }
-   
-    })
+    const data = {
+      username: this.state.username,
+      password: this.state.password,
+      password2: this.state.password2,
+      email: this.state.email,
+    }
+    axios.post('auth/register/',data)
       .then((res) => {
         this.setState({ redirect: true });
       })

@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from '../utils/axios'
 
 
 export const get_comment = post_id => dispatch => {
-    axios.get(`http://127.0.0.1:8000/comment/detail/${post_id}/`)
+    axios.get(`comment/detail/${post_id}/`)
         .then(res => {
             let py = res.data
         
@@ -15,7 +15,7 @@ export const get_comment = post_id => dispatch => {
 }
 
 export const get_replies = parent_id => dispatch => {
-    axios.get(`http://127.0.0.1:8000/comment/detail/${parent_id}/replies/`)
+    axios.get(`comment/detail/${parent_id}/replies/`)
         .then(res => {
             let py = res.data
         
@@ -45,7 +45,7 @@ export const delete_comment = (id,access) => dispatch => {
 
     const confirm = window.confirm('are you sure about that ? ')
     if(confirm){
-        axios.delete(`http://127.0.0.1:8000/comment/${id}/edit/`,config)
+        axios.delete(`comment/${id}/edit/`,config)
             .then(res => {
                 dispatch({
                     type:'DELETE_COMMENTS',
@@ -65,7 +65,7 @@ export const delete_comment_replies = (id,access) => dispatch => {
     const confirm = window.confirm('are you sure about that ? ')
     
     if(confirm){
-        axios.delete(`http://127.0.0.1:8000/comment/${id}/edit/`,config)
+        axios.delete(`comment/${id}/edit/`,config)
         .then(res => {
            
             dispatch({

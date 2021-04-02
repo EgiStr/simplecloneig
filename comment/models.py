@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
+from django.contrib.humanize.templatetags import humanize
+
 from usercostumer.models import UserProfil
 
 # Create your models here.
@@ -13,7 +15,7 @@ class CommentManager(models.Manager):
     def fillter_by_instance(self,instance):
         content_type= ContentType.objects.get_for_model(instance.__class__)
         obj_id = instance.id
-        qs = super(CommentManager,self).filter(content_type=content_type,obj_id= obj_id)
+        qs = super(CommentManager,self).filter(content_type=content_type,obj_id= obj_id,parent=None)
         return qs
 
 class Comments(models.Model):
@@ -40,6 +42,10 @@ class Comments(models.Model):
     def children(self):
         return Comments.objects.filter(parent=self)
     
+    @property
+    def get_time(self):
+        return humanize.naturaltime(self.timestamp)
+
     @property
     def is_parent(self):
         if self.parent != None:
