@@ -1,6 +1,6 @@
 import React  from 'react'
 
-import axios from 'axios'
+import axios from '../axios'
 import Cookies from 'js-cookie'
 import {parseJwt} from '../../components/method/parseJwt'
 import { Redirect } from 'react-router-dom'
@@ -57,7 +57,7 @@ export const resfeshLogin = resfreshToken => {
             client_secret : '6Xb1TvCPLJRmKsrQ4XhGg0uPnwLSvwmJ96DZiUKyG1pB87I6YfkJYhyDycl4vX6EBWCG4lFeDcuHecSGboz6gckgo3RWwSSj0xaBdnvwUwLWUYZOO1HBVdLSOsBrIcVe',
             refresh_token : resfreshToken,
         }
-        axios.post('http://127.0.0.1:8000/auth/token/',data)
+        axios.post('auth/token/',data)
         .then( res => {
             
             // jika gagal maka false / null
@@ -102,7 +102,7 @@ export const requestLogin = async (accessToken ,refreshToken) => {
             }
         }
         // // mengunakan home page agar dapat mengetest token
-        // axios.get('http://127.0.0.1:8000/api/',{headers:{"Authorization": 'Bearer ' + token  }})
+        // axios.get('api/',{headers:{"Authorization": 'Bearer ' + token  }})
         // // jika berhasil maka hasilnya true / dan user sudah auth
         // .then(e => {
         //     resolve(true)

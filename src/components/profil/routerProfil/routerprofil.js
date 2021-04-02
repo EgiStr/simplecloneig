@@ -8,6 +8,7 @@ import SavePosts from './save_post'
 const routerprofil = ({idUser,path}) => {
     return (
         <div>
+           
             <Switch>
                     <Route path={`${path}`} exact component={()=> <Posts param={idUser} />} />
                     <Route path={`${path}/savePost`} exact component={() => <SavePosts param={idUser} />} />

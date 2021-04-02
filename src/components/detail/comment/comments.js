@@ -1,22 +1,15 @@
 import React, { Fragment } from 'react'
 
-import { protectAuth } from '../../../utils/auth/auth'
-
-import Cookies from 'js-cookie'
-
 import { connect } from 'react-redux'
-import { delete_comment_replies,
+import { 
          add_username,
          add_parent } from '../../../action/comment'
+import CommentMore from '../../other/comment/commentedit'
 
-import {AvatarProfil} from '../../../utils/auth/profilPicture'
+import {AvatarProfil} from '../../../utils/auth/profil'
 
-const Childcomment = ({parent,user,nickname,time,profil,content,id,delete_comment_replies,add_parent,add_username}) => {
+const Childcomment = ({user_id,id_user,parent,user,nickname,time,profil,content,id,add_parent,add_username}) => {
     
-    const handleRemove = id => {
-        protectAuth(Cookies.get('access'),Cookies.get('refresh')).then(e => e ? '' : '')
-        delete_comment_replies(id,Cookies.get('access'))
-    }
     
     const handleReplies = (user_username) => {
         add_parent(parent)
@@ -36,7 +29,7 @@ const Childcomment = ({parent,user,nickname,time,profil,content,id,delete_commen
                             style={{borderRadius:'50%'}}
                         />
                     </div>
-                    <div className="col s8" style={{paddingTop:10}}>
+                    <div className="col s7" style={{paddingTop:10}}>
                         <b>{nickname}</b> {content}
                         <div className='col s12 reply'>
                             <div className="col s4" style={{paddingLeft:0}}>
@@ -47,6 +40,10 @@ const Childcomment = ({parent,user,nickname,time,profil,content,id,delete_commen
                             </div>
                         </div>
                     </div>
+                    {user_id === id_user ?
+                    <div className='col s1 more-edit'>
+                             <CommentMore id={id} type={false} />   
+                    </div> : null}
             </Fragment>
         )     
     }else{
@@ -61,7 +58,7 @@ const Childcomment = ({parent,user,nickname,time,profil,content,id,delete_commen
                             style={{borderRadius:'50%'}}
                         />
                     </div>
-                    <div className="col s8" style={{paddingTop:10}}>
+                    <div className="col s7" style={{paddingTop:10}}>
                         <b>{nickname}</b> {content}
                         <div className='col s12 reply'>
                             <div className="col s4" style={{paddingLeft:0}}>
@@ -72,6 +69,10 @@ const Childcomment = ({parent,user,nickname,time,profil,content,id,delete_commen
                             </div>
                         </div>
                     </div>
+                    {user_id === id_user ?
+                    <div className='col s1 more-edit'>
+                             <CommentMore id={id} type={false} />   
+                    </div> : null}
         </Fragment>
     )}
 }
@@ -80,7 +81,7 @@ const Childcomment = ({parent,user,nickname,time,profil,content,id,delete_commen
 
 const mapStateToProps = state => {
     return {
-        replies_comment : state.comment.replies,
+        user_id : state.auth.user.user_id,
     }
 }
-export default connect(mapStateToProps,{delete_comment_replies, add_username,add_parent})(Childcomment)
+export default connect(mapStateToProps,{add_username,add_parent})(Childcomment)

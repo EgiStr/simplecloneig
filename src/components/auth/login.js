@@ -12,7 +12,7 @@ import { GoogleLogin } from 'react-google-login';
  
 import Loading from '../other/loading'
 
-import axios from "axios";
+import axios from ".././../utils/axios";
 
 import '../../login.css'
 
@@ -39,7 +39,7 @@ class Login extends Component {
       password: this.state.password,
     }
     this.setState({loading:true})
-    axios.post('http://127.0.0.1:8000/auth/token/',data)
+    axios.post('auth/token/',data)
     .then((res) => {
       Cookies.set('access', res.data.access_token)
       Cookies.set('refresh', res.data.refresh_token)
@@ -64,7 +64,7 @@ class Login extends Component {
     }
     this.setState({loading:true})
     
-    axios.post(`http://127.0.0.1:8000/auth/convert-token/`, data)
+    axios.post(`auth/convert-token/`, data)
     .then((res) => {
       Cookies.set('access', res.data.access_token)
       Cookies.set('refresh', res.data.refresh_token)
@@ -90,7 +90,7 @@ class Login extends Component {
     }
     this.setState({loading:true})
     
-    axios.post(`http://127.0.0.1:8000/auth/convert-token/`, data)
+    axios.post(`auth/convert-token/`, data)
     .then((res) => {
       Cookies.set('access', res.data.access_token)
       Cookies.set('refresh', res.data.refresh_token)

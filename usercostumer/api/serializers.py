@@ -13,34 +13,16 @@ from usercostumer.models import UserProfil,UserFollowing
 from posts.models import Post
 
 class PostProfilSerializer(ModelSerializer):
-    content_type_id = SerializerMethodField()
-    user = SerializerMethodField()
-    likes = SerializerMethodField()
+
   
     class Meta:
         model = Post
         fields = [
             'id',
-            'content_type_id',
-            'user',
-            'caption',
             'post',
-            'likes',
             'create_at',
           
         ]
-        
-    def get_user(self,obj):
-        return UserProfilPostserializer(obj.user,context={'request':None}).data
-    
-    def get_likes(self,obj):
-        return obj.liked_post.count()
-
-    def get_content_type_id(self,obj):
-        content_type = obj.get_content_type
-        """ for make replies comment """
-        return content_type.id
-
     
 
 

@@ -7,7 +7,7 @@ import M from "materialize-css";
 import { Avatar } from '@material-ui/core'
 
 import ReactCrop from 'react-image-crop'
-import axios from 'axios'
+import axios from '../../utils/axios'
 import Cookies from 'js-cookie'
 
 import { protectAuth } from '../../utils/auth/auth'
@@ -146,7 +146,7 @@ class CreatePost extends Component {
                 'Content-Type': 'multipart/form-data'
             }
         }
-        axios.post('http://127.0.0.1:8000/api/create/',formData,config)
+        axios.post('api/create/',formData,config)
             .then((res) => {
                 // jika succes redirect ke profil
                 this.setState({ redirect: true, urlJadi: null, caption: '', })

@@ -1,60 +1,54 @@
 import React,{ Fragment,useState } from 'react'
+
 import { connect } from 'react-redux'
-import { like_post_with,unlike_post_with } from '../../../action/auth'
 import Cookies from 'js-cookie'
 import axios from '../../../utils/axios'
 
-export const likes = ({postId,user,likes,unlike_post_with,like_post_with}) => {
+export const Follow = ({follow_id,user,btn}) => {
     const [state,setState] =useState({   
-        buttonLikeClass:'small material-icons icon red-text',
-        buttonNotClass:'small material-icons icon',
+        follow:'Following',
+        unfollow:'Follow',
     })
     
 
-    const handleLikeButton = postId => {
-        const data = {
-            post:postId,
-            user:user.user_id
+    const handleFollow = () => {
+
+        const config =  {
+            headers: {
+                "Authorization": 'Bearer ' + Cookies.get('access')
+            }
         }
 
-        const config = {
-            headers : {
-            "Authorization": 'Bearer ' + Cookies.get('access')
-            }}
+        let form = new FormData();
+        form.append('user', follow_id)
+        form.append('following_user', user.user_id)
 
-        axios.post('api/like/',data, config)
-            .then(res => {
-                const prev = localStorage.getItem('like').split(",").map(Number)
-                // jiga ga ada id berarti menghapus
-                res.data.id === undefined ? setState(prev => ({
-                                                    buttonLikeClass :'small material-icons icon',
-                                                    buttonNotClass :'small material-icons icon',
-                                                }))
-                                                : setState(prev =>({
-                                                        buttonLikeClass :'small material-icons icon red-text',
-                                                        buttonNotClass : 'small material-icons icon red-text',}))  
-                res.data.id === undefined ? unlike_post_with(prev,postId) : like_post_with(prev,postId)
-                res.data.id === undefined ? likes(prev => ({...prev,likes:prev.likes - 1})) : likes(prev => ({...prev,likes:prev.likes + 1}))
+        axios.post('auth/following/',form,config)
+            .then(res =>{ 
+                const prev = localStorage.getItem('follow').split(",").map(Number)
+                res.data.id === undefined ? setState({ follow: 'Follow', unfollow: 'Follow' }) : setState({ follow: 'Following', unfollow: 'Following' })
+                res.data.id === undefined ? localStorage.setItem('follow',[prev.filter(e => e !== follow_id)]) : localStorage.setItem('follow',[...prev,follow_id])
                 
             })
-            .catch(e => {console.log(e.request)})
+            .catch(e => console.log(e))
+
     }
-    const has_like = localStorage.getItem('like').split(",").map(Number).includes(postId)
+
+    const is_follow = localStorage.getItem('follow').split(',').map(Number).includes(follow_id)
+    
 
     return (
         <Fragment>
-              <a onClick={()=>{handleLikeButton(postId)}}><i className={ has_like ? state.buttonLikeClass : state.buttonNotClass }>favorite</i></a>
+            <a className={`secondary-content ${btn ? 'btn' : ''}`} style={{cursor:'pointer'}} onClick={() => handleFollow()} >{is_follow ? state.follow : state.unfollow }</a>
         </Fragment>
     )
 }
+
 
 const mapStateToProps = state => ({
     user: state.auth.user
 })
 
-const mapDispatchToProps = {
-    like_post_with,
-    unlike_post_with,
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(likes)
+
+export default connect(mapStateToProps)(Follow)

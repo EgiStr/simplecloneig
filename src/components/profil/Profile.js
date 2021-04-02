@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 
-import axios from 'axios'
+import axios from '../../utils/axios'
 import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
@@ -44,7 +44,7 @@ class Profile extends Component {
         // protectAuth(this.state.access, this.state.refresh).then(e => !e ? window.location.reload() : this.setState({ redirect: false }))
         this.props.getFollower(this.state.access)
         
-        axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
+        axios.get(`auth/profil/${id}/`)
         .then(res => {
             this.props.get_post_data(res.data.post_data)
             this.props.is_follow(res.data.follower.map(e => e.id))
@@ -58,7 +58,7 @@ class Profile extends Component {
         
             const id = this.props.match.params.id;
             this.setState({loading:true})
-            axios.get(`http://127.0.0.1:8000/auth/profil/${id}/`)
+            axios.get(`auth/profil/${id}/`)
                 .then(res => {
                     this.props.get_post_data(res.data.post_data)
                     this.props.is_follow(res.data.follower.map(e => e.id))
@@ -79,7 +79,7 @@ class Profile extends Component {
         form.append('user', diikuti)
         form.append('following_user', pefollow)
 
-        axios.post('http://127.0.0.1:8000/auth/following/',
+        axios.post('auth/following/',
             form, {
             headers: {
                 "Authorization": 'Bearer ' + Cookies.get('access')

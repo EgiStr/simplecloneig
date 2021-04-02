@@ -21,6 +21,7 @@ from posts.api.serializers import (
                                     UserLikePost,
                                     SavePostSerializer,
                                     UserSavePost,
+                                    PostProfilSerializer
                                     )
 class PostApiViews(ListAPIView):
     
@@ -60,7 +61,7 @@ class PostEditApiView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly | IsAdminUser]
 
     def get_queryset(self):
-        qs = Post.objects.filter(id=self.kwargs['id'])
+        qs = Post.objects.filter(id=self.kwargs['pk'])
         return qs
 # user like and post
 
@@ -81,7 +82,7 @@ class GetPostSaveApiView(ListAPIView):
 
 # data post dari save user 
 class GetSavePostData(ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostProfilSerializer
     permission_classes = [IsAuthenticated | IsAdminUser]
     
     def get_queryset(self):
@@ -90,7 +91,7 @@ class GetSavePostData(ListAPIView):
     
         return qs
 class GetLikePostData(ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostProfilSerializer
     permission_classes = [IsAuthenticated | IsAdminUser]
     
     def get_queryset(self):

@@ -36,6 +36,8 @@ const notifikasi = (state = initialState, action) => {
         ...state,
         unreadNotifications: 0 
       }
+    case 'SUCCESS_NOTIFICATIONS':
+      return state
     default:
       return state
       

@@ -1,6 +1,6 @@
 import React,{ useState } from 'react'
 
-import axios from 'axios' ;
+import axios from '../../../utils/axios' ;
 import Cookies from 'js-cookie'
 
 import {Link} from 'react-router-dom'
@@ -36,7 +36,7 @@ const changePassword = () => {
             formData.append('old_password',oldpassword)
             formData.append('new_password',newPassword)
             formData.append('new_password2',newPassword2)
-        axios.put('http://127.0.0.1:8000/auth/password/change/',formData,config)
+        axios.put('auth/password/change/',formData,config)
             .then( res => { 
                 setState({
                     oldpassword:'',

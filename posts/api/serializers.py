@@ -18,6 +18,19 @@ class PostNotifSerializer(ModelSerializer):
         ]
 
 # for post home
+
+class PostProfilSerializer(ModelSerializer):
+
+  
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'post',
+            'create_at',
+          
+        ]
+    
 class PostSerializer(ModelSerializer):
     user = SerializerMethodField()
     likes = SerializerMethodField()
@@ -79,6 +92,7 @@ class PostDetailSerialzer(ModelSerializer):
             'create_at',
             'content_type_id',      
             'comments',
+            'private',
         ]
 
     def get_create_at(self,obj):

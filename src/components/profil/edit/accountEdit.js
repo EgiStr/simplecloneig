@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import M from "materialize-css/dist/js/materialize.min.js";
 
-import axios from "axios";
+import axios from "../../../utils/axios";
 import Cookies from "js-cookie";
 
 import { protectAuth } from "../../../utils/auth/auth";
@@ -43,7 +43,7 @@ class AccountEdit extends Component {
     
     const userId = this.props.user.user_id
 
-    axios.get(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, config)
+    axios.get(`auth/profil/${userId}/edit/`, config)
       .then((res) => {
         const nomor = res.data.nomorHp ? res.data.nomorHp : 62
         const bio  = res.data.bio ? res.data.bio : ''
@@ -112,7 +112,7 @@ class AccountEdit extends Component {
       formdata.append("profil", profil);
     }
 
-    axios.put(`http://127.0.0.1:8000/auth/profil/${userId}/edit/`, formdata, config)
+    axios.put(`auth/profil/${userId}/edit/`, formdata, config)
       .then( res => this.setState({respone:res.statusText}))
       .catch( e => this.setState({respone:e.request.responseText}));
   };

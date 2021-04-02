@@ -1,0 +1,39 @@
+import React,{Fragment} from 'react'
+import { connect } from 'react-redux'
+import Modal from '../../home/modalDetail'
+
+import './tumbPost.css'
+
+export const tumbPost = (props) => {
+    return (
+        <Fragment>
+            <div className='col s12 m4'>
+              
+                    <img
+                        src={props.url}
+                        alt={'post....'}
+                        className='modal-trigger post-image'
+                        href={`#modal_id${props.postId}`}
+                        width={300}
+                        height={290}
+                    />
+            </div>
+            <Modal 
+                id={props.postId}
+                key={props.id}
+                postId={props.postId}
+            />            
+
+        </Fragment>
+    )
+}
+
+const mapStateToProps = (state) => ({
+    
+})
+
+const mapDispatchToProps = {
+    
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(tumbPost)
