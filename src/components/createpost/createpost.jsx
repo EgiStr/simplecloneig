@@ -4,7 +4,6 @@ import { image64toCanvasRef, extractImageFileExtensionFromBase64, base64Stringto
 import { formatBytes } from '../method/convert'
 
 import M from "materialize-css";
-import { Avatar } from '@material-ui/core'
 
 import ReactCrop from 'react-image-crop'
 import axios from '../../utils/axios'
@@ -13,6 +12,8 @@ import Cookies from 'js-cookie'
 import { protectAuth } from '../../utils/auth/auth'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { AvatarProfil } from '../../utils/auth/profil';
+import Avatar from '../other/profil/avatarProfil';
 
 import 'react-image-crop/dist/ReactCrop.css';
 import '../../cp.css'
@@ -164,8 +165,9 @@ class CreatePost extends Component {
                 <div style={{ border: "1px solid gray", borderRadius: "10px", padding: "20px" }}>
                     <div style={{ display: "flex", alignItems: "center" }}>
                         <Avatar 
-                            src={`http://127.0.0.1:8000${this.props.user_id.profil}`}
-                            alt={'profil'}
+                            src={AvatarProfil(this.props.user_id.profil)}
+                            width={50}
+                            height={50}
                         />
                         <a className="caption modal-trigger" href="#modalCreatePost" style={{ flex: "1", borderRadius: "50px", padding: "10px", marginLeft: "5px" }}>What Do You mind?</a>
                     </div>
@@ -184,7 +186,9 @@ class CreatePost extends Component {
                     <div className="divider" />
                     <div className="profile-modal">
                         <Avatar 
-                            src={`http://127.0.0.1:8000${this.props.user_id.profil}`}
+                            src={AvatarProfil(this.props.user_id.profil)}
+                            width={50}
+                            height={50}
                         />
                         <p>{this.props.user_id.username}</p>
                     </div>

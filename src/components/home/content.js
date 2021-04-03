@@ -2,7 +2,6 @@ import React ,{ useState,lazy,Suspense,useCallback,useRef } from "react";
 
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import Avatar from "@material-ui/core/Avatar";
 
 import {AvatarProfil} from '../../utils/auth/profil'
 
@@ -11,13 +10,13 @@ import Likes from '../other/posts/likes'
 import RedirectUser from '../other/profil/redirectUrl'
 
 import '../../content.css'
+import Avatar from "../other/profil/avatarProfil";
 
 const Modal = lazy(()=> import('./modalDetail'))
 
 
-// menganti react-intersection-observer dengan observer API non npm
-
-const Content =(props) => {
+const Content = props => {
+    
     
     const history = useHistory()
    
@@ -57,7 +56,8 @@ const Content =(props) => {
             <div className="head">             
                 <Avatar 
                         className="avatar" 
-                        alt="foto" 
+                        width={50}
+                        height={50}
                         src={urlProfil} 
                 />        
                 <RedirectUser nickname={props.username} />
@@ -78,7 +78,7 @@ const Content =(props) => {
                     <a className="modal-trigger"  href={`#modal_id${props.id}`}><i className="small material-icons icon ">comment</i></a>
                 </div>
                 {/* save */}
-                <div className="col s2 offset-s6">
+                <div className="col s2 offset-s5">
                     <Saves postId={props.postId} />
                 </div>
                     {/* lazy loading modal dengan react */}            

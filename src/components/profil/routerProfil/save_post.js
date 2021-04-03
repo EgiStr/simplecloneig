@@ -4,7 +4,9 @@ import Thumb from './tumbPost'
 
 import { get_post_save_data } from '../../../action/auth'
 import { connect } from 'react-redux'
+
 import Loading from '../../other/loading'
+
 import {withRouter, useHistory} from 'react-router-dom'
 
 const SavePosts = ({user,param,post_data,get_post_save_data}) => {

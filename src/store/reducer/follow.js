@@ -9,7 +9,7 @@ const unfollowing = (followings, n) => {
 }
 
 const initialState = {
-    is_following : false,
+
     followers : [],
     followings : [],
     followingUser : [],
@@ -21,11 +21,6 @@ const follow = (state = initialState,action) => {
     let py = action.payload
    
     switch (action.type) {
-        case 'IS_FOLLOWING':
-            return { 
-                ...state,
-                is_following: py 
-            }
 
         case 'GET_FOLLOWER':
             return {

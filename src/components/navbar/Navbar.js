@@ -7,16 +7,20 @@ import M from "materialize-css";
 import { connect } from 'react-redux'
 import { get_notif_user } from '../../action/notifikasi'
 import { NotifDropdown } from './notifDropdown'
+import { SearchDropdown } from './SearchDropdown'
 
-import { Avatar } from '@material-ui/core'
+import { AvatarProfil } from '../../utils/auth/profil';
 
 
 function Navbar({ user,notif,read,get_notif_user }) {
+    
+    
     if(window.location.pathname === '/register') return <Redirect to={'/register'} />
     if(window.location.pathname === '/forget-password/comfirm') return <Redirect to={'/forget-password/comfirm'} />       
     if (user === null) return <Redirect to={'/login'} />
    
-    const [toggle,setToggle] = useState(false)
+    const [toggleN,setToggleN] = useState(false)
+    const [toggleS,setToggleS] = useState(false)
     
     useEffect(() => {
         var elems = document.querySelectorAll('.dropdown-trigger');
@@ -25,9 +29,17 @@ function Navbar({ user,notif,read,get_notif_user }) {
     },[notif,read]);
     
     const notifTrigger = () => {
-        setToggle(prev => !prev)
+        if(toggleS ) setToggleS(false)
+        
+        setToggleN(prev => !prev)
         get_notif_user()
-    
+        
+    }
+    const searchTrigger = () => {
+        if(toggleN) setToggleN(false)
+        
+        setToggleS(prev => !prev)
+        
     }
     const notifNum = localStorage.getItem('notif') ? Number(localStorage.getItem('notif')) : Number(read)
     
@@ -36,10 +48,13 @@ function Navbar({ user,notif,read,get_notif_user }) {
             <nav>
                 <div className="container">                
                     <div className="nav-wrapper">
-                        <Link to={'/'} className="brand-logo ">Logo</Link>
-                        <ul className="right hide-on-med-and-down">
+            
+                            
+                        <Link to={'/'} className="brand-logo left">SnapThin</Link>
+                        <ul className="right">
+                            
                             <li><Link to={'/'} ><i className="material-icons">home</i></Link></li>
-                            <li><Link to="/search"><i className="material-icons">search</i></Link></li>
+                            <li><a onClick={() => searchTrigger()}><i className="material-icons">search</i></a></li>
                             <li><a
                                 onClick={() => notifTrigger()}
                                 style={{ display: "flex", flexDirection: "row" }}>
@@ -53,19 +68,22 @@ function Navbar({ user,notif,read,get_notif_user }) {
                                             : (null)}
                                 </a></li>
                             <li>
-                                <Avatar
+                                <img
                                     style={{marginTop:'10px',marginLeft:'10px'}} 
-                                    className='dropdown-trigger'
+                                    className='dropdown-trigger circle'
                                     data-target='dropdown1'
-                                    src = {`http://127.0.0.1:8000`+ user.profil}
+                                    src = {AvatarProfil(user.profil)}
                                     alt={'profil mu.... jancoxx'}
-                                    height={30}
-                                    width = {30}
-                                /></li>
+                                    height={43}
+                                    width = {43}
+                                />
+                            </li>
+
                             <NotifDropdown 
                                 notif={notif}
-                                toggle = {toggle}
+                                toggle = {toggleN}
                             />
+                            <SearchDropdown toggle={toggleS} />
                         </ul>
                      
                         <ul id='dropdown1' className='dropdown-content'>

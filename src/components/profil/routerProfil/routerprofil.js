@@ -11,7 +11,7 @@ const routerprofil = ({idUser,path}) => {
            
             <Switch>
                     <Route path={`${path}`} exact component={()=> <Posts param={idUser} />} />
-                    <Route path={`${path}/savePost`} exact component={() => <SavePosts param={idUser} />} />
+                    <Route path={`${path}/saved`} exact component={() => <SavePosts param={idUser} />} />
             </Switch>
         </div>
     )

@@ -11,7 +11,7 @@ export const NotifDropdown = ({notif,toggle}) => {
         display: toggle ? 'block': 'none', 
         marginTop: "65px", 
         boxShadow: " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-        width: "35vw", 
+        width: "40vw", 
         height: "50vh", 
         right: "15px", 
         color: "black", 
@@ -21,7 +21,7 @@ export const NotifDropdown = ({notif,toggle}) => {
     }
     return (
         <div>
-        <li className="box-notif" style={StyleDropdown}>
+        <li className="box-notif " style={StyleDropdown}>
             {notif.map((item,index) => {
   
                 return (
@@ -36,8 +36,7 @@ export const NotifDropdown = ({notif,toggle}) => {
                     </div>
                 )
             })}
-                               
-              {/* <div className="divider" style={{margin:"15px 0"}}/> */}
+                        
             
         </li>
             

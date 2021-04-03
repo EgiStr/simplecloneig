@@ -1,5 +1,5 @@
 import React,{Fragment} from 'react'
-import { connect } from 'react-redux'
+
 import Modal from '../../home/modalDetail'
 
 import './tumbPost.css'
@@ -28,12 +28,5 @@ export const tumbPost = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    
-})
 
-const mapDispatchToProps = {
-    
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(tumbPost)
+export default tumbPost ;

@@ -5,8 +5,8 @@ import M from "materialize-css";
 import { connect } from 'react-redux'
 
 import {getFollowerUser , getFollowingUser} from '../../../action/follow'
-import Following from './following'
-import Follower from './follower'
+import Follows from './follows'
+
 
 import './modalFollow.css'
 
@@ -29,10 +29,6 @@ class ModalFollow extends Component {
                 }
               
             },
-            onCloseEnd: () => {
-                this.Modal.style.display = 'none'
-            },
-            
             inDuration: 250,
             outDuration: 250,
             opacity: 0.5,
@@ -44,38 +40,38 @@ class ModalFollow extends Component {
         }
         
     render() {
-        let {follower,following} = this.props
+        let { follower,following } = this.props
        
       
         return (
             <div id="modal_id_follow" ref={ Modal => { this.Modal = Modal }} className="modal">
-                    {this.props.type === true ? (<h4>follower</h4>) : (<h4>following</h4>)}
-                <div className="modal-content" style={{ height: 400, overflow: 'auto', padding:'30px' }} >
+                    {this.props.type === true ? (<h4>Follower</h4>) : (<h4>Following</h4>)}
+                <div className="modal-content" style={{ height: 400, overflow: 'scroll', padding:'30px' }} >
+                <ul className="collection">
+                    { this.props.type === true 
+                    ? (
                     
-                    {this.props.type === true ? (
-                    
-                    follower.map((e,i) => {
-                        
-                        return <Follower 
-                                key={i}
-                                modal ={this.Modal}
-                                user = {e.user}
-                                id_follower = {e}
-                                />
-                    })
+                        follower.map((e,i) => {
+                            return <Follows 
+                                    key={i}
+                                    modal ={this.Modal}
+                                    user = {e.user}
+                                    />
+                        })
                     ) : (
                     
                         following.map((e,i) => {
-                        return <Following 
+
+                        return <Follows 
                                 modal = {this.Modal}
                                 key = {i}
                                 user ={e.following_user}
-                                id_following = {e}
+ 
                         />
                       
-                    })
-                    )}
-                    
+                    })) 
+                    }
+                </ul>
                    
                 </div>
             </div>

@@ -1,7 +1,7 @@
 #modal_id_follow {
-    width:50% !important;
+    width:fit-content !important;
     padding: 50px !important;
     border-radius: 10px !important;
     overflow: hidden;
-  }
+}
   

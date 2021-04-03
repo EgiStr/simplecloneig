@@ -7,12 +7,11 @@ import Cookies from "js-cookie";
 import { protectAuth } from "../../../utils/auth/auth";
 import { connect } from 'react-redux'
 
-import Avatar from "@material-ui/core/Avatar";
-
 import "../../../AccountEdit.css";
 
 class AccountEdit extends Component {
   constructor(props) {
+    
     super(props);
     this.state = {
       access: Cookies.get("access"),
@@ -124,10 +123,10 @@ class AccountEdit extends Component {
           <div className="col s9 l9">
             <div className="container row" style={{padding:"30px", paddingLeft:'50px', marginLeft:'30px'}}>
               <div className="head_edit">
-                <Avatar
+                <img
                   ref={this.avatarRef}
                   src={this.state.profilpreview}
-                  className="avatar"
+                  className="avatar circle"
                   alt="foto"
                   style={{marginTop:"27px"}}
                 />

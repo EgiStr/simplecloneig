@@ -2,9 +2,9 @@ import React from "react";
 
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
+import { AvatarProfil } from '../../../utils/auth/profil'
 import PageNull from '../../other/pageNull'
 import Thumb from './tumbPost'
-import {AvatarProfil} from '../../../utils/auth/profil'
 
 const Posts = ({post_data}) => {
 

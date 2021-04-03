@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Cookies from 'js-cookie'
 import axios from '../../../utils/axios'
 
-export const Follow = ({follow_id,user,btn}) => {
+export const Follow = ({follow_id,user,className}) => {
     const [state,setState] =useState({   
         follow:'Following',
         unfollow:'Follow',
@@ -39,7 +39,7 @@ export const Follow = ({follow_id,user,btn}) => {
 
     return (
         <Fragment>
-            <a className={`secondary-content ${btn ? 'btn' : ''}`} style={{cursor:'pointer'}} onClick={() => handleFollow()} >{is_follow ? state.follow : state.unfollow }</a>
+            <a className={`${className || 'secondary-content'} `} style={{cursor:'pointer'}} onClick={() => handleFollow()} >{is_follow ? state.follow : state.unfollow }</a>
         </Fragment>
     )
 }

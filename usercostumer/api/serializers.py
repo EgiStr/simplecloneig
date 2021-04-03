@@ -95,17 +95,14 @@ class UserProfilSerialzer(ModelSerializer):
     class Meta:
         model = UserProfil
         fields = [
-            'user',
             'id',
+            'user',
             'name',
             'follower',
             'following',
             'nickname',
             'profil',
             'bio',
-            'email',
-            'nomorHp',
-            'gender',
             'post_count',
             'post_data',
         ]

@@ -2,8 +2,6 @@ import React, {Suspense,lazy} from 'react'
 import { connect } from 'react-redux'
 import Loading from '../../other/loading'
 
-import './comment.css'
-
 const CommentUser = lazy(() => import('./comment'))
 
 export const allComments = ({comments,user_id}) => {

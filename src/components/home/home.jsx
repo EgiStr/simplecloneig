@@ -47,7 +47,7 @@ export const home = ({ user }) => {
   if(user === null) return <Redirect to='/login'/>
   return (
     <div className="container">
-            <div className="row">
+            <div className="row" style={{width:'100%',marginLeft:'60px'}}>
                 <div className="col s8">
                   {/* for post  */}
                   <CreatePost />

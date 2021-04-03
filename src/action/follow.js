@@ -50,21 +50,3 @@ export const getFollowingUser = (access,id) => (dispatch,getstate) => {
         .catch(e => console.log(e.request))
 }
 
-export const is_follow = array => (dispatch,getstate) => {
-    const me = getstate().follow.followings.map(e => e.id)
-    
-    const target = array
-    let trueorfalse = false
-    
-    for(let i =0 ; i < me.length ; i++){
-        if(target.includes(me[i])){
-            trueorfalse = true
-        }
-
-    } 
-  
-    return dispatch({
-        type:'IS_FOLLOWING',
-        payload : trueorfalse,
-    })
-} 

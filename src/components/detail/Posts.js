@@ -75,19 +75,19 @@ export const DetailPosts = (props) => {
                                 <div className="col s2 m2" >
                                     <p style={{ fontWeight: "350",fontSize:15 }}><b>{user.nickname}</b></p>
                                 </div>
-                                {props.user.user_id === user.id ?
-                                        <div className="col s1 m1  offset-s7 offset-m7">
-                                            <More id={id} private={data.private} />
-                                        </div>
+                                {props.user.user_id === user.id 
+                                ?
+                                    <div className="col s1 m1  offset-s7 offset-m7">
+                                        <More id={id} private={data.private} />
+                                    </div>
                                 
                                 :
-                                <div className="col s4 m4">
-                                    <Follow follow_id={user.id} btn={false} />
-                                </div> }
+                                    <div className="col s4 m4">
+                                        <Follow follow_id={user.id} />
+                                    </div> 
+                                }
                                 
                                 
-                            
-                            <div className="divider" />
                         
                             </div>
                             <div className="comments col s12">
@@ -112,8 +112,6 @@ export const DetailPosts = (props) => {
                                     
                                 </div>
                                 ):null}
-                                
-                               
                                 <Comments comments={comments} user_id={props.user.user_id} />
                               
                                 </ul>

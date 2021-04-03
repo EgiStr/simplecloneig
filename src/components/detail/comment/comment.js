@@ -13,7 +13,6 @@ import { connect } from 'react-redux'
 import {AvatarProfil} from '../../../utils/auth/profil'
 import CommentMore from '../../other/comment/commentedit'
 
-import './comment.css'
 const Childcomment = lazy(() => import('./comments'))
 
 const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_parent,add_username}) => {

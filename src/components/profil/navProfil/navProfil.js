@@ -17,7 +17,7 @@ const navProfil = ({user,idUser,url}) => {
                 
                 {idUser === user.username 
                     ? (<NavLink
-                            to={`${url}/savePost`}
+                            to={`${url}/saved`}
                             activeClassName="post__nav active"
                             className="post__nav"
                         >
