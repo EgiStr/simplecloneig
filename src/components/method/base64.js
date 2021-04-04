@@ -22,20 +22,20 @@ export function downloadBase64File (base64Data, filename) {
   }
   
   // Base64 Image to Canvas with a Crop
-  export function image64toCanvasRef (canvasRef, image64, pixelCrop) {
+  export function image64toCanvasRef (canvasRef, image64) {
     // membuat file image
     const image = new Image()
     image.src = image64
-
+    console.log(canvasRef)
+    console.log(image64)
     // ubah persen ke pixel
-    const targetX = image.width * pixelCrop.x / 100;
-    const targetY = image.height * pixelCrop.y / 100;
-    const targetWidth = image.width * pixelCrop.width / 100;
-    const targetHeight = image.height * pixelCrop.height / 100;
+    const targetX = image.clientWidth 
+    const targetY = image.clientHeight
+    console.log(image.clientWidth)
 
     let canvas = canvasRef // document.createElement('canvas');
-    canvas.width = (pixelCrop.width/100) * targetWidth
-    canvas.height =  (pixelCrop.height/100) * targetHeight
+    canvas.width =  targetX
+    canvas.height =  targetY
 
     const ctx = canvas.getContext('2d')
     
@@ -44,13 +44,12 @@ export function downloadBase64File (base64Data, filename) {
         image,
         targetX,
         targetY,
-        targetWidth,
-        targetHeight,
+        targetX,
+        targetY,
         0,
         0,
-        targetWidth,
-        targetHeight
-        
+        targetX,
+        targetY
       )
     }
     

@@ -5,20 +5,21 @@
 .caption:hover{
     background: #dbdbdb;
 }
-.imageVid:hover{
+.image-canvas:hover{
     background: #f0f2f5;
 }
-.imageVid{
+.image-canvas{
+
     padding:8px;
-    border-radius:50px;
+    border-radius:20px;
 }
-.modal{
-    width:70% ;
+#modalCreatePost{
+    width:fit-content ;
+    min-width: 40%;
     padding: 5px 30px ;
-    overflow: hidden ;
     border-radius: 10px ;
 }
-.modal-close{
+.close-modal{
     position: absolute;
     background-color: #e4e6eb !important;
     color: gray;
@@ -28,12 +29,12 @@
     padding: 5px;
     top:12px;
 }
-.profile-modal{
+/* .profile-modal{
     display: flex;
     flex-direction: row;
     align-items: center;
     margin: 15px 0;
-}
+} */
 .caption-post{
     border: none !important;
     overflow: auto !important;
@@ -45,9 +46,13 @@
     display: none;
 } 
 .insert-post{
-    height: 150px !important;
-    overflow-y: scroll;
-    overflow-x: hidden !important;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    height: fit-content;
+    max-height: 500px;
+    overflow-y: hidden !important;
+    /* overflow-x: hidden !important; */
 }
 .insert-post::-webkit-scrollbar {
     width: 7px;
@@ -59,15 +64,26 @@
 .insert-post::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
+#modalCreatePost::-webkit-scrollbar {
+    width: 7px;
+}
+#modalCreatePost::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 50px;
+}
+#modalCreatePost::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
 .btn-send{
     display: flex;
     flex: 1;
     justify-content: center;
-    background-color: #ef6e73;
+    background-color: #ef6e73;   
     color: white;
-    border-radius: 10px;
+    border-radius: 33px;
     padding :5px;
     cursor: pointer;
+
 }
 .insert{
     display: flex;

@@ -80,8 +80,7 @@ class AccountEdit extends Component {
 
       // menyimpan data ke url agar bisa di load di preview
       reader.addEventListener(
-        "load",
-        () => {
+        "load",() => {
           this.setState({ profilpreview: reader.result });
         },false);
       // membuat base64

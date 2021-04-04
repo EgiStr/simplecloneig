@@ -6,11 +6,10 @@ import Cookies from 'js-cookie'
 
 import Content from './content'
 import FecthData from './fetchData'
-import CreatePost from '../createpost/createpost'
+import CreatePost from '../createpost/Createpost'
 import { protectAuth } from '../../utils/auth/auth'
 import PageNull from '../other/pageNull'
 import Loading from '../other/loading'
-
 
 export const home = ({ user }) => {
   const [page,setPage] = useState(1)
@@ -51,6 +50,7 @@ export const home = ({ user }) => {
                 <div className="col s8">
                   {/* for post  */}
                   <CreatePost />
+                  
 
                   {/* data post homepage */}
                     {data.length > 0 ? data.map( (item ,i) => {

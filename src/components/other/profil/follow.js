@@ -39,7 +39,7 @@ export const Follow = ({follow_id,user,className}) => {
 
     return (
         <Fragment>
-            <a className={`${className || 'secondary-content'} `} style={{cursor:'pointer'}} onClick={() => handleFollow()} >{is_follow ? state.follow : state.unfollow }</a>
+            <a className={`${className || 'secondary-content'} `} style={{cursor:'pointer',color: state.follow ==='Following' || state.unfollow ==='Following' ? 'rgb(61, 143, 136)' : '#ef6e73'}} onClick={() => handleFollow()} >{is_follow ? state.follow : state.unfollow }</a>
         </Fragment>
     )
 }
