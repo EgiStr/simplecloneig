@@ -18,6 +18,19 @@ class CommentManager(models.Manager):
         qs = super(CommentManager,self).filter(content_type=content_type,obj_id= obj_id,parent=None)
         return qs
 
+    def fillter_for_sample(self,instance):
+        content_type= ContentType.objects.get_for_model(instance.__class__)
+        obj_id = instance.id
+        qs = super(CommentManager,self).filter(content_type=content_type,obj_id= obj_id,parent=None)[:2]
+        return qs
+
+    def fillter_for_count(self,instance):
+        content_type= ContentType.objects.get_for_model(instance.__class__)
+        obj_id = instance.id
+        qs = super(CommentManager,self).filter(content_type=content_type,obj_id= obj_id)
+        return len(qs)
+
+
 class Comments(models.Model):
     user = models.ForeignKey(UserProfil,on_delete=models.CASCADE,default=1)
     content = models.TextField()

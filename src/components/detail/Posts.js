@@ -51,7 +51,7 @@ export const DetailPosts = (props) => {
 
         <div>
             {loading ? <div><Loading /> {error ? <Pagenull page={'this page 404'}/> : null   }</div> :
-                <div className="container all-content" style={{marginTop:'20px',marginBottom:'20px',height:HeightContainer >500 ? HeightContainer : "650px"}}>
+                <div className="container all-content" style={{backgroundColor:'white',marginTop:'20px',marginBottom:'20px',height:HeightContainer >500 ? HeightContainer : "650px"}}>
                     <div className="row">
                         <div className="col s12 m7 images"  style={{padding:0,margin:0}}>
                             <img
@@ -132,7 +132,7 @@ export const DetailPosts = (props) => {
                                 <div className="col s6">
                                     {likes} likes
                                 </div>
-                                <div className="col s12">
+                                <div className="col s12" style={{fontStyle:'italic',fontSize:12,color:'rgb(138, 130, 129)'}}>
                                     {create_at}
                                 </div>
                                 

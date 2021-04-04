@@ -69,32 +69,36 @@ export const home = ({ user }) => {
                                   captions    = {item.caption}
                                   imageUrl    = {item.post}
                                   avatar      = {item.user.profil}
+                                  count       = {item.comment_count}
                                   like        = {item.likes}
                                   comment     = {item.comments}
+                                  timestamp   = {item.create_at}
                                   />
                           </div>                                                
                           )
 
-                        } else {
+                        }else {
                           return ( 
                           <Content 
-                                  key        = {i}
-                                              // membuat uniq key untuk modal
-                                  id         = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
-                                  contentType= {item.content_type_id}
-                                  postId     = {item.id}
-                                  userId     = {item.user.id}
-                                  username   = {item.user.nickname}
-                                  captions   = {item.caption}
-                                  imageUrl   = {item.post}
-                                  avatar     = {item.user.profil}
-                                  like       = {item.likes}
-                                  comment    = {item.comments}
+                                    key         = {i}
+                                    // membuat uniq key untuk modal
+                                    id          = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
+                                    contentType = {item.content_type_id}
+                                    postId      = {item.id}
+                                    userId      = {item.user.id}
+                                    username    = {item.user.nickname}
+                                    captions    = {item.caption}
+                                    imageUrl    = {item.post}
+                                    avatar      = {item.user.profil}
+                                    count       = {item.comment_count}
+                                    like        = {item.likes}
+                                    comment     = {item.comments}
+                                    timestamp   = {item.create_at}
                                   />)
                         }
                     }) : !loading && <PageNull page={'HOME PAGE'}/> }
              
-                    {loading && <div className='center-align'><Loading /></div>}
+                    { loading && <div className='center-align'><Loading /></div> }
                 </div>
             </div>
         </div>

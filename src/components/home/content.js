@@ -11,12 +11,12 @@ import RedirectUser from '../other/profil/redirectUrl'
 
 import '../../content.css'
 import Avatar from "../other/profil/avatarProfil";
+import CommentHandle from "../detail/commentHandle";
 
 const Modal = lazy(()=> import('./modalDetail'))
 
 
 const Content = props => {
-    
     
     const history = useHistory()
    
@@ -30,7 +30,6 @@ const Content = props => {
         if(!src) return
         img.src = src
     }
-    
      
     // lazy loading
     const observer = useRef(null)
@@ -48,7 +47,6 @@ const Content = props => {
         if (node) observer.current.observe(node)
   },[])
 
-   
     const urlProfil = AvatarProfil(props.avatar);
     
     return (
@@ -65,7 +63,7 @@ const Content = props => {
 
             {/* membuat post image menjadi loading lazy alias diloading jika post an dilayar */}
             <div ref={post}>
-                <img src="data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAJAA4DASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAlEAABAgQEBwAAAAAAAAAAAAABAgMABAYRBRIhMRM0NXGBkbL/xAAVAQEBAAAAAAAAAAAAAAAAAAABA//EABoRAAICAwAAAAAAAAAAAAAAAAECABIDERP/2gAMAwEAAhEDEQA/AAaWpluWZM5OKYmV3HACX0hYJ1JIzaWNt/Rg+qMQcUzKsmWQXGhYvFGVat9DY7RHhvTF90fKoFq7nfAh57axkmKrjqBP/9k=" className="contentImage" data-src={props.imageUrl} alt="foto" />
+                <img  src="data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAJAA4DASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAlEAABAgQEBwAAAAAAAAAAAAABAgMABAYRBRIhMRM0NXGBkbL/xAAVAQEBAAAAAAAAAAAAAAAAAAABA//EABoRAAICAwAAAAAAAAAAAAAAAAECABIDERP/2gAMAwEAAhEDEQA/AAaWpluWZM5OKYmV3HACX0hYJ1JIzaWNt/Rg+qMQcUzKsmWQXGhYvFGVat9DY7RHhvTF90fKoFq7nfAh57axkmKrjqBP/9k=" className="contentImage" data-src={props.imageUrl} alt="foto" />
             </div>
 
             <div className="icon__box row">
@@ -75,7 +73,7 @@ const Content = props => {
                 </div>
                 {/* comment  */}
                 <div className="col s2">
-                    <a className="modal-trigger"  href={`#modal_id${props.id}`}><i className="small material-icons icon ">comment</i></a>
+                    <a onClick={() => history.push(`/p/${props.postId}`)}><i className="small material-icons icon ">comment</i></a>
                 </div>
                 {/* save */}
                 <div className="col s2 offset-s5">
@@ -95,8 +93,20 @@ const Content = props => {
             </div>
                 <div className="row caption-area">
                     <p className="col s12">{state.likes} Likes</p> 
-                    <p className="col s12"><b><span onClick={() => history.push(`profile/${props.nickname}`)}>{props.username}</span></b> {props.captions}</p>
-
+                    {props.captions && <p className="col s12"><b><span style={{cursor:'pointer'}} onClick={() => history.push(`/profile/${props.username}`)}>{props.username}</span></b> {props.captions}</p>}
+                    {props.count > 0 && 
+                    <div>
+                             <a className="modal-trigger col s12"  href={`#modal_id${props.id}`} style={{cursor:'pointer',margin:'3px 0'}} > views all {props.count} comments </a>
+                             {props.comment.map((item,i) => <p key={i} className="col s12 "><b><span style={{cursor:'pointer'}}  onClick={() => history.push(`/profile/${item.user.nickname}`)}>{item.user.nickname}</span></b> {item.content}</p>)}
+                    </div>
+                    }
+                    <p className="col s12" style={{fontStyle:'italic',fontSize:12,color:'rgb(138, 130, 129)'}}>{props.timestamp} </p>
+                    <div className="col s12" style={{margin:0,marginTop:20}}>
+                        <CommentHandle 
+                            contentType = {props.contentType}
+                            obj_id = {props.postId}
+                        />
+                    </div>
                 </div>
             
             </div>

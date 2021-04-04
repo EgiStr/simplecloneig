@@ -63,7 +63,7 @@ const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_p
                     <div className="col s7 comment-content" style={{paddingTop:10}}>
                         <b>{nickname}</b> {content}
                         <div className='col s12 reply'>
-                            <div className="col s4" style={{paddingLeft:0}}>
+                            <div className="col s4" style={{fontStyle:'italic',fontSize:12,color:'rgb(138, 130, 129)',paddingLeft:0}} >
                                 {time.substring(0,6)}
                             </div>
                             <div className="col s4">
@@ -72,25 +72,25 @@ const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_p
                         </div>
                         <div className="col s12 replies" style={{margin:'10px auto'}}>
                           {/* agar membuat hanya di itu sendiri replies dimuat  */}
-                        {renderReplies()}      
-                        
-                        
                         {/* membuat beberapa kemungkinan diReplies */}
                         {
                                 (function(){
                                     if(replies.length > 0){
                                         if(limit <= 0) {
-                                            return <p style={{cursor: "pointer"}} onClick={() => setLimit(prev => prev + 2)}>View replies {replies.length} </p>
+                                            return <p style={{cursor: "pointer",margin:'10px 0'}} onClick={() => setLimit(prev => prev + 2)}>View replies {replies.length} </p>
                                         }else{
                                             if(child > 0){
-                                                return <p style={{cursor: "pointer"}} onClick={() => setLimit(prev => prev + 2)}>View replies {child} </p>
+                                                return <p style={{cursor: "pointer",margin:'10px 0'}} onClick={() => setLimit(prev => prev + 2)}>View replies {child} </p>
                                             }else if(child === 0 || child < 0){
-                                                return <p style={{cursor: "pointer"}} onClick={()=> setLimit(0)}>Hide replies</p>
+                                                return <p style={{cursor: "pointer",margin:'10px 0'}} onClick={()=> setLimit(0)}>Hide replies</p>
                                             }
                                         }
                                     }
                                 })()
                         }
+                        {renderReplies()}      
+                        
+                        
                         </div>
                     </div>
                     <div className='col s1 more-edit' >
@@ -116,7 +116,7 @@ const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_p
                     <div className="col s8" style={{paddingTop:10}}>
                         <b>{nickname}</b> {content}
                         <div className='col s12 reply'>
-                            <div className="col s4" style={{paddingLeft:0}}>
+                            <div className="col s4" style={{fontStyle:'italic',fontSize:12,color:'rgb(138, 130, 129)',paddingLeft:0}} >
                                 {time.substring(0,6)}
                             </div>
                             <div className="col s4">
@@ -125,7 +125,6 @@ const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_p
                         </div>
                         <div className="col s12 replies" style={{margin:'10px auto'}}>
                           {/* agar membuat hanya di itu sendiri replies dimuat  */}
-                        {renderReplies()}      
                         
                         
                         {/* membuat beberapa kemungkinan diReplies */}
@@ -133,17 +132,18 @@ const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_p
                                 (function(){
                                     if(replies.length > 0){
                                         if(limit <= 0) {
-                                            return <p style={{cursor: "pointer"}} onClick={() => setLimit(prev => prev + 2)}>View replies {replies.length} </p>
+                                            return <p style={{cursor: "pointer",margin:'10px 0'}} onClick={() => setLimit(prev => prev + 2)}>View replies {replies.length} </p>
                                         }else{
                                             if(child > 0){
-                                                return <p style={{cursor: "pointer"}} onClick={() => setLimit(prev => prev + 2)}>View replies {child} </p>
+                                                return <p style={{cursor: "pointer",margin:'10px 0'}} onClick={() => setLimit(prev => prev + 2)}>View replies {child} </p>
                                             }else if(child === 0 || child < 0){
-                                                return <p style={{cursor: "pointer"}} onClick={()=> setLimit(0)}>Hide replies</p>
+                                                return <p style={{cursor: "pointer",margin:'10px 0'}} onClick={()=> setLimit(0)}>Hide replies</p>
                                             }
                                         }
                                     }
                                 })()
-                        }
+                            }
+                            {renderReplies()}      
                         </div>
                     </div>
                     {user_id === user.id ?

@@ -32,7 +32,7 @@ const Childcomment = ({user_id,id_user,parent,user,nickname,time,profil,content,
                     <div className="col s7" style={{paddingTop:10}}>
                         <b>{nickname}</b> {content}
                         <div className='col s12 reply'>
-                            <div className="col s4" style={{paddingLeft:0}}>
+                            <div className="col s4" style={{fontStyle:'italic',fontSize:12,color:'rgb(138, 130, 129)',paddingLeft:0}}>
                                 {time.substring(0,6)}
                             </div>
                             <div className="col s6">
@@ -61,7 +61,7 @@ const Childcomment = ({user_id,id_user,parent,user,nickname,time,profil,content,
                     <div className="col s7" style={{paddingTop:10}}>
                         <b>{nickname}</b> {content}
                         <div className='col s12 reply'>
-                            <div className="col s4" style={{paddingLeft:0}}>
+                            <div className="col s4" style={{fontStyle:'italic',fontSize:12,color:'rgb(138, 130, 129)',paddingLeft:0}}>
                                 {time.substring(0,6)}
                             </div>
                             <div className="col s6">

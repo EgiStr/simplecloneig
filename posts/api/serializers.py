@@ -5,7 +5,7 @@ from comment.models import Comments
 from posts.models import Post,Like, SavePostUser
 
 from usercostumer.api.serializers import UserProfilPostserializer
-from comment.api.serializers import CommentChildrenSerializer
+from comment.api.serializers import CommentChildrenToSerializer,CommentChildrenSerializer
 
 # for post notif
 class PostNotifSerializer(ModelSerializer):
@@ -32,10 +32,14 @@ class PostProfilSerializer(ModelSerializer):
         ]
     
 class PostSerializer(ModelSerializer):
+    comment = None
+        
+
     user = SerializerMethodField()
     likes = SerializerMethodField()
     
     comments = SerializerMethodField()
+    comment_count = SerializerMethodField()
     content_type_id = SerializerMethodField()
     create_at = SerializerMethodField()
     class Meta:
@@ -50,6 +54,7 @@ class PostSerializer(ModelSerializer):
             'create_at',
             'content_type_id',      
             'comments',
+            'comment_count',
         ]
 
     def get_create_at(self,obj):
@@ -63,8 +68,13 @@ class PostSerializer(ModelSerializer):
         return obj.liked_post.all().count()
 
     def get_comments(self,obj):
-        comments_qs = Comments.objects.fillter_by_instance(obj)
-        return CommentChildrenSerializer(comments_qs,many=True,context ={'request':None}).data
+        comment = Comments.objects.fillter_for_sample(obj)
+        return CommentChildrenToSerializer(comment,many=True).data
+
+    def get_comment_count(self,obj):
+        comment = Comments.objects.fillter_for_count(obj)
+           
+        return comment
     
     def get_content_type_id(self,obj):
         content_type = obj.get_content_type

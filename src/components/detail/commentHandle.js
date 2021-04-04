@@ -83,7 +83,7 @@ const commentHandle = (props) => {
     }
     return (
         <div>
-               {props.parent ? (<p className="col s12 center-align" onClick={() => handleCancel()}> your replies {props.username}, click to cancel    </p>) : (null)}
+               {props.parent && <p className="col s12 center-align" onClick={() => handleCancel()}> your replies {props.username}, click to cancel </p> }
                             <MentionsInput
                                 value={content}
                                 onChange={handleChange}

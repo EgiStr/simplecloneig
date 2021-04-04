@@ -34,7 +34,7 @@ const Modal = props => {
 
         
     return(
-              <div id={`modal_id${props.id}`} className="modal " style={{width:'100%'}}>
+              <div id={`modal_id${props.id}`} className="modal " style={{width:'100%',backgroundColor:'rgba(0,0,0,0.1)'}}>
                   {open ?
                       <Suspense fallback={<Loading/>}>
                           <PostDetail id={props.postId} />
