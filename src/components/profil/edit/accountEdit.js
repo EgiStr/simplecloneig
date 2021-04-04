@@ -127,7 +127,9 @@ class AccountEdit extends Component {
                   src={this.state.profilpreview}
                   className="avatar circle"
                   alt="foto"
-                  style={{marginTop:"27px"}}
+                  width={60}
+                  height={60}
+                  style={{margin:"0"}}
                 />
                 <div className="edit_right">
                   <p>{username}</p>
@@ -173,6 +175,7 @@ class AccountEdit extends Component {
                   type="textarea"
                   name='bio'
                   className="browser-default fr"
+    
                 />
               </div>
               <div style={{ display: "flex", flexDirection: "column", color: "#bfbfbf", width: "355px", fontSize: "0.7rem", padding: "40px 0 20px 70px" }}>
