@@ -11,7 +11,7 @@ export const NotifDropdown = ({notif,toggle}) => {
         display: toggle ? 'block': 'none', 
         marginTop: "65px", 
         boxShadow: " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-        width: "40vw", 
+        width: "60vw", 
         height: "50vh", 
         right: "15px", 
         color: "black", 

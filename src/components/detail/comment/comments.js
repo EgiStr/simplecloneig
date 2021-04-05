@@ -6,10 +6,11 @@ import {
          add_parent } from '../../../action/comment'
 import CommentMore from '../../other/comment/commentedit'
 
+import { useHistory } from 'react-router-dom'
 import {AvatarProfil} from '../../../utils/auth/profil'
 
 const Childcomment = ({user_id,id_user,parent,user,nickname,time,profil,content,id,add_parent,add_username}) => {
-    
+    const history = useHistory()
     
     const handleReplies = (user_username) => {
         add_parent(parent)
@@ -30,7 +31,7 @@ const Childcomment = ({user_id,id_user,parent,user,nickname,time,profil,content,
                         />
                     </div>
                     <div className="col s7" style={{paddingTop:10}}>
-                        <b>{nickname}</b> {content}
+                        <b style={{cursor: "pointer"}} onClick={() => history.push(`/profile/${nickname}`)}>{nickname}</b> {content}
                         <div className='col s12 reply'>
                             <div className="col s4" style={{fontStyle:'italic',fontSize:12,color:'rgb(138, 130, 129)',paddingLeft:0}}>
                                 {time.substring(0,6)}
@@ -59,7 +60,7 @@ const Childcomment = ({user_id,id_user,parent,user,nickname,time,profil,content,
                         />
                     </div>
                     <div className="col s7" style={{paddingTop:10}}>
-                        <b>{nickname}</b> {content}
+                        <b style={{cursor: "pointer"}} onClick={() => history.push(`/profile/${nickname}`)}>{nickname}</b> {content}
                         <div className='col s12 reply'>
                             <div className="col s4" style={{fontStyle:'italic',fontSize:12,color:'rgb(138, 130, 129)',paddingLeft:0}}>
                                 {time.substring(0,6)}

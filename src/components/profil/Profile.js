@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Avatar from '@material-ui/core/Avatar'
 
 import axios from '../../utils/axios'
 import Cookies from 'js-cookie'
@@ -10,7 +9,6 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
 
-import { getFollower } from '../../action/follow'
 import { get_post_data } from '../../action/auth'
 
 import ModalFollow from './follow/modelFollow'
@@ -21,6 +19,7 @@ import Follow from '../other/profil/follow'
 import PageNull from '../other/pageNull'
 
 import '../../Profile.css'
+
 
 
 class Profile extends Component {
@@ -42,7 +41,7 @@ class Profile extends Component {
         if(this.props.user !== null){
             axios.get(`auth/profil/${id}/`)
             .then(res => {
-                this.props.getFollower(Cookies.get('access'))
+    
                 this.props.get_post_data(res.data.post_data)
                 this.setState({ data: res.data,loading:false })
             })
@@ -56,7 +55,7 @@ class Profile extends Component {
             this.setState({loading:true})
             axios.get(`auth/profil/${id}/`)
             .then(res => {
-                    this.props.getFollower(Cookies.get('access'))
+                    
                     this.props.get_post_data(res.data.post_data)
                     this.setState({ data: res.data,loading:false})
                 })
@@ -73,7 +72,6 @@ class Profile extends Component {
         const {url,path} = this.props.match
         const authUser = this.props.user.username
         const idUser = this.props.match.params.id
-        
     
         const { follower, following, id, nickname, bio, name, profil, post_count } = this.state.data
 
@@ -83,11 +81,21 @@ class Profile extends Component {
                 <div className="container">
                 <div className="row header" >
                     <div>
-                        <Avatar
-                            className="avatar"
+                        <img
+                            className="avatar hide-on-small-only"
                             alt="foto"
                             src={profil}
-                            style={{ width: "150px", height: "150px" }}
+                            width={150}
+                            height={150}
+                            style={{ borderRadius:'50%'}}
+                        />
+                        <img
+                            className="avatar hide-on-med-and-up"
+                            alt="foto"
+                            src={profil}
+                            width={80}
+                            height={80}
+                            style={{ borderRadius:'50%'}}
                         />
                     </div>
                     <div>
@@ -148,4 +156,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, { getFollower,get_post_data })(Profile)
+export default connect(mapStateToProps, { get_post_data })(Profile)

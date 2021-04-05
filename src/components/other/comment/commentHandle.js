@@ -11,14 +11,17 @@ import { get_comment,
          add_parent,
          add_username,
          
-                        } from '../../action/comment'
+                        } from '../../../action/comment'
 
-import './comment/comment.css'
+
+import { useDispatch } from 'react-redux'
+
+import '../../detail/comment/comment.css'
 
 
 const commentHandle = (props) => {
+    const dispatch = useDispatch()
     const [content,setContent] = useState('')
-    
     useEffect(() => {
         setContent(prevState => `@${props.username} ` + prevState)   
 
@@ -66,12 +69,13 @@ const commentHandle = (props) => {
                     "Authorization": 'Bearer ' + Cookies.get('access')
                 },
             })
-                .then(res => {             
+                .then(res => {      
+                    dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Comment Success Created`})     
                     props.add_comment(res.data,props.parent)
                     props.add_parent(null)
                     setContent('')
                 })
-                .catch(e => console.log(e.request) )
+                .catch(e => dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Comment Failed Created Try Again`}))
         } 
     }
     const handleChange = (event, newValue, newPlainTextValue, mentions) => setContent(newValue)
@@ -99,7 +103,7 @@ const commentHandle = (props) => {
                                 />
                             </MentionsInput>
                             <button className="btn btn-flat col s2"  onClick={() => {handleComment()}}>
-                                    posts
+                                    Post
                             </button>
         </div>
     )

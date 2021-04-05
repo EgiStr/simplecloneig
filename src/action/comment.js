@@ -51,8 +51,12 @@ export const delete_comment = (id,access) => dispatch => {
                     type:'DELETE_COMMENTS',
                     payload:id,
                 })
+                dispatch({
+                    type:'GET_SUCCESS_MASSAGE',
+                    payload: `Delete comment Success`
+                })
             })
-            .catch(e => console.log(e.request))
+            .catch(e => dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Delete Failed please try again` }))
     }
 }
 
@@ -67,13 +71,17 @@ export const delete_comment_replies = (id,access) => dispatch => {
     if(confirm){
         axios.delete(`comment/${id}/edit/`,config)
         .then(res => {
-           
+
+            dispatch({
+                type:'GET_SUCCESS_MASSAGE',
+                payload: `Delete Replies Success`
+            })
             dispatch({
                 type:'DELETE_COMMENTS_REPLIES',
                 payload:id,
             })
         })
-        .catch(e => console.log(e.request))
+        .catch(e =>  dispatch({ type:'GET_SUCCESS_MASSAGE' ,payload: `Delete Failed please try again` }))
     }
 }
 

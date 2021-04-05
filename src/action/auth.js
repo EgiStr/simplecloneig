@@ -13,16 +13,26 @@ export const loginUser = access => dispatch => {
 
     axios.get(`auth/me/`,config)
         .then(res => {
-            const user = res.data
-            Cookies.set('ud',user)
+            const rawUser = res.data
+            const user = parseJwt(rawUser)
+
+            Cookies.set('ud',rawUser)
+            dispatch({
+                type:'GET_SUCCESS_MASSAGE',
+                payload: `Hello ${user.username},Welcome..`
+            })
             dispatch({
                 type:'LOGIN_SUCCESS',
-                payload : parseJwt(user),
+                payload :user,
             })
         })
 } 
 
 export const LogoutAuth = () => dispatch => {
+    dispatch({
+        type:'GET_SUCCESS_MASSAGE',
+        payload: `Logout Success, goodbyee`
+    })
     return dispatch({
         type:'LOGOUT_SUCCESS',
     })
@@ -119,7 +129,6 @@ export const get_post_save_data = () => (dispatch,getState) => {
         }
     }
     if(getState().auth.save_post_data.length === 0){
-        console.log('ada lagi')
         axios.get('api/save/post/', config )
             .then(res => {
                 dispatch({

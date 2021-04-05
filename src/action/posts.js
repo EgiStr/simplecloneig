@@ -13,11 +13,15 @@ export const PrivePost = id => dispatch => {
     axios.put(`api/${id}/edit/`,data,config)
         .then(res => {
             dispatch({
+                type:'GET_SUCCESS_MASSAGE',
+                payload: `Your Post Success Archived`
+            })
+            dispatch({
                 type:'SUCCESS_NOTIFICATIONS'
             })
-            console.log(res)
+        
         })
-        .catch(e =>console.log(e))
+        .catch(e => dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Your Post Failed Archived Try Again` }))
 }
 
 export const UnPrivePost = id => dispatch => {
@@ -34,9 +38,12 @@ export const UnPrivePost = id => dispatch => {
             dispatch({
                 type:'SUCCESS_NOTIFICATIONS'
             })
-            console.log(res)
+            dispatch({
+                type:'GET_SUCCESS_MASSAGE',
+                payload: `Your Post Success UnArchived`
+            })
         })
-        .catch(e =>console.log(e))
+        .catch(e => dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Your Post Failed UnArchived Try Again` }))
 }
 export const deletePost = id => dispatch => {
 
@@ -44,14 +51,13 @@ export const deletePost = id => dispatch => {
         headers: {
         "Authorization": 'Bearer ' + Cookies.get('access')
     }}
+    
     const confirm = window.confirm('are you sure about that ? ')
     if(confirm){
         axios.delete(`api/${id}/edit/`,config)
             .then(res => {
-                dispatch({
-                    type:'SUCCESS_NOTIFICATIONS',
-                })
+                return window.location = '/'
             })
-            .catch(e => console.log(e.request))
+            .catch(e => dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Your Post Failed Delete Try Again` }))
     }
 }

@@ -12,8 +12,9 @@ import Caption from './captionInput'
 
 import { extractImageFileExtensionFromBase64, base64StringtoFile } from '../../method/base64'
 
-export const FormRoot = (props) => {
 
+export const FormRoot = (props) => {
+    
     const [state,setState] = useState({
         step:1,
         caption:'',
@@ -68,7 +69,7 @@ export const FormRoot = (props) => {
                 window.location = `/p/${res.data.id}`
                 // jika succes redirect ke profil
             })
-            .catch(e => setState(prev => ({...prev,step: 4})) )
+            .catch(e => {setState(prev => ({...prev,step: 4})) ; props.dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Failed Create Post Try Again`})} )
     }
 
     const nextStep = () => setState(prev => ({...prev,step: prev.step + 1}))

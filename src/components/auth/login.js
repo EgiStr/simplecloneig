@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 
 import { Redirect,Link } from "react-router-dom";
-import Cookies from 'js-cookie'
 
 import { connect } from 'react-redux'
+
 import { loginUser, get_post_like,get_post_save } from '../../action/auth'
 import { getFollower } from '../../action/follow'
 import { get_notif_login, } from '../../action/notifikasi'
+
 import FacebookLogin from 'react-facebook-login';
 import { GoogleLogin } from 'react-google-login';
- 
-import Loading from '../other/loading'
 
 import axios from ".././../utils/axios";
+import Loading from '../other/loading'
+import Cookies from 'js-cookie'
 
 import '../../login.css'
 
@@ -38,19 +39,20 @@ class Login extends Component {
       username : this.state.title, 
       password: this.state.password,
     }
+
     this.setState({loading:true})
     axios.post('auth/token/',data)
-    .then((res) => {
-      Cookies.set('access', res.data.access_token)
-      Cookies.set('refresh', res.data.refresh_token)
-      this.props.get_post_like()  
-      this.props.get_post_save()
-      this.props.get_notif_login()
-      this.props.getFollower(res.data.access_token)
-      this.props.loginUser(res.data.access_token)
-      this.setState({loading:false})
-      
-    })
+      .then((res) => {
+        Cookies.set('access', res.data.access_token)
+        Cookies.set('refresh', res.data.refresh_token)
+        this.props.get_post_like()  
+        this.props.get_post_save()
+        this.props.get_notif_login()
+        this.props.getFollower(res.data.access_token)
+        this.props.loginUser(res.data.access_token)
+        this.setState({loading:false})
+        
+      })
       .catch((e) => this.setState({ notValide: true,loading:false }));
     }
     
@@ -91,17 +93,17 @@ class Login extends Component {
     this.setState({loading:true})
     
     axios.post(`auth/convert-token/`, data)
-    .then((res) => {
-      Cookies.set('access', res.data.access_token)
-      Cookies.set('refresh', res.data.refresh_token)
-      this.props.get_post_like()
-      this.props.get_post_save()
-      this.props.getFollower(res.data.access_token)
-      this.props.get_notif_login()
-      this.props.loginUser(res.data.access_token)
-      this.setState({loading:false})
-      
-    })
+      .then((res) => {
+        Cookies.set('access', res.data.access_token)
+        Cookies.set('refresh', res.data.refresh_token)
+        this.props.get_post_like()
+        this.props.get_post_save()
+        this.props.getFollower(res.data.access_token)
+        this.props.get_notif_login()
+        this.props.loginUser(res.data.access_token)
+        this.setState({loading:false})
+        
+      })
       .catch((e) => this.setState({notValide:true,loading:false}));
   }
   
@@ -111,7 +113,7 @@ class Login extends Component {
 
 
   render() {
-    if (this.props.user != null) return <Redirect to="/" />
+    if (this.props.user !== null) return <Redirect to="/" />
 
     return (
 

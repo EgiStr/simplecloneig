@@ -1,11 +1,14 @@
-import React,{ Fragment,useState } from 'react'
+import React,{ useState } from 'react'
 
 import { connect } from 'react-redux'
 import Cookies from 'js-cookie'
 import axios from '../../../utils/axios'
 
+import { useDispatch } from 'react-redux'
+
 export const Follow = ({follow_id,user,className}) => {
-    const [state,setState] =useState({   
+    const dispatch = useDispatch()
+    const [state,setState] = useState({   
         follow:'Following',
         unfollow:'Follow',
     })
@@ -20,8 +23,8 @@ export const Follow = ({follow_id,user,className}) => {
         }
 
         let form = new FormData();
-        form.append('user', follow_id)
-        form.append('following_user', user.user_id)
+            form.append('user', follow_id)
+            form.append('following_user', user.user_id)
 
         axios.post('auth/following/',form,config)
             .then(res =>{ 
@@ -30,18 +33,15 @@ export const Follow = ({follow_id,user,className}) => {
                 res.data.id === undefined ? localStorage.setItem('follow',[prev.filter(e => e !== follow_id)]) : localStorage.setItem('follow',[...prev,follow_id])
                 
             })
-            .catch(e => console.log(e))
+            .catch(e =>  dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Failed Follow Try Again`}))
 
     }
 
     const is_follow = localStorage.getItem('follow').split(',').map(Number).includes(follow_id)
     
 
-    return (
-        <Fragment>
-            <a className={`${className || 'secondary-content'} `} style={{cursor:'pointer',color: state.follow ==='Following' || state.unfollow ==='Following' ? 'rgb(61, 143, 136)' : '#ef6e73'}} onClick={() => handleFollow()} >{is_follow ? state.follow : state.unfollow }</a>
-        </Fragment>
-    )
+    return <a className={`${className || 'secondary-content'} `} style={{cursor:'pointer',color: state.follow ==='Following' || state.unfollow ==='Following' ? 'rgb(61, 143, 136)' : '#ef6e73'}} onClick={() => handleFollow()} >{is_follow ? state.follow : state.unfollow }</a>  
+    
 }
 
 

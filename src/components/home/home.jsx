@@ -11,6 +11,8 @@ import { protectAuth } from '../../utils/auth/auth'
 import PageNull from '../other/pageNull'
 import Loading from '../other/loading'
 
+import '../../content.css'
+
 export const home = ({ user }) => {
   const [page,setPage] = useState(1)
   
@@ -45,9 +47,10 @@ export const home = ({ user }) => {
   
   if(user === null) return <Redirect to='/login'/>
   return (
-    <div className="container">
-            <div className="row" style={{width:'100%',marginLeft:'60px'}}>
-                <div className="col s8">
+    <div className="container" style={{width:'100%'}}>
+
+            <div className="row" style={{margin:'0 auto'}}>
+                <div className="col s12 m10 l8">
                   {/* for post  */}
                   <CreatePost />
                   
@@ -57,7 +60,7 @@ export const home = ({ user }) => {
                         if(data.length === i + 1){
                           return ( 
                             // membuat terakhir terobserve
-                          <div ref={lastBookElementRef} key={i}>
+                            <div ref={lastBookElementRef} key={i}>
                             <Content 
                                   key         = {i}
                                               // membuat uniq key untuk modal
@@ -79,7 +82,7 @@ export const home = ({ user }) => {
 
                         }else {
                           return ( 
-                          <Content 
+                            <Content 
                                     key         = {i}
                                     // membuat uniq key untuk modal
                                     id          = {Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}
@@ -95,7 +98,7 @@ export const home = ({ user }) => {
                                     comment     = {item.comments}
                                     timestamp   = {item.create_at}
                                   />)
-                        }
+                                }
                     }) : !loading && <PageNull page={'HOME PAGE'}/> }
              
                     { loading && <div className='center-align'><Loading /></div> }

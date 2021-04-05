@@ -3,6 +3,7 @@ import follow from './reducer/follow' ;
 import auth from './reducer/auth' ;
 import notifikasi from './reducer/notifikasi'
 import comment from './reducer/comments'
+import massage from './reducer/massage'
 import thunk from 'redux-thunk' ;
 
 const rootReducer = combineReducers({
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
     auth,
     comment,
     notifikasi,
+    massage,
 
 })
 const middlwares = applyMiddleware(thunk)

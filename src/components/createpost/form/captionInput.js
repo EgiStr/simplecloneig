@@ -1,16 +1,18 @@
 import React from 'react'
 
 export const captionInput = (props) => {
+
+    
     return (
         <div className="row" style={{padding:10,marginTop:20}}>
             <div className="col s8">
                 <textarea
-                                type="textarea"
-                                onChange={event => props.handleChange({name:'caption',value:event.target.value})}
-                                value={props.value.caption}
-                                placeholder="caption mu apa"
-                                className="caption-post"
-                                autoFocus
+                    type="textarea"
+                    onChange={event => props.handleChange({name:'caption',value:event.target.value})}
+                    value={props.value.caption}
+                    placeholder="caption mu apa"
+                    className="caption-post"
+                    autoFocus
                 />
             </div>
             <div className="col s4">

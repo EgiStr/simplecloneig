@@ -159,7 +159,6 @@ class UserEditProfil(RetrieveUpdateAPIView):
     permission_classes=[IsOwnerOrReadOnly | IsAdminUser]
 
     def get_queryset(self):
-        print(self.request.META['REMOTE_ADDR'])
         qs = UserProfil.objects.filter(id=self.kwargs['pk'])
         return qs
 

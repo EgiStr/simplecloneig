@@ -11,14 +11,16 @@ import ForgetPassword from './components/auth/forgetPassword'
 import passwordNew from './components/auth/password-new'
 import DetailPost from './components/detail/Posts'
 import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Alert from "./components/other/alert";
+
 
 const App = () => {
   return (
     <Router >
-      
+    
+      <Alert />
       <Navbar />
       {/* daerah content page atas*/}
-      
       <Switch>
         {/* daerah switch bakal keganti otamatis sesuai lick dan compoenent */}
         <Route exact path="/" component={Home} />
@@ -32,6 +34,7 @@ const App = () => {
         <Route path="/register" component={Register} />
         <Route exact path="/forget-password" component={ForgetPassword} />
         <Route path="/forget-password/comfirm" component={passwordNew} />
+
       </Switch>
     </Router>
   );

@@ -38,13 +38,14 @@ const changePassword = () => {
             formData.append('new_password2',newPassword2)
         axios.put('auth/password/change/',formData,config)
             .then( res => { 
+                this.props.dispatch({ type:'GET_SUCCESS_MASSAGE',payload:`Success Reset Password`})
                 setState({
                     oldpassword:'',
                     newPassword:'',
                     newPassword2:'',
                 })
                 setRespone(res.data.message)})
-            .catch(e => setRespone(e.request.response))
+            .catch(e => {setRespone(e.request.response);this.props.dispatch({ type:'GET_SUCCESS_MASSAGE',payload:`Failed Reset Password ,${e.response.data}`})})
     }
         
    

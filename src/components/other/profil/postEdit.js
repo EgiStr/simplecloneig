@@ -20,8 +20,8 @@ export const dropDown = (props) => {
                                 <ul id='dropdown2' className='dropdown-content'>
 
                                     <li>{props.private ? <a onClick={()=> props.UnPrivePost(props.id)}>UnArchive</a> : <a onClick={()=> props.PrivePost(props.id)}>Archive</a>}</li>
-                                    <li><a onClick={()=>props.deletePost(props.id)}>Delete</a></li>
                                     <li className="divider" tabIndex="-1"></li>
+                                    <li><a onClick={()=>props.deletePost(props.id)}>Delete</a></li>
                                     
                                 </ul>
         </div>

@@ -9,14 +9,15 @@ import {
     } from '../../../action/comment'
 
 import { connect } from 'react-redux'
-
+import { useHistory } from 'react-router-dom'
 import {AvatarProfil} from '../../../utils/auth/profil'
 import CommentMore from '../../other/comment/commentedit'
 
 const Childcomment = lazy(() => import('./comments'))
 
 const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_parent,add_username}) => {
- 
+
+    const history = useHistory()
     const [limit,setLimit] = useState(0)
     
     let child = replies.length !== 0 ? (replies.length - limit)  : null 
@@ -30,7 +31,6 @@ const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_p
     // mengekstrak replies
     const renderReplies = () => {
             return replies.slice(0,limit).map((e,i)=>{
-                console.log(e)
                 return   <Suspense key={i} fallback={<Loading />}>
                             <Childcomment   
                                 key={i}
@@ -61,7 +61,7 @@ const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_p
                         />
                     </div>
                     <div className="col s7 comment-content" style={{paddingTop:10}}>
-                        <b>{nickname}</b> {content}
+                        <b style={{cursor: "pointer"}} onClick={() => history.push(`/profile/${nickname}`)}>{nickname}</b> {content}
                         <div className='col s12 reply'>
                             <div className="col s4" style={{fontStyle:'italic',fontSize:12,color:'rgb(138, 130, 129)',paddingLeft:0}} >
                                 {time.substring(0,6)}
@@ -114,7 +114,7 @@ const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_p
                         />
                     </div>
                     <div className="col s8" style={{paddingTop:10}}>
-                        <b>{nickname}</b> {content}
+                        <b style={{cursor: "pointer"}} onClick={() => history.push(`/profile/${nickname}`)}>{nickname}</b> {content}
                         <div className='col s12 reply'>
                             <div className="col s4" style={{fontStyle:'italic',fontSize:12,color:'rgb(138, 130, 129)',paddingLeft:0}} >
                                 {time.substring(0,6)}

@@ -7,7 +7,7 @@ import {AvatarProfil} from '../../utils/auth/profil'
 import axios from '../../utils/axios'
 
 import Loading from '../other/loading'
-import InputComment from './commentHandle'
+import InputComment from '../other/comment/commentHandle'
 import Comments from './comment/allComments'
 
 import Likes from '../other/posts/likes'
@@ -61,7 +61,7 @@ export const DetailPosts = (props) => {
                                 className="posting-img"
                             />
                         </div>
-                        <div className="col s12 m5 detail">
+                        <div className="col s12 m5 detail" style={{backgroundColor:'white'}}>
                             <div className="headers col s12">
                                 <div className="col s2 m2">
                                     <img

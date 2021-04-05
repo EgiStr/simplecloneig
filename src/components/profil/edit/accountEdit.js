@@ -57,7 +57,7 @@ class AccountEdit extends Component {
           bio: bio,
         });
       })
-      .catch((e) => console.log(e.request));
+      .catch( e => console.log(e.request));
 
     M.AutoInit();
   }
@@ -111,8 +111,8 @@ class AccountEdit extends Component {
     }
 
     axios.put(`auth/profil/${userId}/edit/`, formdata, config)
-      .then( res => this.setState({respone:res.statusText}))
-      .catch( e => this.setState({respone:e.request.responseText}));
+      .then( res => {this.setState({respone:res.statusText});this.props.dispatch({ type:'GET_SUCCESS_MASSAGE',payload:`Success Updated Profil` })})
+      .catch( e => {this.setState({respone:e.request.responseText});this.props.dispatch({ type:'GET_SUCCESS_MASSAGE',payload:`Failed Update Profil ,${e.request.responseText}` })});
   };
 
   render() {
