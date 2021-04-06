@@ -2,7 +2,7 @@ import React,{ useState } from 'react'
 import axios from '../../utils/axios'
 import Loading from '../other/loading'
 
-const forgetPassword = () => {
+const forgetPassword = (props) => {
     const [email,setEmail] = useState('')
     const [respone,setRespone] = useState(null)
     const [loading,setLoading] = useState(false)
@@ -25,7 +25,7 @@ const forgetPassword = () => {
                 setLoading(false)
             })
     }
-
+   
     return (
         <div>
             <div className="container_login">

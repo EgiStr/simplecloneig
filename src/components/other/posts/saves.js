@@ -1,4 +1,4 @@
-import React,{ Fragment,useState } from 'react'
+import React,{ useState } from 'react'
 import { connect } from 'react-redux'
 import { post_save,post_unsave } from '../../../action/auth'
 import Cookies from 'js-cookie'
@@ -44,11 +44,9 @@ export const saves = ({postId,user,post_save,post_unsave}) => {
     const has_save = localStorage.getItem('save').split(",").map(Number).includes(postId)
 
 
-    return (
-        <Fragment>
-             <a onClick={()=> handleSaveButton(postId)}><i className="small material-icons icon " >{has_save ? state.saveButton : state.unsaveButton}</i></a>
-        </Fragment>
-    )
+    return <a onClick={()=> handleSaveButton(postId)}><i className="small material-icons icon " >{has_save ? state.saveButton : state.unsaveButton}</i></a>
+        
+    
 }
 
 const mapStateToProps = state => ({

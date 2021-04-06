@@ -154,7 +154,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'snapthina@gmail.com'
-EMAIL_HOST_PASSWORD = 'Masukaku12345'
+EMAIL_HOST_PASSWORD = 'Akubuatsitus123'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

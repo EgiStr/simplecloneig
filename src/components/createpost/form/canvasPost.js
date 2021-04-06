@@ -6,7 +6,7 @@ export const canvasPost = props => {
         <div className="row">
             <div className="insert-post col s12">
                 
-                <img src={props.value.url} alt="foto mu..." className="image-canvas"  style={{maxWidth:'80vw'}} />
+                <img src={props.value.url} alt="foto mu..." className="image-canvas"  style={{maxWidth:'80vw',objectFit:'contain'}} />
             </div>
                 <div className="col s12" style={{marginTop:30}}>
                  

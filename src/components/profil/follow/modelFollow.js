@@ -7,9 +7,6 @@ import { connect } from 'react-redux'
 import {getFollowerUser , getFollowingUser} from '../../../action/follow'
 import Follows from './follows'
 
-
-import './modalFollow.css'
-
 class ModalFollow extends Component {
     constructor(props){
         super(props)
@@ -44,7 +41,7 @@ class ModalFollow extends Component {
        
       
         return (
-            <div id="modal_id_follow" ref={ Modal => { this.Modal = Modal }} className="modal">
+            <div id="modal_id_follow" style={{width:'fit-content',padding:'50px',borderRadius:'10px',overflow:'hidden'}} ref={ Modal => { this.Modal = Modal }} className="modal">
                     {this.props.type === true ? (<h4>Follower</h4>) : (<h4>Following</h4>)}
                 <div className="modal-content" style={{ height: 400, overflow: 'scroll', padding:'30px' }} >
                 <ul className="collection" style={{width:'100%',padding:'-10px 0'}}>

@@ -3,7 +3,7 @@ import React ,{ useState,lazy,Suspense,useCallback,useRef } from "react";
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import {AvatarProfil} from '../../utils/auth/profil'
+import { AvatarProfil } from '../../utils/auth/profil'
 
 import Saves from '../other/posts/saves'
 import Likes from '../other/posts/likes'
@@ -13,7 +13,7 @@ import RedirectUser from '../other/profil/redirectUrl'
 import Avatar from "../other/profil/avatarProfil";
 import CommentHandle from "../other/comment/commentHandle";
 
-const Modal = lazy(()=> import('./modalDetail'))
+const Modal = lazy(()=> import('../other/posts/modalDetail'))
 
 
 const Content = props => {
@@ -93,8 +93,8 @@ const Content = props => {
             </div>
                 <div className="row caption-area">
                     <p className="col s12">{state.likes} Likes</p> 
-                    {props.captions && <p className="col s12"><b><span style={{cursor:'pointer'}} onClick={() => history.push(`/profile/${props.username}`)}>{props.username}</span></b> {props.captions}</p>}
-                    {props.count > 0 && 
+                    { props.captions && <p className="col s12"><b><span style={{cursor:'pointer'}} onClick={() => history.push(`/profile/${props.username}`)}>{props.username}</span></b> {props.captions}</p>}
+                    { props.count > 0 && 
                     <div>
                              <a className="modal-trigger col s12"  href={`#modal_id${props.id}`} style={{cursor:'pointer',margin:'3px 0'}} > views all {props.count} comments </a>
                              {props.comment.map((item,i) => <p key={i} className="col s12 "><b><span style={{cursor:'pointer'}}  onClick={() => history.push(`/profile/${item.user.nickname}`)}>{item.user.nickname}</span></b> {item.content}</p>)}

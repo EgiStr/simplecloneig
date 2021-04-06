@@ -33,15 +33,15 @@ const CommentUser = ({user_id,user,time,profil,nickname,content,id,replies,add_p
             return replies.slice(0,limit).map((e,i)=>{
                 return   <Suspense key={i} fallback={<Loading />}>
                             <Childcomment   
-                                key={i}
-                                parent = {id}
-                                id_user={e.user.id}
+                                key      = {i}
+                                user     = {user_id === e.user.id}                                     
+                                id       = {e.id}
+                                id_user  = {e.user.id}
+                                parent   = {id}
                                 nickname = {e.user.nickname}
-                                time = {e.timestamp}
-                                profil = {e.user.profil}
-                                content = {e.content}
-                                id    = {e.id}
-                                user = {user_id === e.user.id}                                     
+                                time     = {e.timestamp}
+                                profil   = {e.user.profil}
+                                content  = {e.content}
                             /> 
                         </Suspense>
             })
@@ -163,4 +163,4 @@ const mapStateToProps = state => {
         user_id : state.auth.user.user_id,
     }
 }
-export default connect(mapStateToProps,{add_parent,delete_comment,add_username})(CommentUser)
+export default connect(mapStateToProps,{ add_parent,delete_comment,add_username })(CommentUser)

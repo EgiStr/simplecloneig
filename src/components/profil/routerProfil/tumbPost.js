@@ -1,10 +1,10 @@
 import React,{Fragment} from 'react'
 
-import Modal from '../../home/modalDetail'
+import Modal from '../../other/posts/modalDetail'
 
-import './tumbPost.css'
+import '../../../assert/css/tumbPost.css'
 
-export const tumbPost = (props) => {
+export const tumbPost = props => {
     return (
         <Fragment>
             <div className='col s12 m4'>

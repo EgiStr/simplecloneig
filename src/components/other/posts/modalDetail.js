@@ -3,10 +3,10 @@ import React, { useState,useEffect,lazy,Suspense } from 'react'
 import M from "materialize-css";
 import { connect } from 'react-redux'
 
-import Loading from '../other/loading'
+import Loading from '../loading'
 
 
-const PostDetail = lazy(() => import('../detail/Posts'))
+const PostDetail = lazy(() => import('../../detail/Posts'))
 
 const Modal = props => {
     const [open,setOpen] =useState (false)

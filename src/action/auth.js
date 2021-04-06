@@ -19,7 +19,33 @@ export const loginUser = access => dispatch => {
             Cookies.set('ud',rawUser)
             dispatch({
                 type:'GET_SUCCESS_MASSAGE',
-                payload: `Hello ${user.username},Welcome..`
+                payload: `Hello ${user.username} ,Welcome...`
+            })
+            dispatch({
+                type:'LOGIN_SUCCESS',
+                payload :user,
+            })
+        })
+} 
+export const massageUser = value => dispatch => {
+    dispatch({ type:'GET_SUCCESS_MASSAGE',payload:value})
+}
+export const UpdateUser = access => dispatch => {
+    const config = {
+        headers: {
+            "Authorization": 'Bearer ' + access,
+        }
+    }
+
+    axios.get(`auth/me/`,config)
+        .then(res => {
+            const rawUser = res.data
+            const user = parseJwt(rawUser)
+
+            Cookies.set('ud',rawUser)
+            dispatch({
+                type:'GET_SUCCESS_MASSAGE',
+                payload: `Username successfuly updated`
             })
             dispatch({
                 type:'LOGIN_SUCCESS',

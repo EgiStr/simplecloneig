@@ -16,8 +16,8 @@ function Navbar({ user,notif,read,get_notif_user }) {
     
     
     if(window.location.pathname === '/register') return <Redirect to={'/register'} />
-    if(window.location.pathname === '/forget-password/comfirm') return <Redirect to={'/forget-password/comfirm'} />       
-    if (user === null) return <Redirect to={'/login'} />
+    if(window.location.pathname === '/forget-password/comfirm/') return <p></p>        
+    if (user === null && window.location.pathname !== '/forget-password/comfirm/') return <Redirect to={'/login'} />
    
     const [toggleN,setToggleN] = useState(false)
     const [toggleS,setToggleS] = useState(false)

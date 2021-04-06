@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react'
 
 import { connect } from 'react-redux'
-import { 
-         add_username,
+
+import { add_username,
          add_parent } from '../../../action/comment'
+
 import CommentMore from '../../other/comment/commentedit'
 
 import { useHistory } from 'react-router-dom'
-import {AvatarProfil} from '../../../utils/auth/profil'
+import { AvatarProfil } from '../../../utils/auth/profil'
 
 const Childcomment = ({user_id,id_user,parent,user,nickname,time,profil,content,id,add_parent,add_username}) => {
     const history = useHistory()

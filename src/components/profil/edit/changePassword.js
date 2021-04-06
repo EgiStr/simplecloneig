@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom'
 
 import { protectAuth } from '../../../utils/auth/auth'
 
-import '../../../Password.css'
+import '../../../assert/css/PasswordChange.css'
 
 
 const changePassword = () => {

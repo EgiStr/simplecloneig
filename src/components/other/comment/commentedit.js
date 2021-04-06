@@ -37,9 +37,9 @@ export const dropDown = ({id,delete_comment,delete_comment_replies,type}) => {
     return (
         <div>
             <a className='dropdown-trigger' data-target='dropdown3'><i className="material-icons ">more_vert</i></a>
-                                <ul id='dropdown3' className='dropdown-content'>
-                                    <li><a onClick={()=> handleRemove(id)}>delete</a></li>
-                                </ul>
+            <ul id='dropdown3' className='dropdown-content'>
+                <li><a onClick={()=> handleRemove(id)}>delete</a></li>
+            </ul>
         </div>
     )
 }

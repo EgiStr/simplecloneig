@@ -18,7 +18,7 @@ import Loading from '../other/loading'
 import Follow from '../other/profil/follow'
 import PageNull from '../other/pageNull'
 
-import '../../Profile.css'
+import '../../assert/css/Profile.css'
 
 
 
@@ -37,11 +37,10 @@ class Profile extends Component {
     componentDidMount() {
         
         const id = this.props.match.params.id;
-        // protectAuth(this.state.access, this.state.refresh).then(e => !e ? window.location.reload() : this.setState({ redirect: false }))
+
         if(this.props.user !== null){
             axios.get(`auth/profil/${id}/`)
-            .then(res => {
-    
+            .then(res => {    
                 this.props.get_post_data(res.data.post_data)
                 this.setState({ data: res.data,loading:false })
             })
@@ -54,7 +53,7 @@ class Profile extends Component {
             const id = this.props.match.params.id;
             this.setState({loading:true})
             axios.get(`auth/profil/${id}/`)
-            .then(res => {
+                .then(res => {
                     
                     this.props.get_post_data(res.data.post_data)
                     this.setState({ data: res.data,loading:false})
@@ -69,7 +68,8 @@ class Profile extends Component {
 
     render() {
         if(this.props.user === null) return <Redirect to={'/login'}/>
-        const {url,path} = this.props.match
+        
+        const { url, path } = this.props.match
         const authUser = this.props.user.username
         const idUser = this.props.match.params.id
     

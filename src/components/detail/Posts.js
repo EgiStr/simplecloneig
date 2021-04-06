@@ -16,7 +16,7 @@ import Follow from '../other/profil/follow'
 import More from '../other/profil/postEdit'
 import Pagenull from '../other/pageNull'
 
-import '../../Posts.css'
+import '../../assert/css/Posts.css'
 
 
 export const DetailPosts = (props) => {
@@ -50,7 +50,7 @@ export const DetailPosts = (props) => {
     return (
 
         <div>
-            {loading ? <div><Loading /> {error ? <Pagenull page={'this page 404'}/> : null   }</div> :
+            {loading ? <div><Loading /> {error ? <Pagenull page={'page 404 not found '}/> : null   }</div> :
                 <div className="container all-content" style={{backgroundColor:'white',marginTop:'20px',marginBottom:'20px',height:HeightContainer >500 ? HeightContainer : "650px"}}>
                     <div className="row">
                         <div className="col s12 m7 images"  style={{padding:0,margin:0}}>
@@ -123,7 +123,7 @@ export const DetailPosts = (props) => {
                                     <Likes postId={id} likes={setData}/>
                                 </div>
                                 <div className="col s2">
-                                    <a onClick={()=>null}><i className='small material-icons icon '>comment</i></a>
+                                    <a><i className='small material-icons icon '>comment</i></a>
                                 </div>
                                 <div className="col s2 offset-s5">
                                     <Saves postId={id}/>
@@ -144,6 +144,7 @@ export const DetailPosts = (props) => {
                                     contentType = {content_type_id}
                                     obj_id = {id}
                                 />
+
                             </div>
                         </div>
                     </div>

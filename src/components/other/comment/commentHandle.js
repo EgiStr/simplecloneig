@@ -16,7 +16,7 @@ import { get_comment,
 
 import { useDispatch } from 'react-redux'
 
-import '../../detail/comment/comment.css'
+import '../../../assert/css/comment.css'
 
 
 const commentHandle = (props) => {

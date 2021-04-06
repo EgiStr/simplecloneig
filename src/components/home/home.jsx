@@ -1,17 +1,21 @@
 import React , { useState,useEffect,useRef,useCallback } from 'react'
 
-import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+
 import Cookies from 'js-cookie'
 
 import Content from './content'
 import FecthData from './fetchData'
 import CreatePost from '../createpost/Createpost'
+
 import { protectAuth } from '../../utils/auth/auth'
+
 import PageNull from '../other/pageNull'
 import Loading from '../other/loading'
 
-import '../../content.css'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+
+import '../../assert/css/content.css'
 
 export const home = ({ user }) => {
   const [page,setPage] = useState(1)
@@ -99,7 +103,7 @@ export const home = ({ user }) => {
                                     timestamp   = {item.create_at}
                                   />)
                                 }
-                    }) : !loading && <PageNull page={'HOME PAGE'}/> }
+                    }) : !loading && <PageNull page={'HOME PAGE , Follow something in search'}/> }
              
                     { loading && <div className='center-align'><Loading /></div> }
                 </div>

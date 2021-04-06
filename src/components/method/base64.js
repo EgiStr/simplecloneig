@@ -26,12 +26,10 @@ export function downloadBase64File (base64Data, filename) {
     // membuat file image
     const image = new Image()
     image.src = image64
-    console.log(canvasRef)
-    console.log(image64)
     // ubah persen ke pixel
     const targetX = image.clientWidth 
     const targetY = image.clientHeight
-    console.log(image.clientWidth)
+ 
 
     let canvas = canvasRef // document.createElement('canvas');
     canvas.width =  targetX

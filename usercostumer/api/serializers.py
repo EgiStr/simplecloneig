@@ -1,4 +1,3 @@
-
 from django.db.models.deletion import SET_NULL
 
 from rest_framework.serializers import ModelSerializer,SerializerMethodField
@@ -28,10 +27,20 @@ class PostProfilSerializer(ModelSerializer):
 
 
 class UserEditProfil(ModelSerializer):
-
+    email = serializers.EmailField(
+            required=True,
+            validators=[
+                UniqueValidator(queryset=User.objects.all(),message='Email already used'),
+                ]
+    )
+    nickname = serializers.CharField(
+            validators=[
+                UniqueValidator(queryset=UserProfil.objects.all(),message='Username already used'),
+                ]
+    )
     class Meta:
         model = UserProfil
-        fields =[
+        fields = [
             'bio',
             'gender',
             'name',
@@ -40,6 +49,24 @@ class UserEditProfil(ModelSerializer):
             'email',
             'nickname',
         ]
+        read_only = ('user')
+
+    def update(self, instance, validated_data):
+        
+        userNew = instance.user
+        userNew.username = validated_data.get('nickname')
+        userNew.email = validated_data.get('email')
+        userNew.save()
+        instance.nickname = validated_data.get('nickname')
+        instance.name = validated_data.get('name')
+        instance.nomorHp = validated_data.get('nomorHp')
+        instance.gender = validated_data.get('gender')
+        if validated_data.get('profil') != None:
+            instance.profil = validated_data.get('profil')
+        instance.bio = validated_data.get('bio')
+        instance.save()
+
+        return instance 
         
 
 class UserProfilPostserializer(ModelSerializer):
@@ -154,7 +181,8 @@ class registeruser(ModelSerializer):
     email = serializers.EmailField(
             required=True,
             validators=[
-                UniqueValidator(queryset=User.objects.all())
+                UniqueValidator(queryset=User.objects.all(),message='Email already use'),
+            
                 ]
     )
 

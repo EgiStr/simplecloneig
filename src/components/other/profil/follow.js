@@ -36,8 +36,8 @@ export const Follow = ({follow_id,user,className}) => {
             .catch(e =>  dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Failed Follow Try Again`}))
 
     }
-
-    const is_follow = localStorage.getItem('follow').split(',').map(Number).includes(follow_id)
+    const data = localStorage.getItem('follow') ? localStorage.getItem('follow').split(',').map(Number).includes(follow_id) : window.location.reload()
+    const is_follow = data
     
 
     return <a className={`${className || 'secondary-content'} `} style={{cursor:'pointer',color: state.follow ==='Following' || state.unfollow ==='Following' ? 'rgb(61, 143, 136)' : '#ef6e73'}} onClick={() => handleFollow()} >{is_follow ? state.follow : state.unfollow }</a>  

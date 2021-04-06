@@ -6,37 +6,36 @@ import Cookies from "js-cookie";
 
 import { protectAuth } from "../../../utils/auth/auth";
 import { connect } from 'react-redux'
+import { UpdateUser,massageUser } from '../../../action/auth'
 
-import "../../../AccountEdit.css";
+import "../../../assert/css/AccountEdit.css";
 
 class AccountEdit extends Component {
   constructor(props) {
     
     super(props);
     this.state = {
-      access: Cookies.get("access"),
-      refresh: Cookies.get("refresh"),
-      bio: "",
-      name:'',
       username: "",
+      name:'',
+      bio: "",
       email: "",
       phone: 0,
       gender: "",
       profil: null,
       respone : null,
       profilpreview: null,
+      loading:true,
     };
     this.avatarRef = React.createRef();
   }
 
   componentDidMount() {
    
-    protectAuth(this.state.access, this.state.refresh).then( e =>
-      !e ? window.location.reload() : null
-    );
+    protectAuth(Cookies.get("access"), Cookies.get("refresh")).then( e => !e ? window.location.reload() : null );
+ 
     const config = {
       headers: {
-        Authorization: "Bearer " + this.state.access,
+        Authorization: "Bearer " + Cookies.get("access"),
       },
     }
     
@@ -55,6 +54,7 @@ class AccountEdit extends Component {
           profil: res.data.profil,
           profilpreview: res.data.profil,
           bio: bio,
+          loading:false,
         });
       })
       .catch( e => console.log(e.request));
@@ -72,7 +72,7 @@ class AccountEdit extends Component {
 
   handleProfil = event => {
     if (event.target.files[0].size > 2097152) {
-      alert("this file to big low 2mb please");
+      alert("this file to big ,low 2mb please");
     } else {
       const image = event.target.files[0];
 
@@ -92,7 +92,7 @@ class AccountEdit extends Component {
   handleSubmit = () => {
     const config = {
       headers: {
-        'Authorization': "Bearer " + this.state.access,
+        'Authorization': "Bearer " + Cookies.get("access"),
         "Content-Type": "multipart/form-data",
       },
     }
@@ -105,14 +105,18 @@ class AccountEdit extends Component {
       formdata.append("nomorHp", phone);
       formdata.append("email", email);
       formdata.append("name", name);
-    if (profil.size === undefined) {
-    } else {
-      formdata.append("profil", profil);
-    }
+    if (profil.size !== undefined) formdata.append("profil", profil);
+    
 
     axios.put(`auth/profil/${userId}/edit/`, formdata, config)
-      .then( res => {this.setState({respone:res.statusText});this.props.dispatch({ type:'GET_SUCCESS_MASSAGE',payload:`Success Updated Profil` })})
-      .catch( e => {this.setState({respone:e.request.responseText});this.props.dispatch({ type:'GET_SUCCESS_MASSAGE',payload:`Failed Update Profil ,${e.request.responseText}` })});
+      .then( res => {
+        if(this.props.user.username !== username) this.props.UpdateUser(Cookies.get('access'))
+        this.props.massageUser(`Success Updated Profil ,${res.statusText}`)
+      })
+      .catch( e => {
+        this.setState({respone:e.request.statusText});
+        this.props.massageUser(`Failed Update Profil ,${e.request.statusText}`)
+      });
   };
 
   render() {
@@ -146,6 +150,18 @@ class AccountEdit extends Component {
                 </div>
               </div>
               <div className="input col s12">
+                <label>Username</label>
+                <input
+                  type="text"
+                  className="browser-default fr"
+                  placeholder="Username"
+                  id="username"
+                  name="username"
+                  onChange={this.handleChange}
+                  value={username === null ? "" : username}
+                />
+              </div>
+              <div className="input col s12">
                 <label>Name</label>
                 <input
                   placeholder="Name"
@@ -155,17 +171,6 @@ class AccountEdit extends Component {
                   onChange={this.handleChange}
                   className="browser-default fr" />
               </div>
-              {/* <div className="input">
-                <label>Username</label>
-                <input
-                  type="text"
-                  className="browser-default fr"
-                  placeholder="Username"
-                  id="username"
-                  onChange={this.handleUsername}
-                  value={username === null ? "" : username}
-                />
-              </div> */}
               <div className="input col s12">
                 <label>Bio</label>
                 <textarea
@@ -196,11 +201,11 @@ class AccountEdit extends Component {
               <div className="input col s12">
                 <label>Phone</label>
                 <input
-                  placeholder="Phone Number"
+                  placeholder="Email"
                   onChange={this.handleChange}
                   value={phone === null ? "" : phone}
-                  name="nomorHp"
-                  type="tel"
+                  name="phone"
+                  type="email"
                   className="browser-default fr"
                 />
               </div>
@@ -239,4 +244,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(AccountEdit);
+export default connect(mapStateToProps,{ UpdateUser,massageUser })(AccountEdit);

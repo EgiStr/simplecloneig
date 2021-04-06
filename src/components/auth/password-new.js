@@ -2,11 +2,11 @@ import React,{ useState } from 'react'
 import axios from '../../utils/axios'
 import Loading from '../other/loading'
 import {useHistory} from 'react-router-dom'
+import { connect } from 'react-redux'
 
-const passwordNew = () => {
+const passwordNew = props => {
     const history = useHistory()
     const [state,setState] = useState({
-        token:'',
         password:''
     })
     const [respone,setRespone] = useState(null)
@@ -23,22 +23,26 @@ const passwordNew = () => {
     const handleSubmit = () => {
         delete axios.defaults.headers.common["Authorization"];
         setLoading(true)
-        const {token,password} = state
+        const { password } = state
+        const token = props.location.search.substring(1)
+        
         const data = {
             token:token,
             password:password,
         }
-        axios.post(`auth/password_reset/`,data)
+        axios.post(`auth/password_reset/confirm/`,data)
             .then(res => {
                 setLoading(false)
+                props.dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Successfully Reset Password` })
                 history.push('/login')
             })
             .catch(e => {
-                setRespone(`${e.request.statusText} password or token invalid !`)
+                props.dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `failed Reset Password ,${e.request.response}` })
+                setRespone(`${e.request.response} password Invalid invalid !`)
+                console.log(e.request)
                 setLoading(false)
             })
     }
-
     return (
         <div>
             <div className="container_login">
@@ -46,17 +50,6 @@ const passwordNew = () => {
                     <h5>RESET PASSWORD</h5>
                     {loading && <Loading />}
                     {respone && <p className="message-login">{respone}</p>}
-                
-                <div className="input-field">
-                    <input 
-                        id="icon_prefix2" 
-                        type="text" 
-                        className="validate" 
-                        name='token' 
-                        onChange={ e => handleChange(e)} 
-                    />
-                    <label htmlFor="icon_prefix2">Token key</label>
-                </div>
                 <div className="input-field">
                     <input 
                         id="icon_prefix" 
@@ -81,4 +74,4 @@ const passwordNew = () => {
     )
 }
 
-export default passwordNew ;
+export default connect()(passwordNew) ;

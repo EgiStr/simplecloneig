@@ -3,9 +3,10 @@ import React , {memo} from 'react'
 import Follow from '../other/profil/follow'
 import RedirectUser from '../other/profil/redirectUrl'
 
-import '../../notif.css'
 import { AvatarProfil } from '../../utils/auth/profil'
 import Avatar from '../other/profil/avatarProfil'
+
+import '../../assert/css/notif.css'
 
 const Notif = ({post,sender,text,type}) => {
 

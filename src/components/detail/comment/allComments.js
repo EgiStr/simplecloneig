@@ -1,5 +1,5 @@
-import React, {Suspense,lazy} from 'react'
-import { connect } from 'react-redux'
+import React, { Suspense,lazy } from 'react'
+
 import Loading from '../../other/loading'
 
 const CommentUser = lazy(() => import('./comment'))
@@ -23,17 +23,11 @@ export const allComments = ({comments,user_id}) => {
                                                 />
                                             </Suspense>
                                 })
-                            ) : (null)}  
+                            ) : <div>no comment :3</div>}  
         </div>
     )
 }
 
-const mapStateToProps = (state) => ({
-    
-})
 
-const mapDispatchToProps = {
-    
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(allComments)
+export default allComments;

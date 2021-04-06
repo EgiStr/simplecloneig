@@ -35,7 +35,7 @@ export const SearchUser = () => {
        
         <div className='box-notif-search'>  
 
-            <input onChange={(event)=>{setSearch(event.target.value)}} placeholder="search User...."></input>        
+            <input onChange={ event => setSearch(event.target.value)} placeholder="search User...."></input>        
             {loading ? <Loading /> : null}
             <div className="divider" style={{margin:"15px 0"}}/>
                 <ul className="collection row">

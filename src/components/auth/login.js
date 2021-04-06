@@ -5,17 +5,18 @@ import { Redirect,Link } from "react-router-dom";
 import { connect } from 'react-redux'
 
 import { loginUser, get_post_like,get_post_save } from '../../action/auth'
+
 import { getFollower } from '../../action/follow'
 import { get_notif_login, } from '../../action/notifikasi'
 
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login'
 import { GoogleLogin } from 'react-google-login';
 
 import axios from ".././../utils/axios";
 import Loading from '../other/loading'
 import Cookies from 'js-cookie'
 
-import '../../login.css'
+import '../../assert/css/login.css'
 
 
 class Login extends Component {
@@ -41,6 +42,7 @@ class Login extends Component {
     }
 
     this.setState({loading:true})
+   
     axios.post('auth/token/',data)
       .then((res) => {
         Cookies.set('access', res.data.access_token)
@@ -142,36 +144,37 @@ class Login extends Component {
               id="icon_prefix"
             />
           </div>
-          <button
-            className="btn waves-effect waves-light"
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            Submit
-          <i className="material-icons right">send</i>
-          </button>
+
+          <button className="btn waves-effect waves-light" type="submit" onClick={this.handleSubmit}> Submit <i className="material-icons right">send</i> </button>
+          
           <div className="line"><span>OR</span></div>
          
-          <div className="icon_box">
-            <div className="icon_field">
+          <div className="icon_box row">
+            <div className="col s12">
             <FacebookLogin
               appId="800571104144427"
               autoLoad={false}
               fields="name,email"
+              size={'medium'}
+              textButton={'Facebook'}
               callback={this.responseCallbackFacebook} 
+            
             />         
             </div>
-            <div className="icon_field">
+            <div className="col s12">
               <GoogleLogin
                 clientId="853564458690-kj782663d50bbft782m1na2s9hks69gi.apps.googleusercontent.com"
-                buttonText="Login"
                 onSuccess={this.responseCallbackGoogle}
+                size={'small'}
+                buttonText={'Google'}
+                icon={true}
+              
               />,
             </div>
           </div>
           <div>You dont have account? <a href="/register">sign up</a></div>
           <br></br>
-          <Link to={"/forget-password"}> Forget-password ?</Link>
+          <Link to={"/forget-password/?maskaan"}> Forget-password ?</Link>
         </div>
       </div>
     );
@@ -179,8 +182,6 @@ class Login extends Component {
 }
 
 
-const mapStateToProps = state => {
-  return {user : state.auth.user}
-}
+const mapStateToProps = state => ({ user : state.auth.user })
 
 export default connect(mapStateToProps, { loginUser, get_post_like, get_notif_login,getFollower,get_post_save  })(Login);

@@ -8,12 +8,12 @@ export default function FecthData(page,access) {
     const [data, setData] = useState({})
     const [hasMore, setHasMore] = useState(false)
     
+    const config = {
+        headers:{
+        "Authorization": 'Bearer ' + access,
+    }}
 
     useEffect( () => {
-        const config = {
-            headers:{
-            "Authorization": 'Bearer ' + access,
-        }}
         setLoading(true)
         axios.get(`api/?page=${page}`,config)
         .then( res => {

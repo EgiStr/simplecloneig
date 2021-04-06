@@ -17,13 +17,13 @@ export const dropDown = (props) => {
     return (
         <div>
             <a id='trigger'className='dropdown-trigger'data-target='dropdown2'><i className="material-icons ">more_horiz</i></a>
-                                <ul id='dropdown2' className='dropdown-content'>
+            <ul id='dropdown2' className='dropdown-content'>
 
-                                    <li>{props.private ? <a onClick={()=> props.UnPrivePost(props.id)}>UnArchive</a> : <a onClick={()=> props.PrivePost(props.id)}>Archive</a>}</li>
-                                    <li className="divider" tabIndex="-1"></li>
-                                    <li><a onClick={()=>props.deletePost(props.id)}>Delete</a></li>
-                                    
-                                </ul>
+                <li>{props.private ? <a onClick={() => props.UnPrivePost(props.id)}>UnArchive</a> : <a onClick={()=> props.PrivePost(props.id)}>Archive</a>}</li>
+                <li className="divider" tabIndex="-1"></li>
+                <li><a onClick={() => props.deletePost(props.id)}>Delete</a></li>
+                
+            </ul>
         </div>
     )
 }

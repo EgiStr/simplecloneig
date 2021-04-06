@@ -34,7 +34,7 @@ def follow_notif_delete(instance,*args, **kwargs):
 # forget password // reset password
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
-    email_plaintext_message = "masuk ke link tersebut dan buat password dan masukan token \n 127.0.0.1:8000{}confirm/ \n masukan token ini \n {}".format(reverse('auth:password_reset:reset-password-request'), reset_password_token.key)
+    email_plaintext_message = f"masuk ke link tersebut dan buat password  \n 127.0.0.1:3000/forget-password/comfirm/?{reset_password_token.key} \n \n "
     send_mail(
         # title:
         "Password Reset for {title}".format(title="SnapThin Website"),

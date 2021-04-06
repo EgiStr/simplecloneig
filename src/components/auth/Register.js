@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from '../../utils/axios'
-import { Redirect } from 'react-router-dom'
-
+import { connect } from 'react-redux'
 class Register extends Component {
   constructor(props) {
     super(props)
@@ -10,8 +9,6 @@ class Register extends Component {
       password: '',
       password2: '',
       email: '',
-      validate: false,
-      redirect: false,
       error:null,
     }
     delete axios.defaults.headers.common["Authorization"];
@@ -25,9 +22,6 @@ class Register extends Component {
     }))
   }
 
-  handlePasswordValidate = event => this.setState({ password2: event.target.value, validate: this.state.password === event.target.value })
-  
-
   handleSubmit = e => {
     e.preventDefault();
     const data = {
@@ -38,58 +32,48 @@ class Register extends Component {
     }
     axios.post('auth/register/',data)
       .then((res) => {
-        this.setState({ redirect: true });
+        this.props.dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `${data.username} Successfuly Created ,` })
+        this.props.history.push('/login')
       })
       .catch(e => {
         if (e.request.status === 400) { console.clear(); }
-        this.setState({ validate: true, redirect: false, error: e.request.response })
+        this.props.dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Failed Created Account` })
+        this.setState({ validate: true, error: e.request.response })
       })
   }
   
   render() {
-    if(this.state.redirect) return <Redirect to={'/login'}/>
+    if(this.props.user !== null) this.props.history.push('/')
     return (
-      <div className="container_login">
-        <div className="box_login">
-          <h5>Register IgClone</h5>
-          {this.state.validate && <p className="message-login">{this.state.error}</p>}
+      <div className="container_login" >
+        <div className="box_login row" style={{minWidth:'30vw',height:'93vh'}}>
+          <h5>Create Account</h5>
+          {this.state.error && <p className="message-login">{this.state.error}</p>}
           <div className="input-field">
-            <input id="icon_prefix" type="text" className="validate" name='username' onChange={(event) => {
-              this.handleChange(event);
-            }} />
+            <input id="icon_prefix" type="text" className="validate" name='username' onChange={this.handleChange} />
             <label htmlFor="icon_prefix">username</label>
           </div>
           <div className="input-field">
-            <input id="icon_prefix2" type="text" className="validate" name='email' onChange={event => this.handleChange(event)} />
+            <input id="icon_prefix2" type="text" className="validate" name='email' onChange={this.handleChange} />
             <label htmlFor="icon_prefix2">email</label>
           </div>
           <div className="input-field">
-            <input id="icon_prefix3" type="password" className="validate" name='password' onChange={ event => this.handleChange(event) } />
+            <input id="icon_prefix3" type="password" className="validate" name='password' onChange={this.handleChange} />
             <label htmlFor="icon_prefix3">password</label>
           </div>
           <div className="input-field">
-            <input id="icon_prefix4" type="password" className="validate" onChange={(event) => {
-              this.handlePasswordValidate(event);
-            }} />
+            <input id="icon_prefix4" type="password" className="validate" name="password2" onChange={this.handleChange} />
             <label htmlFor="icon_prefix4">password confirm</label>
           </div>
-  
-          {this.state.validate 
-          ?(<button
-              className="btn waves-effect waves-light"
-              type="submit"
-              onClick={this.handleSubmit}>
-              Submit
-              <i className="material-icons right">send</i>
-            </button>) 
-          :(<button
-              className="btn waves-effect waves-light disabled"
+          <button
+              className="btn waves-effect waves-light "
               type="submit"
               onClick={this.handleSubmit}
             >
               Submit
               <i className="material-icons right">send</i>
-            </button>)}
+          </button>
+
             have an account? <a href="/login">Log in</a>
         </div>
       </div>
@@ -98,4 +82,9 @@ class Register extends Component {
 
 }
 
-export default Register;
+const mapStateToProps = state => ({
+  user : state.auth.user,
+  massage : state.massage
+})
+
+export default connect(mapStateToProps)(Register);

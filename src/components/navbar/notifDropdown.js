@@ -1,7 +1,7 @@
 import React from 'react'
 import Notif from './Notif'
 
-
+import PageNull from '../other/pageNull'
 
 
 export const NotifDropdown = ({notif,toggle}) => {
@@ -22,7 +22,7 @@ export const NotifDropdown = ({notif,toggle}) => {
     return (
         <div>
         <li className="box-notif " style={StyleDropdown}>
-            {notif.map((item,index) => {
+            {notif.length > 0  ? notif.map((item,index) => {
   
                 return (
                     <div key={index}>
@@ -35,7 +35,7 @@ export const NotifDropdown = ({notif,toggle}) => {
                         />
                     </div>
                 )
-            })}
+            }) : <PageNull page={'notif go back !'} />}
                         
             
         </li>

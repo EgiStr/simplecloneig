@@ -6,7 +6,7 @@ import Avatar from '../other/profil/avatarProfil';
 import { connect } from 'react-redux'
 import ModalPost from './modalPost';
 
-import '../../cp.css'
+import '../../assert/css/CreatePost.css'
 
 
 export const uploadpost = (props) => {
