@@ -14,11 +14,10 @@ class UserNotifikasiApiView(ListAPIView):
     permission_classes= [IsAuthenticated]
     
     def get_queryset(self): 
-        qs = Notifikasi.objects.filter( receiver__user__id = self.request.user.id,
-                                        is_seen = False)
+        qs = Notifikasi.objects.filter( receiver__user__id = self.request.user.id ,is_seen = False)
         # kalau notif terlalu dikit tambah 10 notif lalu
         if len(qs) <= 10 :
-            queryTambahan = Notifikasi.objects.filter(receiver__user__id = self.request.user.id,is_seen = True,)[:20]
+            queryTambahan = Notifikasi.objects.filter(receiver__user__id = self.request.user.id ,is_seen = True,)[:20]
             qs = qs | queryTambahan
         return qs
 

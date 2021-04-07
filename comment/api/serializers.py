@@ -15,7 +15,6 @@ class UserProfilPostserializer(ModelSerializer):
 
 class UpdateOrDeleteCommentSerializer(ModelSerializer):
  
-
     class Meta:
         model = Comments 
         fields =[ 
@@ -35,14 +34,13 @@ class CommentChildrenToSerializer(ModelSerializer):
             
             'id',
             'user',
-            
             'obj_id',
             'content',
             'timestamp',
-            'parent',
-      
+            'parent',     
             
         ]
+ 
     def get_timestamp(self,obj):
         return obj.get_time
         
@@ -86,6 +84,7 @@ class CommentChildrenSerializer(ModelSerializer):
 
 class CommentCreateSerializer(ModelSerializer):
    
+    timestamp = SerializerMethodField()
     replies = SerializerMethodField()
 
     class Meta:
@@ -100,7 +99,8 @@ class CommentCreateSerializer(ModelSerializer):
             'replies',
         ]
 
-   
+    def get_timestamp(self,obj):
+        return obj.get_time
     
     def get_replies(self,obj):
         return CommentChildrenToSerializer(obj.children(),many=True,context={'request':None}).data
@@ -118,7 +118,7 @@ class CommentCreateSerializer(ModelSerializer):
         try:
             parent_id = validated_data['parent']
 
-        except:
+        except Exception as e:
             parent_id = None
 
         parent_obj = parent_id

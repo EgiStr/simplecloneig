@@ -1,4 +1,4 @@
-from django.db import connection, models
+from django.db import models
 from django.contrib.contenttypes.models import ContentType
 
 # Create your models here.
@@ -12,7 +12,6 @@ class PostManage(models.Manager):
         users = [nickname,]
         # mencari user yang di follow si user
         users +=  [ i.user for i in  UserFollowing.objects.filter(following_user = nickname)] # values_list mengembalikan gruop yang ada si user -> id 
-        # print('new query   ....',[]) 
         
         # memfilter user yang ada didalam list -> yang difollow 
         qs = super(PostManage,self).filter(user__in=users).filter(private=False).order_by('-create_at')

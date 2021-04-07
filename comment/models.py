@@ -27,8 +27,8 @@ class CommentManager(models.Manager):
     def fillter_for_count(self,instance):
         content_type= ContentType.objects.get_for_model(instance.__class__)
         obj_id = instance.id
-        qs = super(CommentManager,self).filter(content_type=content_type,obj_id= obj_id)
-        return len(qs)
+        qs = super(CommentManager,self).filter(content_type=content_type,obj_id= obj_id).count()
+        return qs
 
 
 class Comments(models.Model):
