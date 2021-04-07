@@ -23,7 +23,6 @@ export const tumbPost = props => {
                 preloadingImg(entries[0].target.firstChild)
         }})
         // kalo ada node, inisialisasi dengan observer
-
         if (node) observer.current.observe(node)
   },[])
     return (
