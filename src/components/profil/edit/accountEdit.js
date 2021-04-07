@@ -110,12 +110,13 @@ class AccountEdit extends Component {
 
     axios.put(`auth/profil/${userId}/edit/`, formdata, config)
       .then( res => {
-        if(this.props.user.username !== username) this.props.UpdateUser(Cookies.get('access'))
-        this.props.massageUser(`Success Updated Profil ,${res.statusText}`)
+        if(this.props.user.username !== username ||  profil.size !== undefined) this.props.UpdateUser(Cookies.get('access'))
+        this.props.massageUser(`Success Updated Profil ,${res.responseText}`)
       })
       .catch( e => {
-        this.setState({respone:e.request.statusText});
-        this.props.massageUser(`Failed Update Profil ,${e.request.statusText}`)
+       console.log(e.request)
+        this.setState({respone:e.request.responseText});
+        this.props.massageUser(`Failed Update Profil ,${e.request.responseText}`)
       });
   };
 

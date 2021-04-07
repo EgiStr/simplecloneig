@@ -28,9 +28,7 @@ export const dropDown = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    
-})
+
 
 const mapDispatchToProps = {
     PrivePost,
@@ -38,4 +36,4 @@ const mapDispatchToProps = {
     deletePost,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(dropDown)
+export default connect(null, mapDispatchToProps)(dropDown)

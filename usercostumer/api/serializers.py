@@ -30,7 +30,7 @@ class UserEditProfil(ModelSerializer):
     email = serializers.EmailField(
             required=True,
             validators=[
-                UniqueValidator(queryset=User.objects.all(),message='Email already used'),
+                UniqueValidator(queryset=UserProfil.objects.all(),message='Email already used'),
                 ]
     )
     nickname = serializers.CharField(

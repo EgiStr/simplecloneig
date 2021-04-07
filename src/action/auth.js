@@ -57,7 +57,7 @@ export const UpdateUser = access => dispatch => {
 export const LogoutAuth = () => dispatch => {
     dispatch({
         type:'GET_SUCCESS_MASSAGE',
-        payload: `Logout Success, goodbyee`
+        payload: `Logout Succussfuly`
     })
     return dispatch({
         type:'LOGOUT_SUCCESS',
@@ -113,7 +113,7 @@ export const post_save = (prev,post_id) => dispatch => {
 export const post_unsave = (prev,post_id) => dispatch => {
     dispatch({
         type: 'UNSAVE_POST',
-        payload:{
+        payload: {
             post_id : post_id,
             prev:prev
         }

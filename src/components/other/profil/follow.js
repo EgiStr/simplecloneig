@@ -36,7 +36,9 @@ export const Follow = ({follow_id,user,className}) => {
             .catch(e =>  dispatch({ type:'GET_SUCCESS_MASSAGE', payload: `Failed Follow Try Again`}))
 
     }
-    const data = localStorage.getItem('follow') ? localStorage.getItem('follow').split(',').map(Number).includes(follow_id) : window.location.reload()
+
+    const data = localStorage.getItem('follow') ? localStorage.getItem('follow').split(',').map(Number).includes(follow_id) : false
+    
     const is_follow = data
     
 
