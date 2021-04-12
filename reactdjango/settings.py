@@ -96,16 +96,16 @@ AUTHENTICATION_BACKENDS = (
 
 
 # Google configuration
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '853564458690-qp83fa5270i272sheigrs9ls49en1ei3.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Lo3fsT-BXYY1kcAaOlTBDTHM'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY =  <you secret key>
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET =  <you secret key>
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',
 ]
 # Facebook configuration
-SOCIAL_AUTH_FACEBOOK_KEY = '800571104144427'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'df80716922b48b9c05166a22a7df69cc'
+SOCIAL_AUTH_FACEBOOK_KEY = <you secret key>
+SOCIAL_AUTH_FACEBOOK_SECRET =  <you secret key>
 
 # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
 # Email is not sent by default, to get it, you must request the email permission.
@@ -153,8 +153,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'snapthina@gmail.com'
-EMAIL_HOST_PASSWORD = 'Akubuatsitus123'
+EMAIL_HOST_USER =  <you username>
+EMAIL_HOST_PASSWORD =  <you password>
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
