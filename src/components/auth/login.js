@@ -28,15 +28,15 @@ class Login extends Component {
       notValide: false,
       loading: false,
     };
-    delete axios.defaults.headers.common["Authorization"];
+    
   }
 
   handleSubmit = e => {
     e.preventDefault();
     const data = {
       grant_type : 'password',
-      client_id: 'qDqQ2k5cz2HNaHsuyZC4JPwRRHxPOm2PJUoSXeTJ',
-      client_secret : '6Xb1TvCPLJRmKsrQ4XhGg0uPnwLSvwmJ96DZiUKyG1pB87I6YfkJYhyDycl4vX6EBWCG4lFeDcuHecSGboz6gckgo3RWwSSj0xaBdnvwUwLWUYZOO1HBVdLSOsBrIcVe',
+      client_id: <make client id ini admin panel in Django toolkit-application>',
+      client_secret : <make client scret ini admin panel in Django toolkit-application>',
       username : this.state.title, 
       password: this.state.password,
     }
@@ -60,8 +60,8 @@ class Login extends Component {
     
   responseCallbackGoogle = response => {
     const data = {
-      client_id: 'GXAKvHOF27PXTF4qzLHiFTL9MdKrv5wfEHiqpnYr',                   
-      client_secret: 'BMN5fi1R9yNcmTYO53bAPeODNlu3xQK8QTpl8MxKjf7odJn7hvITOFW8B1jR0yHH6wHP11Ifpj0s1YLlutkyTs2p8rXuMTbKamr2LSHoan4jxUFkPFz70l8sE4cAlS6b',
+      client_id:<make client id ini admin panel in Django toolkit-application>' ,                   
+      client_secret:<make client id ini admin panel in Django toolkit-application>' ,
       grant_type:'convert_token',
       backend : 'google-oauth2',
       token:response.accessToken
@@ -86,8 +86,8 @@ class Login extends Component {
   responseCallbackFacebook = response => {
 
     const data = {
-      client_id: 'M2jCI0zmsBQAhJJGWl1FHZIRcCor3y7zFVibFjgj',                   
-      client_secret: '3QVb9j86NnCrhAoZsnALFjY3hNg25a7zGgdeFVH6Q88zew2iTv3QHg1ZgW5Xw2Ef0BwdKEgz6T6gbJqBJ9NQuO88Y6ZPN8bxHNf76z7VTx4B1sPOATSqV541cgxNUMEe',
+      client_id:<make client id ini admin panel in Django toolkit-application>' ,                   
+      client_secret:<make client id ini admin panel in Django toolkit-application>',
       grant_type:'convert_token',
       backend : 'facebook',
       token:response.accessToken
@@ -152,7 +152,7 @@ class Login extends Component {
           <div className="icon_box row">
             <div className="col s12">
             <FacebookLogin
-              appId="800571104144427"
+              appId=<your app id>
               autoLoad={false}
               fields="name,email"
               size={'medium'}
@@ -163,7 +163,7 @@ class Login extends Component {
             </div>
             <div className="col s12">
               <GoogleLogin
-                clientId="853564458690-kj782663d50bbft782m1na2s9hks69gi.apps.googleusercontent.com"
+                clientId=<your app id>
                 onSuccess={this.responseCallbackGoogle}
                 size={'small'}
                 buttonText={'Google'}
